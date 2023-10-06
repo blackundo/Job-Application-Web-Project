@@ -1,6 +1,7 @@
 import React from "react";
-
-const Layout = ({ children }) => {
+import Logo from "../../Assets/Logo.svg";
+import FormContent from "./FormContent";
+const From = ({ children }) => {
   return (
     <div>
       <div className="flex max-md:h-screen ">
@@ -10,15 +11,11 @@ const Layout = ({ children }) => {
           </div>
         </div>
         <div className="right w-2/3 bg-slate-300 grid place-content-center relative max-md:w-full">
-          <FormContent
-            Title={Title}
-            titleInput={titleInput}
-            titleBtn={titleBtn}
-          />
+          {children}
         </div>
       </div>
     </div>
   );
 };
 
-export default Layout;
+export default From;
