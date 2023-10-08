@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Login.css";
-import From from "../../Components/Form/Layout";
+import Form from "../../Components/Form/Layout";
 import FormContent from "../../Components/Form/FormContent";
 
 const titleInput = [
@@ -10,9 +10,9 @@ const titleInput = [
 
 const Login = () => {
   return (
-    <From>
+    <Form>
       <FormContent Title={"Login"} titleInput={titleInput} titleBtn={"Login"} />
-    </From>
+    </Form>
   );
 };
 

@@ -4,7 +4,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
-import LoginSuccess from "./Pages/Register/RegisterSuccess";
+import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 function App() {
   return (
     <>
@@ -14,7 +14,8 @@ function App() {
           <Route path="/">
             <Route path="login" element={<Login />} />
             <Route path="Register" element={<Register />} />
-            <Route path="loginSuccess" element={<LoginSuccess />} />
+            <Route path="ForgotPass" element={<ForgotPassword />} />
+            {/* <Route path="registerSuccess" element={<RegisterSuccess />} /> */}
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../../Components/Form/Layout";
 import FormContent from "../../Components/Form/FormContent";
+import RegisterSuccess from "../Register/RegisterSuccess";
 
 const titleInput = [
   { id: 1, placeHolder: "Email Address", type: "email", label: "Email" },
@@ -14,14 +15,23 @@ const titleInput = [
 ];
 
 const Register = () => {
+  const [isRegistered, setIsRegistered] = useState(false);
+
   return (
-    <Layout>
-      <FormContent
-        Title={"Register"}
-        titleInput={titleInput}
-        titleBtn={"Sign up"}
-      />
-    </Layout>
+    <>
+      {!isRegistered ? (
+        <Layout>
+          <FormContent
+            Title={"Register"}
+            titleInput={titleInput}
+            titleBtn={"Sign up"}
+            setIsRegistered={setIsRegistered}
+          />
+        </Layout>
+      ) : (
+        <RegisterSuccess />
+      )}
+    </>
   );
 };
 
