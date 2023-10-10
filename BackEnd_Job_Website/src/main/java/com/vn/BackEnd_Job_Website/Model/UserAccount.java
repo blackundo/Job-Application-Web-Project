@@ -13,7 +13,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "useraccount")
 public class UserAccount {
     @Id
     @Column(name = "userID", nullable = false)
@@ -31,10 +30,4 @@ public class UserAccount {
     @Column(name = "password")
     private String password;
 
-    public UserAccount(int id, String name, String email, String password) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
 }

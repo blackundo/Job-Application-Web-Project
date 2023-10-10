@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class    Conversation {
+public class Conversation {
     @Id
     @Column(name = "conversationID", nullable = false)
     private Integer id;
