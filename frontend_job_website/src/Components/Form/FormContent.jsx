@@ -2,7 +2,8 @@ import React from "react";
 import Input from "../InputForm/Input";
 import Social from "../../Pages/Login/Button/Social";
 
-const FormContent = ({ Title, titleInput, titleBtn }) => {
+const FormContent = ({ Title, titleInput, titleBtn, inputValues, onInputChange, onSubmit }) => {
+
   return (
     <>
       <span className="absolute top-6 right-14">
@@ -19,10 +20,16 @@ const FormContent = ({ Title, titleInput, titleBtn }) => {
                 label={item.label}
                 placeholder={item.placeHolder}
                 type={item.type}
+                name={item.name}
+                value={inputValues[item.name] || ''}
+                onChange={(event) => {
+                  const newValue = event.target.value;
+                  onInputChange(item.name, newValue); // Gọi hàm handleInputChange của thành phần cha
+                }}
               />
             );
           })}
-          <button className="bg-[#133FA0] w-full h-12 rounded-md text-white my-3 text-[1.2rem] font-normal">
+          <button className="bg-[#133FA0] w-full h-12 rounded-md text-white my-3 text-[1.2rem] font-normal" onClick={onSubmit}>
             {titleBtn}
           </button>
           <div className="flex items-center w-full ">
