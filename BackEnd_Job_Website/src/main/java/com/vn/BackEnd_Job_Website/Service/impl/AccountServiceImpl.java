@@ -1,8 +1,6 @@
 package com.vn.BackEnd_Job_Website.Service.impl;
 
 import com.vn.BackEnd_Job_Website.Dto.AccountDTO;
-import com.vn.BackEnd_Job_Website.Model.UserAccount;
-import com.vn.BackEnd_Job_Website.Respository.AccountRespository;
 import com.vn.BackEnd_Job_Website.Service.AccountService;
 
 import org.springframework.stereotype.Service;
