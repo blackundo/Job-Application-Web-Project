@@ -18,6 +18,7 @@ import java.util.Set;
 @Entity
 public class UserAccount implements UserDetails {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userID", nullable = false)
     private Integer id;
 
