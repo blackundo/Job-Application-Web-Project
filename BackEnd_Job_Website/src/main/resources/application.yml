@@ -6,17 +6,19 @@ spring:
     url: jdbc:sqlserver://localhost:1433;databaseName=Application_Job;encrypt=true;trustServerCertificate=true
     Username: sa
     password: khanhuy123
-    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl #fix table replace with lowercase automatic and _
+      dialect: org.hibernate.dialect.SQLServer2012Dialect
       ddl-auto: none
     show-sql: true
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.SQLServer2012Dialect
     database: sql_server
-    database-platform: org.hibernate.dialect. PostgreSQLDialect
+    database-platform: org.hibernate.dialect.SQLServer2012Dialect
   main:
     banner-mode: off
 server:
