@@ -1,6 +1,6 @@
 import React from "react";
-import Logo from "../../../Assets/Logo.svg";
-import FormContent from "./FormContent";
+import Logo from "../../Assets/Logo.svg";
+import FormContent from "../../Pages/Login/Form/FormContent";
 const From = ({ children }) => {
   return (
     <div>

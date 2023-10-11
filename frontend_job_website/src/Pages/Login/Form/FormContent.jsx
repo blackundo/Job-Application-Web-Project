@@ -21,7 +21,7 @@ const FormContent = ({ Title, setIsRegistered }) => {
     axios
       .get("http://localhost:9000/Users")
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
         setUsers(res.data);
         //dispatch({ type: "data", payload: res.data });
       })
@@ -53,14 +53,6 @@ const FormContent = ({ Title, setIsRegistered }) => {
     }
   };
 
-  const handleRegister = () => {
-    if (Title === "Register") {
-      setIsRegistered(true);
-      setTimeout(() => {
-        window.location.href = "/login";
-      }, 3000);
-    }
-  };
   return (
     <>
       {Title === "Login" ? (
@@ -118,6 +110,12 @@ const FormContent = ({ Title, setIsRegistered }) => {
               />
             </div>
           </div>
+          <Link
+            to={"/forgotPass"}
+            className="text-blue-600 text-sm font-normal"
+          >
+            Forgot Password?
+          </Link>
           <button
             className="bg-[#133FA0] w-full h-12 rounded-md text-white my-3 text-[1.2rem] font-normal"
             onClick={handleLogin}

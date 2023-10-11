@@ -1,5 +1,5 @@
-import Layout from "../../Components/Form/Layout";
-import Input from "../../Components/InputForm/Input";
+import Layout from "../../Layouts/Layout/Layout";
+
 import Social from "../Login/Button/Social";
 
 function ForgotPassword() {
