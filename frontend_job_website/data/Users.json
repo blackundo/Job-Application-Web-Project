@@ -1,0 +1,44 @@
+{
+    "Users":[
+        {
+            "id": 1,
+            "name": "John",
+            "email": "john@gmail.com",
+            "password": "1234",
+            "role": {
+                "roleId": 23,
+                "roleName": "Administrator"
+            }
+        },
+        {
+            "id": 2,
+            "name": "Jane",
+            "email": "jane@gmail.com",
+            "password": "5678",
+            "role": {
+                "roleId": 42,
+                "roleName": "User"
+            }
+        },
+        {
+            "id": 3,
+            "name": "David",
+            "email": "david@gmail.com",
+            "password": "abcd",
+            "role": {
+                "roleId": 42,
+                "roleName": "User"
+            }
+        },
+        {
+            "id": 4,
+            "name": "Alice",
+            "email": "alice@gmail.com",
+            "password": "efgh",
+            "role": {
+                "roleId": 23,
+                "roleName": "Administrator"
+            }
+        }
+    ]
+}
