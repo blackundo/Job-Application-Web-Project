@@ -13,7 +13,6 @@ function Input({ label, type, placeholder }) {
           placeholder={placeholder}
           className="pl-3 w-full h-[40px] rounded-md"
         />
-        <button className="absolute top-1/2 right-0 text-2xl -translate-x-1/2 -translate-y-1/2"></button>
       </div>
     </div>
   );

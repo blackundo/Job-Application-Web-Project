@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../../Assets/Logo.svg";
+import Logo from "../../../Assets/Logo.svg";
 import FormContent from "./FormContent";
 const From = ({ children }) => {
   return (

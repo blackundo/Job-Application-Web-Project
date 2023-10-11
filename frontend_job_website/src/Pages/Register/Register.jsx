@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Layout from "../../Components/Form/Layout";
 import FormContent from "../../Components/Form/FormContent";
-import RegisterSuccess from "../Register/RegisterSuccess";
+import RegisterSuccess from "./RegisterSuccess";
 
 const titleInput = [
   { id: 1, placeHolder: "Email Address", type: "email", label: "Email" },
