@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Login.css";
 import Form from "../../Layouts/Layout/Layout";
-import FormContent from "./Form/FormContent";
+import FormContent from "../../Components/Login/Login";
 
 const Login = () => {
   return (

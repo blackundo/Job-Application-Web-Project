@@ -29,6 +29,26 @@
         "role_Id": 43,
         "roleName": "User"
       }
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "qưeer",
+      "role": {
+        "role_id": "id_2zfs5jckt",
+        "roleName": "User"
+      },
+      "id": 4
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "ăqưeqwe",
+      "role": {
+        "role_id": "id_s5wvf9g95",
+        "roleName": "User"
+      },
+      "id": 5
     }
   ]
 }
