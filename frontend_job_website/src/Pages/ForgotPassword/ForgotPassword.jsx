@@ -1,6 +1,6 @@
 import Layout from "../../Layouts/Layout/Layout";
 
-import Social from "../Login/Button/Social";
+import Social from "../../Components/Social/Social";
 
 function ForgotPassword() {
   return (

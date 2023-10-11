@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useState } from "react";
-import loginReducer from "../../../Stores/loginReducer";
+import loginReducer from "../../Stores/loginReducer";
 
-import Social from "../Button/Social";
+import Social from "../Social/Social";
 import { Link } from "react-router-dom";
 import axios from "axios";
 const initialState = {

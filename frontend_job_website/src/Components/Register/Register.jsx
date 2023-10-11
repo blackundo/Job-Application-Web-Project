@@ -1,8 +1,8 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 import axios from "axios";
-import Social from "../../Login/Button/Social";
+import Social from "../Social/Social";
 
 const FormContent = ({ Title, setIsRegistered }) => {
   const [formData, setFormData] = useState({
@@ -52,7 +52,6 @@ const FormContent = ({ Title, setIsRegistered }) => {
       });
   };
   function generateUniqueId() {
-    // You can use a combination of a prefix and a random number to generate a unique ID
     return "id_" + Math.random().toString(36).substr(2, 9);
   }
   const handleInputChange = (e) => {
