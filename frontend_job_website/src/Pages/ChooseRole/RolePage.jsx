@@ -1,8 +1,10 @@
+import Role from "../../Components/Role/Role";
+
 function RolePage() {
   return (
-    <div>
-      <div></div>
-    </div>
+    <>
+      <Role />
+    </>
   );
 }
 

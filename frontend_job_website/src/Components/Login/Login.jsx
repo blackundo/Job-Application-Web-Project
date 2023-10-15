@@ -1,9 +1,9 @@
 import React, { useEffect, useReducer, useState } from "react";
 import loginReducer from "../../Stores/loginReducer";
-
 import Social from "../Social/Social";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import "./Login.css";
 const initialState = {
   email: "",
   password: "",
@@ -55,21 +55,12 @@ const FormContent = ({ Title, setIsRegistered }) => {
 
   return (
     <>
-      {Title === "Login" ? (
-        <span className="absolute top-6 right-14">
-          Don’t have an account?
-          <Link to={"/Register"} className="text-[#000084] cursor-pointer">
-            Register now
-          </Link>
-        </span>
-      ) : (
-        <span className="absolute top-6 right-14">
-          Have already account?
-          <Link to={"/login"} className="text-[#000084] cursor-pointer">
-            Login
-          </Link>
-        </span>
-      )}
+      <span className="absolute top-6 right-14">
+        Don’t have an account?
+        <Link to={"/chooseRole"} className="text-[#000084] cursor-pointer">
+          Register now
+        </Link>
+      </span>
 
       <div className="box-login w-[23rem] ">
         <h1 className="text-2xl font-semibold font-serif pb-7">{Title}</h1>

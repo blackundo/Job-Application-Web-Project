@@ -1,4 +1,4 @@
-import Layout from "../../Layouts/Layout/Layout";
+import Layout from "../../Layouts/Layout";
 
 import Social from "../../Components/Social/Social";
 
