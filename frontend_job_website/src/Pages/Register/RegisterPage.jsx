@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Layout from "../../Layouts/Layout/Layout";
+import Layout from "../../Layouts/Layout";
 import RegisterSuccess from "./RegisterSuccess";
 import FormContent from "../../Components/Register/Register";
 

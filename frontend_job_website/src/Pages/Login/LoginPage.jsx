@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import "./Login.css";
-import Form from "../../Layouts/Layout/Layout";
+
+import Layout from "../../Layouts/Layout";
 import FormContent from "../../Components/Login/Login";
 
 const Login = () => {
   return (
-    <Form>
+    <Layout>
       <FormContent Title={"Login"} titleBtn={"Login"} />
-    </Form>
+    </Layout>
   );
 };
 
