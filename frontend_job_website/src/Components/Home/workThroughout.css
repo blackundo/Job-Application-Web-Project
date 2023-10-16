@@ -1,0 +1,10 @@
+.slideshow-c{
+  transition: transform 0.3s ease;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+
+  .slideshow-c::-webkit-scrollbar {
+    display: none;
+}
