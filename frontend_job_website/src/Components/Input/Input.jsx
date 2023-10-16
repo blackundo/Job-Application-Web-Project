@@ -11,7 +11,7 @@ function Input({ label, type, placeholder }) {
         <input
           type={type}
           placeholder={placeholder}
-          className="pl-3 w-full h-[40px] rounded-md"
+          className="pl-3 w-full h-[40px] rounded-md border border-slate-600"
         />
       </div>
     </div>

@@ -5,13 +5,14 @@ import Register from "./Pages/Register/RegisterPage";
 import RegisterSuccess from "./Pages/Register/RegisterSuccess";
 import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import RolePage from "./Pages/ChooseRole/RolePage";
+import Home from "./Pages/Home/Home";
 function App() {
   return (
     <div className="h-screen">
       <BrowserRouter>
         <Routes>
           {/* <Route path="/" element={<Layout />}> */}
-          <Route path="/">
+          <Route path="/" element={<Home />}>
             <Route path="chooseRole" element={<RolePage />} />
             <Route path="login" element={<Login />} />
             <Route path="Register" element={<Register />} />

@@ -1,0 +1,6 @@
+/* @media not all and (min-width: 768px) {
+  .sideShowPopular {
+    overflow-x: scroll;
+    display: flex;
+  }
+} */
