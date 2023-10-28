@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import loginReducer from "../../Stores/loginReducer";
 import Social from "../Social/Social";
 import { Link } from "react-router-dom";
@@ -11,46 +11,34 @@ const initialState = {
   errorMessage: "",
 };
 const FormContent = ({ Title, setIsRegistered }) => {
-  const [state, dispatch] = useReducer(loginReducer, initialState);
+  const [{ user }, dispatch] = useReducer(loginReducer, initialState);
   const [users, setUsers] = useState([]);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState(false);
 
-  useEffect(function () {
-    axios
-      .get("http://localhost:9000/Users")
-      .then((res) => {
-        //console.log(res.data);
-        setUsers(res.data);
-        //dispatch({ type: "data", payload: res.data });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  /*  const handleInputChange = (e) => {
-    dispatch({
-      type: "INPUT_CHANGE",
-      fieldName: e.target.name,
-      payload: e.target.value,
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
   };
-  const handleLogout = () => {
-    dispatch({ type: "LOGOUT" });
-  }; */
-  const handleLogin = () => {
-    const user = users.find(
-      (u) => u.email === email && u.password === password
-    );
-    if (user) {
-      setError(false);
-      console.log("Login successful");
-    } else {
-      setError(true);
-      console.log("Login failed");
-    }
+
+  const handleLogin = async () => {
+    await axios.get("http://localhost:9003/Accounts").then((res) => {
+      let accounts = res.data.map((a) => a.Account);
+      let findUser = accounts.find((f) => f.Email === formData.email);
+      findUser ? setUsers(findUser) : setError(true);
+      if (users.Password === formData.password) {
+        dispatch({
+          type: "LOGIN",
+          payload: users,
+        });
+      }
+    });
   };
 
   return (
@@ -80,8 +68,8 @@ const FormContent = ({ Title, setIsRegistered }) => {
                 name="email"
                 placeholder="Email Address"
                 className="pl-3 w-full h-[40px] rounded-md"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={(e) => handleInputChange(e)}
               />
             </div>
           </div>
@@ -96,8 +84,8 @@ const FormContent = ({ Title, setIsRegistered }) => {
                 name="password"
                 placeholder="Your Password"
                 className="pl-3 w-full h-[40px] rounded-md"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={(e) => handleInputChange(e)}
               />
             </div>
           </div>

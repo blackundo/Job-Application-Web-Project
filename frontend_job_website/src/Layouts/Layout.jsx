@@ -1,6 +1,6 @@
-import React from "react";
 import Logo from "../Assets/Logo.svg";
 
+// eslint-disable-next-line react/prop-types
 const From = ({ children }) => {
   return (
     <div>

@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import Social from "../Social/Social";
 
 const FormContent = ({ Title, setIsRegistered }) => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const role = searchParams.get("role");
+  console.log(role);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -44,7 +48,7 @@ const FormContent = ({ Title, setIsRegistered }) => {
       .then((res) => {
         setLoad(false);
         console.log("success", res.data);
-        window.location.href = "/registerSuccess";
+        setIsRegistered(true);
       })
       .catch((err) => {
         setLoad(true);

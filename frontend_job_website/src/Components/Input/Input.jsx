@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { FaEyeSlash } from "react-icons/fa";
-import { IoEyeSharp } from "react-icons/io5";
+// eslint-disable-next-line react/prop-types
 function Input({ label, type, placeholder }) {
   return (
     <div className="flex flex-col py-2">
