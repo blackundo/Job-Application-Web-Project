@@ -1,23 +1,21 @@
 import { useEffect, useReducer, useState } from "react";
-import loginReducer from "../../Stores/loginReducer";
+
 import Social from "../Social/Social";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
-const initialState = {
-  email: "",
-  password: "",
-  isLoggedin: false,
-  errorMessage: "",
-};
+import loginReducer from "../../Stores/storeLogin";
+import { useDispatch } from "react-redux";
+
 const FormContent = ({ Title, setIsRegistered }) => {
-  const [{ user }, dispatch] = useReducer(loginReducer, initialState);
+  const dispatch = useDispatch();
   const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,11 +30,16 @@ const FormContent = ({ Title, setIsRegistered }) => {
       let accounts = res.data.map((a) => a.Account);
       let findUser = accounts.find((f) => f.Email === formData.email);
       findUser ? setUsers(findUser) : setError(true);
+
       if (users.Password === formData.password) {
+        setError(false);
         dispatch({
           type: "LOGIN",
           payload: users,
         });
+        navigate("/");
+      } else {
+        setError(true);
       }
     });
   };
