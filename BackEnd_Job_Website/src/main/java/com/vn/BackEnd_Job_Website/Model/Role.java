@@ -1,5 +1,6 @@
 package com.vn.BackEnd_Job_Website.Model;
 
-public class User {
-
+public enum Role {
+    USER,
+    ADMIN
 }
