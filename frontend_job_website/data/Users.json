@@ -49,6 +49,76 @@
         "roleName": "User"
       },
       "id": 5
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "12",
+      "role": {
+        "role_id": "id_ex23iccdy",
+        "roleName": "User"
+      },
+      "id": 6
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "1231",
+      "role": {
+        "role_id": "id_gzmqjkwb8",
+        "roleName": "User"
+      },
+      "id": 7
+    },
+    {
+      "name": "",
+      "email": "",
+      "password": "",
+      "role": {
+        "role_id": "id_1ck6swzga",
+        "roleName": "User"
+      },
+      "id": 8
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "123456",
+      "role": {
+        "role_id": "id_ch1uxzjme",
+        "roleName": "User"
+      },
+      "id": 9
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "123",
+      "role": {
+        "role_id": "id_10gyngg14",
+        "roleName": "User"
+      },
+      "id": 10
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "e",
+      "role": {
+        "role_id": "id_vy960nylw",
+        "roleName": "User"
+      },
+      "id": 11
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "2313",
+      "role": {
+        "role_id": "id_i6sgrgzfw",
+        "roleName": "User"
+      },
+      "id": 12
     }
   ]
 }

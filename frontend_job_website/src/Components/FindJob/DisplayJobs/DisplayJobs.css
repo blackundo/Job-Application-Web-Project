@@ -1,0 +1,27 @@
+.pagination li.selected {
+  background-color: #0366d6;
+  border-color: transparent;
+  color: white;
+  min-width: 32px;
+  border-radius: 7px;
+}
+
+.pagination li a {
+  border-radius: 7px;
+  padding: 0.1rem 1rem;
+  border: gray 1px solid;
+  cursor: pointer;
+}
+.pagination li.previous a,
+.pagination li.next a,
+.pagination li.break a {
+  border-color: transparent;
+}
+
+.pagination li.disabled a {
+  color: grey;
+}
+.pagination li.disabled,
+.pagination li.disabled a {
+  cursor: default;
+}

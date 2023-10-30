@@ -1,0 +1,193 @@
+[
+  {
+    "Role": { "roleID": 1, "roleName": "Candidate" },
+    "Account": {
+      "AccountID": 1,
+      "roleID": 1,
+      "Email": "bpobjoy0@nytimes.com",
+      "Password": "fD2%q0$6llk~oaNo"
+    },
+
+    "SpecializationField": {
+      "SpecializationID": 1,
+      "SpecializationName": "Javascript"
+    },
+    "Field": {
+      "FieldID": 1,
+      "FieldName": "Technical",
+      "SpecializationID": 1
+    },
+    "Experience": {
+      "ExperienceID": 1,
+      "OldJobPosition": "FrontEnd",
+      "Levels": "Freshers"
+    },
+    "Candidate": {
+      "CandidateID": 1,
+      "Fullname": "Robinette Piotrkowski",
+      "Age": 37,
+      "FieldID": 1,
+      "Gender": false,
+      "UniversityOrCollege": "Fiji School of Medicine",
+      "City": "Quận Sáu",
+      "UploadFileCV": "TortorRisusDapibus.doc",
+      "ExperienceID": 1,
+      "AccountID": 1
+    }
+  },
+
+  {
+    "Role": { "roleID": 2, "roleName": "Company" },
+    "Account": {
+      "AccountID": 2,
+      "roleID": 2,
+      "Email": "bpobjoy0@nytimes.com",
+      "Password": "fD2%q0$6llk~oaNo"
+    },
+    "MessageConver": {
+      "MessageID": 2,
+      "AccountID": 2,
+      "Content": "in quis justo maecenas rhoncus aliquam lacus morbi quis tortor",
+      "timeStamp": "04/22/2001"
+    },
+    "MainField": {
+      "MainFieldID": 2,
+      "FieldName": "Technology",
+      "InfoField": "donec vitae nisi nam ultrices libero non mattis pulvinar nulla pede",
+      "Achievement": "hac habitasse platea dictumst maecenas ut massa quis augue luctus tincidunt",
+      "ActiveTime": 1986
+    },
+    "Company": {
+      "CompanyID": 2,
+      "AccountID": 2,
+      "CompanyName": "Oyondu",
+      "Introduction": "pulvinar nulla pede ullamcorper augue a suscipit nulla elit ac nulla",
+      "MainFieldID": 2,
+      "Address": "87 Trailsway Center",
+      "Fouding": "03/10/1962",
+      "BusinessEmail": "ssansom0@typepad.com",
+      "Organizational": "molestie lorem quisque ut erat curabitur gravida nisi at nibh in hac",
+      "PhoneNumber": "638-398-6490"
+    },
+    "SpecializationHiring": {
+      "SpecializationHiringID": 2,
+      "SpecializationName": "Specialization1"
+    },
+    "FieldHiring": {
+      "FieldHiringID": 2,
+      "FieldName": "Field2",
+      "SpecializationHiringID": 2
+    },
+    "HiringContent": {
+      "HiringContentID": 2,
+      "Title": "Librarian",
+      "Content": "nec nisi vulputate nonummy maecenas tincidunt lacus at velit vivamus vel nulla eget eros elementum pellentesque quisque porta volutpat erat quisque erat eros viverra eget"
+    },
+    "HiringStatus": { "StatusID": 1, "StatusName": "Closed" },
+    "Hiring": {
+      "HiringID": "f319a96d-6804-464c-ab3c-a369fa5a69ac",
+      "CompanyID": 2,
+      "HiringName": "Accountant III",
+      "ApplicationLimit": 105,
+      "DateSubmit": "19-06-2021",
+      "HiringContentID": 2,
+      "StatusID": 2,
+      "FieldHiringID": 2
+    }
+  },
+  {
+    "Role": { "roleID": 3, "roleName": "Candidate" },
+    "Account": {
+      "AccountID": 3,
+      "roleID": 3,
+      "Email": "bpobjoy0@nytimes.com",
+      "Password": "fD2%q0$6llk~oaNo"
+    },
+
+    "SpecializationField": {
+      "SpecializationID": 3,
+      "SpecializationName": "Javascript"
+    },
+    "Field": {
+      "FieldID": 3,
+      "FieldName": "Technical",
+      "SpecializationID": 3
+    },
+    "Experience": {
+      "ExperienceID": 3,
+      "OldJobPosition": "FrontEnd",
+      "Levels": "Freshers"
+    },
+    "Candidate": {
+      "CandidateID": 3,
+      "Fullname": "Robinette Piotrkowski",
+      "Age": 37,
+      "FieldID": 3,
+      "Gender": false,
+      "UniversityOrCollege": "Fiji School of Medicine",
+      "City": "Quận Sáu",
+      "UploadFileCV": "TortorRisusDapibus.doc",
+      "ExperienceID": 3,
+      "AccountID": 3
+    }
+  },
+  {
+    "Role": { "roleID": 4, "roleName": "Company" },
+    "Account": {
+      "AccountID": 4,
+      "roleID": 4,
+      "Email": "bpobjoy0@nytimes.com",
+      "Password": "fD2%q0$6llk~oaNo"
+    },
+    "MessageConver": {
+      "MessageID": 4,
+      "AccountID": 4,
+      "Content": "in quis justo maecenas rhoncus aliquam lacus morbi quis tortor",
+      "timeStamp": "04/22/2001"
+    },
+    "MainField": {
+      "MainFieldID": 4,
+      "FieldName": "Technology",
+      "InfoField": "donec vitae nisi nam ultrices libero non mattis pulvinar nulla pede",
+      "Achievement": "hac habitasse platea dictumst maecenas ut massa quis augue luctus tincidunt",
+      "ActiveTime": 1986
+    },
+    "Company": {
+      "CompanyID": 4,
+      "AccountID": 4,
+      "CompanyName": "Oyondu",
+      "Introduction": "pulvinar nulla pede ullamcorper augue a suscipit nulla elit ac nulla",
+      "MainFieldID": 4,
+      "Address": "87 Trailsway Center",
+      "Fouding": "03/10/1962",
+      "BusinessEmail": "ssansom0@typepad.com",
+      "Organizational": "molestie lorem quisque ut erat curabitur gravida nisi at nibh in hac",
+      "PhoneNumber": "638-398-6490"
+    },
+    "SpecializationHiring": {
+      "SpecializationHiringID": 4,
+      "SpecializationName": "Specialization1"
+    },
+    "FieldHiring": {
+      "FieldHiringID": 4,
+      "FieldName": "Field2",
+      "SpecializationHiringID": 4
+    },
+    "HiringContent": {
+      "HiringContentID": 4,
+      "Title": "Librarian",
+      "Content": "nec nisi vulputate nonummy maecenas tincidunt lacus at velit vivamus vel nulla eget eros elementum pellentesque quisque porta volutpat erat quisque erat eros viverra eget"
+    },
+    "HiringStatus": { "StatusID": 1, "StatusName": "Closed" },
+    "Hiring": {
+      "HiringID": "f319a96d-6804-464c-ab3c-a369fa5a69ac",
+      "CompanyID": 4,
+      "HiringName": "Accountant III",
+      "ApplicationLimit": 105,
+      "DateSubmit": "19-06-2021",
+      "HiringContentID": 4,
+      "StatusID": 4,
+      "FieldHiringID": 4
+    }
+  }
+]

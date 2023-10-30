@@ -1,4 +1,3 @@
-import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { BsFacebook } from "react-icons/bs";
 import { FaGithub } from "react-icons/fa";

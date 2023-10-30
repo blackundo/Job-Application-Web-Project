@@ -1,12 +1,14 @@
-export default function loginReducer(state, action) {
+const initialState = {
+  isLoggedIn: false,
+  user: null,
+};
+export default function loginReducer(state = initialState, action) {
   switch (action.type) {
-    case "INPUT_CHANGE":
-      return {
-        ...state,
-        [action.fieldName]: action.payload,
-      };
-
+    case "LOGIN":
+      return { ...state, isLoggedIn: true, user: action.payload };
+    case "LOGOUT":
+      return { ...state, isLoggedIn: false, user: null };
     default:
-      throw state;
+      return state;
   }
 }
