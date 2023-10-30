@@ -1,8 +1,7 @@
 package com.vn.BackEnd_Job_Website.Service;
 
-import com.vn.BackEnd_Job_Website.Dto.AccountDTO;
-import com.vn.BackEnd_Job_Website.Model.UserAccount;
+import com.vn.BackEnd_Job_Website.Dto.AccountDto;
 
 public interface AccountService {
-    String save(AccountDTO accountDTO);
+    String save(AccountDto accountDTO);
 }

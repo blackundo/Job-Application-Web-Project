@@ -3,10 +3,9 @@ package com.vn.BackEnd_Job_Website.Service;
 import com.vn.BackEnd_Job_Website.Controller.auth.AuthenticationRequest;
 import com.vn.BackEnd_Job_Website.Controller.auth.AuthenticationResponse;
 import com.vn.BackEnd_Job_Website.Controller.auth.RegisterRequest;
-import com.vn.BackEnd_Job_Website.Model.UserAccount;
-import com.vn.BackEnd_Job_Website.Respository.UserAccountRepository;
+import com.vn.BackEnd_Job_Website.Model.Account;
+import com.vn.BackEnd_Job_Website.Respository.AccountRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.codec.CodecConfigurer;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,14 +14,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final UserAccountRepository repository;
+    private final AccountRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        var user = UserAccount.builder()
-                .name(request.getFullname())
+        var user = Account.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
