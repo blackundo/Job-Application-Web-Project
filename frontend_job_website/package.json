@@ -24,10 +24,11 @@
     "test": "vite test",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "server": "json-server --watch data/Users.json --port 9000",
-    "server2": "json-server --watch data/Jobs.json --port 9001",
+    "server2": "json-server --watch data/Jobs.json --port 9001 --Delay 500",
     "server3": "json-server --watch data/CandidateData.json --port 9002",
     "server4": "json-server --watch data/CompanyData.json --port 9003",
-    "serverAccount": "json-server --watch data/AccountData.json --port 9003"
+    "serverAccount": "json-server --watch data/AccountData.json --port 9003",
+    "serverProfile": "json-server --watch data/ProfileData.json --port 9004"
   },
   "eslintConfig": {
     "extends": [

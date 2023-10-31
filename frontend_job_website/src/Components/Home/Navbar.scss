@@ -91,3 +91,10 @@
     z-index: 500;
   }
 }
+.avatarMenu {
+  &:hover {
+    ul {
+      display: grid;
+    }
+  }
+}

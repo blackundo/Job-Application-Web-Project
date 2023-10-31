@@ -3,8 +3,11 @@ import { FaLocationDot } from "react-icons/fa6";
 import { BiSolidSearchAlt2 } from "react-icons/bi";
 import BoxFilter from "../BoxFilter/BoxFilter";
 import { useState } from "react";
-function BoxFindJob() {
+import axios from "axios";
+import { useEffect } from "react";
+function BoxFindJob({ cities, setQuery }) {
   const [isFindJobs, setIsFindJobs] = useState(false);
+
   const handleFindJob = () => {
     setIsFindJobs((j) => !j);
   };
@@ -21,6 +24,11 @@ function BoxFindJob() {
               type="text"
               placeholder="Search by vacancies "
               className="w-full  absolute h-11 pl-10 outline-none top-1/2 -translate-y-1/2 text-[1rem]"
+              onChange={(e) =>
+                setQuery({
+                  query: e.target.value,
+                })
+              }
             />
           </div>
           <div className="col-span-3 relative max-md:col-span-1 ">
@@ -31,11 +39,19 @@ function BoxFindJob() {
               name="Address"
               id="Address"
               className="w-full absolute h-11 pl-10 border-l border-gray-700  top-1/2 -translate-y-1/2 text-[1rem] max-md:border-none outline-none"
+              onChange={(e) => {
+                setQuery({
+                  location: e.target.value,
+                });
+              }}
             >
-              {cities.map((c) => {
+              <option value="" className="bg-sky-200">
+                All
+              </option>
+              {cities?.map((c) => {
                 return (
-                  <option key={c.Name} value={c.Value}>
-                    {c.Name}
+                  <option key={c} value={c}>
+                    {c}
                   </option>
                 );
               })}

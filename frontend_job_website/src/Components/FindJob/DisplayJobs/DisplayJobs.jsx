@@ -1,40 +1,19 @@
 import { AiFillQuestionCircle, AiOutlineMore } from "react-icons/ai";
 // import { jobs } from "./job";
 import DetailsJob from "./DetailsJob";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import "./DisplayJobs.css";
+import { Link } from "react-router-dom";
 
-function DisplayJobs() {
-  const [Jobs, setJobs] = useState(null);
+function DisplayJobs({ Jobs, load, error }) {
   const [jobDetail, setJobDetail] = useState(null);
-  const [load, setLoad] = useState(true);
+
   const [loadDetail, setLoadDetail] = useState(true);
-  const [error, setError] = useState(false);
   const [itemOffset, setItemOffset] = useState(0);
   const jobsPerPage = 10;
-
-  useEffect(() => {
-    async function fetchData() {
-      setLoad(true);
-      const response = await axios
-        .get("http://localhost:9001/Jobs")
-        .then((res) => {
-          setLoad(false);
-          setError(false);
-          setJobs(res.data);
-          return res;
-        })
-        .catch((err) => {
-          setError(true);
-          return err;
-        });
-      console.log(response);
-    }
-    fetchData();
-  }, []);
-  //console.log(Jobs);
+  const mobile = window.innerWidth <= 768;
 
   const handleChooseJob = async (id) => {
     setLoadDetail(true);
@@ -42,10 +21,12 @@ function DisplayJobs() {
       .get(`http://localhost:9001/Jobs?ID=${id}`)
       .then((res) => {
         setLoadDetail(false);
-        // console.log(res.data[0]);
+        // console.log(res.data[0].image_company);
         setJobDetail(res.data[0]);
       })
-      .catch((err) => setError("Error loading job details"));
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const endOffset = itemOffset + jobsPerPage;
@@ -77,7 +58,7 @@ function DisplayJobs() {
             <div className="flex items-center justify-between">
               <span className="text-[0.81rem]">Short by: (X) - (X)</span>
               <span className="flex items-center justify-center text-[0.68rem] gap-1">
-                (X) Jobs
+                {Jobs?.length} Jobs
                 <AiFillQuestionCircle className="text-slate-400" />
               </span>
             </div>
@@ -107,10 +88,11 @@ function DisplayJobs() {
             })
           ) : (
             <div className="listJobs flex flex-col items-center icon gap-3">
-              {currentJobs.map((j, i) => {
+              {currentJobs?.map((j, i) => {
                 return (
-                  <div
-                    className="box border-[3px] border-slate-700 px-4 rounded-2xl py-2 cursor-pointer hover:bg-blue-500/30 transition-colors max-h-[17rem]"
+                  <Link
+                    to={`${mobile ? "detailsMb" : ""}`}
+                    className="box border-[3px] border-slate-700 px-4 rounded-2xl py-2 cursor-pointer hover:bg-blue-500/30 transition-colors max-h-[17rem] w-full"
                     key={i}
                     onClick={() => handleChooseJob(j.ID)}
                   >
@@ -140,7 +122,7 @@ function DisplayJobs() {
                         <span className="cursor-pointer">More</span>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>

@@ -2,8 +2,9 @@ import { createStore } from "redux";
 const initialState = {
   isLoggedIn: false,
   user: null,
+  profile: null,
 };
-function loginReducer(state = initialState, action) {
+function LoginReducer(state = initialState, action) {
   switch (action.type) {
     case "LOGIN":
       localStorage.setItem("user", JSON.stringify(action.payload));
@@ -11,10 +12,12 @@ function loginReducer(state = initialState, action) {
     case "LOGOUT":
       localStorage.removeItem("user");
       return { ...state, isLoggedIn: false, user: null };
+    case "PROFILE":
+      return { ...state, profile: action.payload };
     default:
       return state;
   }
 }
 
-const store = createStore(loginReducer);
+const store = createStore(LoginReducer);
 export default store;

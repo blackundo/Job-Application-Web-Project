@@ -2,21 +2,20 @@
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import "./information.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 function Information({ back }) {
   const [resettle, setResettle] = useState(false);
-  const handleBack = () => {
-    back((b) => !b);
-  };
+  const navigate = useNavigate();
   const handleDisplayResettle = () => {
     setResettle((r) => !r);
   };
   return (
-    <div className="flex items-center justify-center border">
+    <div className="flex items-center justify-center  ">
       <div className="w-[34.81rem]  flex items-center justify-center">
         <div className="w-full pt-3">
           <AiOutlineArrowLeft
             className="text-xl font-bold cursor-pointer"
-            onClick={handleBack}
+            onClick={() => navigate(-1)}
           />
           <span className="font-bold text-[1.75rem]">Contact information</span>
           <div className="flex flex-col form w-full gap-3">

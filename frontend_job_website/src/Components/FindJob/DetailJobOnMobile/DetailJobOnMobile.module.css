@@ -1,0 +1,65 @@
+.detailsJobs {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 0.3rem;
+}
+.detailsJobs div {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  gap: 1rem;
+}
+
+.detailsJobs button {
+  background: #a09f9f;
+  color: #e9e4e4;
+  padding: 3px;
+  border-radius: 4px;
+}
+
+.title h2 {
+  font-size: 12px;
+  font-weight: 700;
+}
+.title h2::after {
+  content: ":";
+  font-size: 12px;
+  font-weight: 700;
+}
+.title span {
+  font-size: 12px;
+  font-weight: 400;
+}
+.btn {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.6rem;
+}
+
+.btn button:nth-child(1) {
+  background: #1cb8ff;
+  color: #fff;
+  font-size: 1rem;
+  width: 100%;
+  height: 3rem;
+  border-radius: 0.6rem;
+}
+.btn button:nth-child(2),
+.btn button:nth-child(3) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1rem;
+  background: #e4e2e0;
+  width: 100%;
+  height: 3rem;
+  border-radius: 0.6rem;
+}
+
+.btn button:hover {
+  cursor: pointer;
+}

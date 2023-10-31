@@ -10,7 +10,12 @@ import { ProfilePage } from "./Pages/ProfilePage/ProfilePage";
 import MessagePage from "./Pages/MessagePage/MessagePage";
 import NotFoundPage from "./Pages/ErrorPages/NotFoundPage";
 import { Provider } from "react-redux";
+
+import Degree from "./Components/Profile/Degree/Degree";
+import Profile from "./Components/Profile/Profile";
+import Information from "./Components/Profile/Edit/Information";
 import store from "./Stores/storeLogin";
+import JobDetailForMobile from "./Pages/FindJobPage/JobDetailForMobile";
 
 function App() {
   return (
@@ -25,7 +30,16 @@ function App() {
               <Route path="Register" element={<Register />} />
               <Route path="forgotPass" element={<ForgotPassword />} />
               <Route path="findJobs" element={<FindJobPage />} />
-              <Route path="profileU" element={<ProfilePage />} />
+              <Route
+                path="findJobs/detailsMb"
+                element={<JobDetailForMobile />}
+              />
+
+              <Route path="profileU" element={<ProfilePage />}>
+                <Route index element={<Profile />} />
+                <Route path="degree" element={<Degree />} />
+                <Route path="editP" element={<Information />} />
+              </Route>
               <Route path="Message/:id" element={<MessagePage />} />
               <Route path="/*" element={<NotFoundPage />} />
             </Route>
