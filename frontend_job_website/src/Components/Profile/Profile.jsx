@@ -10,18 +10,17 @@ import { RiPhoneFindFill } from "react-icons/ri";
 import { TbReplace } from "react-icons/tb";
 import { useState } from "react";
 import logoFile from "../../Assets/logoFile.svg";
-function Profile({ setEditInfo, setOpenDegree }) {
-  const [option, setOption] = useState(false);
-  const [nameFile, setNameFile] = useState("Upload your CV file");
+import { Link, NavLink } from "react-router-dom";
 
+function Profile() {
+  const pf = JSON.parse(localStorage.getItem("profile"));
+  const [option, setOption] = useState(false);
+  const [nameFile, setNameFile] = useState("");
   const handleDisplayOption = () => {
     setOption((o) => !o);
   };
-  const handleEditInfo = () => {
-    setEditInfo(true);
-  };
+
   const handleOnchangeFile = (e) => {
-    //console.log(e);
     console.log(e.target.value.length);
     if (e.target.value.length === 0) {
       setNameFile("You have not uploaded your CV file yet ");
@@ -30,21 +29,20 @@ function Profile({ setEditInfo, setOpenDegree }) {
       setNameFile(realPathArray[realPathArray.length - 1]);
     }
   };
-  const handleOpenDegree = () => {
-    setOpenDegree(true);
-  };
+
+  if (pf === null && pf === undefined) return;
 
   return (
-    <div className="  flex items-center justify-center">
+    <div className="  flex items-center justify-center max-md:mt-[5.625rem]">
       <div className="max-w-[34.81rem] ">
         <div className="flex items-center justify-center pt-10 w-full">
           <div className="flex items-center justify-evenly w-full">
-            <span className="text-3xl font-bold">Đỗ Phước Đạt</span>
-            <div className="h-[6.25rem] ms-w-[6.25rem] flex items-center justify-center">
+            <span className="text-3xl font-bold">{pf[0].full_name}</span>
+            <div className="h-[6.25rem] ms-w-[6.25rem] flex items-center justify-center border rounded-full">
               <img
-                src={img}
+                src={pf[0].avatar}
                 alt=""
-                className="shadow rounded-full max-w-full h-auto align-middle border-none"
+                className="shadow rounded-full max-w-full h-full align-middle border-none"
               />
             </div>
           </div>
@@ -54,18 +52,20 @@ function Profile({ setEditInfo, setOpenDegree }) {
             <ul className="flex flex-col gap-4 items-start justify-center">
               <li className="flex items-center justify-start gap-3 text-[#767676]">
                 <HiMail />
-                Email
+                Email: <span>{pf[0].email}</span>
               </li>
               <li className="flex items-center justify-start gap-3 text-[#767676]">
                 <AiFillPhone />
-                Number Phone
+                Number Phone: <span>{pf[0].phone}</span>
               </li>
               <li className="flex items-center justify-start gap-3 text-[#767676]">
                 <FaLocationDot />
-                Address
+                Address: <span>{pf[0].address}</span>
               </li>
             </ul>
-            <IoIosArrowForward onClick={handleEditInfo} />
+            <Link to={"editP"}>
+              <IoIosArrowForward />
+            </Link>
           </div>
         </div>
         <div className="flex flex-col  gap-3">
@@ -142,16 +142,16 @@ function Profile({ setEditInfo, setOpenDegree }) {
               Improve your job matching
             </span>
           </div>
-          <div className="border-b-2 border-slate-500 w-full flex items-center justify-between">
+          <NavLink
+            to={"degree"}
+            className="border-b-2 border-slate-500 w-full flex items-center justify-between"
+          >
             <div className="flex flex-col justify-center items-start">
               <span className="font-bold">Degree</span>
               <span>Emphasize your skills and experience</span>
             </div>
-            <IoIosArrowForward
-              className="text-2xl cursor-pointer"
-              onClick={handleOpenDegree}
-            />
-          </div>
+            <IoIosArrowForward className="text-2xl cursor-pointer" />
+          </NavLink>
           <div className="border-b-2 border-slate-500 w-full flex items-center justify-between">
             <div className="flex flex-col justify-center items-start">
               <span className="font-bold">Job favorite</span>

@@ -2,8 +2,10 @@ import { FaBan, FaSuitcase } from "react-icons/fa";
 import { AiFillFlag, AiFillHeart } from "react-icons/ai";
 
 function DetailsJob({ job, load }) {
+  const urlDecodeData = decodeURIComponent(job?.image_company);
+
   return (
-    <div className="col-span-7 border-2 border-slate-600 w-full h-[55rem] pt-2 rounded-2xl  sticky top-4 max-md:hidden overflow-y-hidden ">
+    <div className="col-span-7 border-2 border-slate-600 w-full h-[59rem] pt-2 rounded-2xl  sticky top-4 max-md:hidden overflow-y-hidden ">
       {load && job === null ? (
         <div className="flex items-center justify-center h-1/2 text-2xl">
           <button
@@ -37,15 +39,23 @@ function DetailsJob({ job, load }) {
       ) : (
         <>
           <div className=" p-3 ">
-            <div className="flex flex-col items-start justify-center gap-2">
-              <div className="flex flex-col">
-                <span className="font-bold text-[1.5rem]">
-                  {job.company_name}
-                </span>
-                <span className="text-[1.125rem]">{job.NameHR}</span>
+            <div className="relative h-52">
+              <img
+                src={`${urlDecodeData}`}
+                alt=""
+                className="w-full  object-cover h-3/4 absolute z-10 rounded-lg "
+              />
+              <div className="flex flex-col items-start justify-center gap-2 absolute z-50 top-1/2 backdrop-blur-xl w-full px-5 ">
+                <div className="flex flex-col">
+                  <span className="font-bold text-[1.5rem]">
+                    {job.company_name}
+                  </span>
+                  <span className="text-[1.125rem]">{job.NameHR}</span>
+                </div>
+                <span>location: {job.location}</span>
               </div>
-              <span>location: {job.location}</span>
             </div>
+
             <div>
               <span>Summary</span>
               <div className="flex items-center justify-start gap-3">
@@ -74,100 +84,53 @@ function DetailsJob({ job, load }) {
                 <span className="text-[#2D2D2D] font-sans ">
                   {job.description}
                 </span>
-                <div className="flex items-center justify-center gap-2">
-                  <FaSuitcase />
-                  <span>Job type</span>
+                <div>
+                  <div className="flex items-center justify-center gap-2">
+                    <FaSuitcase />
+                    <span>Job type</span>
+                  </div>
+                  <div>
+                    <span className="h-[1.68rem]  bg-[#D9D9D9] text-[#5A5A5A] p-1 text-[0.875rem] rounded-sm ">
+                      {job.Type}
+                    </span>
+                  </div>
                 </div>
                 <div>
-                  <span className="h-[1.68rem]  bg-[#D9D9D9] text-[#5A5A5A] p-1 text-[0.875rem] rounded-sm ">
-                    {job.Type}
-                  </span>
+                  <div className="flex items-center justify-center gap-2">
+                    <FaSuitcase />
+                    <span>Salary</span>
+                  </div>
+                  <div>
+                    <span className="h-[1.68rem]  bg-[#D9D9D9] text-[#5A5A5A] p-1 text-[0.875rem] rounded-sm ">
+                      {Number(Math.floor(job.salary / 100))} $
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center justify-center gap-2">
+                    <FaSuitcase />
+                    <span>Start Date - End Date</span>
+                  </div>
+                  <div>
+                    <span className="h-[1.68rem]  bg-[#D9D9D9] text-[#5A5A5A] p-1 text-[0.875rem] rounded-sm ">
+                      {job.start_date}
+                    </span>
+                    -
+                    <span className="h-[1.68rem]  bg-[#D9D9D9] text-[#5A5A5A] p-1 text-[0.875rem] rounded-sm ">
+                      {job.end_date}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="description border-t-2 border-slate-700/40 overflow-y-auto h-full pb-7 px-4">
+            <div className="description border-t-2 border-slate-700/40 overflow-y-auto h-full pb-[5rem] px-4">
               <span className="text-2xl font-bold">{job.job_title}</span>
               <span>{job.experience_years}</span>
               <br />
               <span>{job.education_level}</span>
               <br />
               <p>{job.job_description}</p>
-              {/*    <ul>
-                    <li>abc</li>
-                    <li>abc</li>
-                    <li>abc</li>
-                    <li>abc</li>
-                    <li>abc</li>
-                    <li>abc</li>
-                  </ul>
-                  <ul>
-                    <li>
-                      "Waspada terhadap Modus Penipuan pada saat proses
-                      interview. Perusahaan tidak akan memungut biaya apapun
-                      dalam melakukan proses interview. Mohon segera melaporkan
-                      ke kami, jika pada saat Anda diundang untuk interview dan
-                      diminta untuk melakukan pembayaran dengan sejumlah uang."
-                      "Please be aware of the Fraud Company. The company will
-                      never be collecting any payment in the process of
-                      interview. Please immediately report to us if there's any
-                      companies that collecting payment to the Jobseekers."
-                    </li>
-                    <li>
-                      "Waspada terhadap Modus Penipuan pada saat proses
-                      interview. Perusahaan tidak akan memungut biaya apapun
-                      dalam melakukan proses interview. Mohon segera melaporkan
-                      ke kami, jika pada saat Anda diundang untuk interview dan
-                      diminta untuk melakukan pembayaran dengan sejumlah uang."
-                      "Please be aware of the Fraud Company. The company will
-                      never be collecting any payment in the process of
-                      interview. Please immediately report to us if there's any
-                      companies that collecting payment to the Jobseekers."
-                    </li>
-                    <li>
-                      "Waspada terhadap Modus Penipuan pada saat proses
-                      interview. Perusahaan tidak akan memungut biaya apapun
-                      dalam melakukan proses interview. Mohon segera melaporkan
-                      ke kami, jika pada saat Anda diundang untuk interview dan
-                      diminta untuk melakukan pembayaran dengan sejumlah uang."
-                      "Please be aware of the Fraud Company. The company will
-                      never be collecting any payment in the process of
-                      interview. Please immediately report to us if there's any
-                      companies that collecting payment to the Jobseekers."
-                    </li>
-                    <li>
-                      "Waspada terhadap Modus Penipuan pada saat proses
-                      interview. Perusahaan tidak akan memungut biaya apapun
-                      dalam melakukan proses interview. Mohon segera melaporkan
-                      ke kami, jika pada saat Anda diundang untuk interview dan
-                      diminta untuk melakukan pembayaran dengan sejumlah uang."
-                      "Please be aware of the Fraud Company. The company will
-                      never be collecting any payment in the process of
-                      interview. Please immediately report to us if there's any
-                      companies that collecting payment to the Jobseekers."
-                    </li>
-                    <li>
-                      "Waspada terhadap Modus Penipuan pada saat proses
-                      interview. Perusahaan tidak akan memungut biaya apapun
-                      dalam melakukan proses interview. Mohon segera melaporkan
-                      ke kami, jika pada saat Anda diundang untuk interview dan
-                      diminta untuk melakukan pembayaran dengan sejumlah uang."
-                      "Please be aware of the Fraud Company. The company will
-                      never be collecting any payment in the process of
-                      interview. Please immediately report to us if there's any
-                      companies that collecting payment to the Jobseekers."
-                    </li>
-                    <li>
-                      "Waspada terhadap Modus Penipuan pada saat proses
-                      interview. Perusahaan tidak akan memungut biaya apapun
-                      dalam melakukan proses interview. Mohon segera melaporkan
-                      ke kami, jika pada saat Anda diundang untuk interview dan
-                      diminta untuk melakukan pembayaran dengan sejumlah uang."
-                      "Please be aware of the Fraud Company. The company will
-                      never be collecting any payment in the process of
-                      interview. Please immediately report to us if there's any
-                      companies that collecting payment to the Jobseekers."
-                    </li>
-                  </ul> */}
+
               <div>
                 <div
                   className="flex items-center justify-start px-3 h-[3.25rem] border w-[12.18rem] text-[1.3rem] 

@@ -4,12 +4,10 @@ import Social from "../Social/Social";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
-import loginReducer from "../../Stores/storeLogin";
 import { useDispatch } from "react-redux";
 
 const FormContent = ({ Title, setIsRegistered }) => {
   const dispatch = useDispatch();
-  const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,22 +24,25 @@ const FormContent = ({ Title, setIsRegistered }) => {
   };
 
   const handleLogin = async () => {
-    await axios.get("http://localhost:9003/Accounts").then((res) => {
-      let accounts = res.data.map((a) => a.Account);
+    try {
+      const res = await axios.get("http://localhost:9003/Accounts");
+      setError(false);
+      let accounts = res.data;
       let findUser = accounts.find((f) => f.Email === formData.email);
-      findUser ? setUsers(findUser) : setError(true);
 
-      if (users.Password === formData.password) {
-        setError(false);
+      if (findUser && findUser.Password === formData.password) {
         dispatch({
           type: "LOGIN",
-          payload: users,
+          payload: findUser,
         });
         navigate("/");
       } else {
         setError(true);
       }
-    });
+    } catch (error) {
+      setError(true);
+      console.log(error);
+    }
   };
 
   return (
