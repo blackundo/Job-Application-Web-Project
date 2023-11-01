@@ -22,7 +22,7 @@ public class AuthenticationController {
         if (role.equals("Company")){
             return ResponseEntity.ok(service.regCompany(request, role));
         }else if (role.equals("Candidate")){
-            return null;
+            return ResponseEntity.ok(service.regCandidate(request, role));
         }else {
             return new ResponseEntity<>("Invalid role", HttpStatus.BAD_REQUEST);
         }

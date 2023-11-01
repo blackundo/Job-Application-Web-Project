@@ -10,6 +10,7 @@ import org.hibernate.annotations.Nationalized;
 @Entity
 public class Candidate {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CandidateID", nullable = false)
     private Integer id;
 

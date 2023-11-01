@@ -4,6 +4,7 @@ import com.vn.BackEnd_Job_Website.Controller.auth.AuthenticationRequest;
 import com.vn.BackEnd_Job_Website.Controller.auth.AuthenticationResponse;
 import com.vn.BackEnd_Job_Website.Controller.auth.RegisterRequest;
 import com.vn.BackEnd_Job_Website.Model.Account;
+import com.vn.BackEnd_Job_Website.Model.Candidate;
 import com.vn.BackEnd_Job_Website.Model.Company;
 import com.vn.BackEnd_Job_Website.Model.Role;
 import com.vn.BackEnd_Job_Website.Respository.AccountRepository;
@@ -39,9 +40,7 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
-        if (role.equalsIgnoreCase("Company")){
-            repoAccount.save(user);
-        }
+        repoAccount.save(user);
 
         //handle user trước
 //            Company company = new Company(user.getId(),
@@ -71,26 +70,29 @@ public class AuthenticationService {
                 .build();
     }
 
-//    public AuthenticationResponse regCandidate(RegisterRequest request, String role) {
-////        var claimRole = Role.builder().roleName(role).build();
-//        var user = Account.builder()
-//                .role(repoRole.findById(2).get()) // 1- ADMIN | 2- Company | 3- Candidate
-//                .email(request.getEmail())
-//                .password(passwordEncoder.encode(request.getPassword()))
-//                .build();
-//
-//        if (role.equalsIgnoreCase("Company")){
-//            repoAccount.save(user);
-//        }
-//
-//
-//        repoCompany.save(company);
-//
-//        var jwtToken = jwtService.generateToken(user);
-//        return AuthenticationResponse.builder()
-//                .token(jwtToken)
-//                .build();
-//    }
+    public AuthenticationResponse regCandidate(RegisterRequest request, String role) {
+        var user = Account.builder()
+                .role(repoRole.findById(3).get()) // 1- ADMIN | 2- Company | 3- Candidate
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .build();
+
+        repoAccount.save(user);
+
+        Candidate candidate = new Candidate();
+        candidate.setAccountID(user);
+        candidate.setFullname(request.getFullName());
+        candidate.setAge(Integer.valueOf(request.getAge()));
+        candidate.setGender(request.isGender());
+        candidate.setCity(request.getCity());
+
+        repoCandidate.save(candidate);
+
+        var jwtToken = jwtService.generateToken(user);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+    }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
