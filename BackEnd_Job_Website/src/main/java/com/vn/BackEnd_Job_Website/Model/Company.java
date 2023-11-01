@@ -1,17 +1,19 @@
 package com.vn.BackEnd_Job_Website.Model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
 import java.time.LocalDate;
+import java.util.Date;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Company {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CompanyID", nullable = false)
     private Integer id;
 
@@ -35,7 +37,7 @@ public class Company {
     private String address;
 
     @Column(name = "Fouding")
-    private LocalDate fouding;
+    private Date fouding;
 
     @Column(name = "BusinessEmail")
     private String businessEmail;
