@@ -39,12 +39,6 @@ function useJobs({ query, location }) {
             setError(err);
           });
       }
-      // console.log(query.length);
-      // if (query.length < 3) {
-      //   query = "";
-      //   setIsLoading(true);
-      //   return;
-      // }
 
       fetchJobs();
       return () => {

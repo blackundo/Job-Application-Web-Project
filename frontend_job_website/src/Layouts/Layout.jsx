@@ -1,7 +1,7 @@
 import Logo from "../Assets/Logo.svg";
 
 // eslint-disable-next-line react/prop-types
-const From = ({ children }) => {
+const Layout = ({ children }) => {
   return (
     <div>
       <div className="flex max-md:h-screen ">
@@ -18,4 +18,4 @@ const From = ({ children }) => {
   );
 };
 
-export default From;
+export default Layout;

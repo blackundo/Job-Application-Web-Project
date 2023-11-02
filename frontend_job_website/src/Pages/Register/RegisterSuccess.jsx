@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Layout from "../../Layouts/Layout";
-import "./RegisterSuccess.css";
+
 import Logo from "../../Assets/JustLogo.svg";
 const LoginSuccess = () => {
   const steps = [

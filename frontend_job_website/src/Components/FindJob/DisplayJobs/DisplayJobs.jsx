@@ -7,9 +7,16 @@ import ReactPaginate from "react-paginate";
 import "./DisplayJobs.css";
 import { Link } from "react-router-dom";
 
+// const calculator = (start_date) => {
+//   const currentDate = new Date();
+//   console.log(currentDate);
+//   const startDate = start_date?.split("-").reverse().join("-");
+//   console.log(new Date(startDate || startDate));
+//   console.log(differenceInDays(currentDate, new Date(startDate)));
+// };
+
 function DisplayJobs({ Jobs, load, error }) {
   const [jobDetail, setJobDetail] = useState(null);
-
   const [loadDetail, setLoadDetail] = useState(true);
   const [itemOffset, setItemOffset] = useState(0);
   const jobsPerPage = 10;
@@ -40,9 +47,9 @@ function DisplayJobs({ Jobs, load, error }) {
 
     setItemOffset(newOffset);
   };
+
   return (
     <>
-      {error && <div>Error</div>}
       <div className="grid grid-cols-12 place-content-center place-items-start pt-5 gap-5 max-md:px-10">
         <div className="col-span-5 max-md:col-span-12">
           <div className="border-b border-slate-300 pb-4 ">

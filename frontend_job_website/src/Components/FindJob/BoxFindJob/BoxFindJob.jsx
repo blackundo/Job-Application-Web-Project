@@ -62,7 +62,7 @@ function BoxFindJob({ cities, setQuery }) {
               className=" h-11 bg-blue-500 rounded-lg w-4/5 max-md:w-full"
               onClick={handleFindJob}
             >
-              Find a Job
+              Advanced search
             </button>
           </div>
         </div>

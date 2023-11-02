@@ -1,0 +1,15 @@
+.charts div:nth-child(odd) {
+  width: 100%;
+  /* background: blueviolet; */
+  height: 500px;
+}
+
+.charts div:nth-child(even) {
+  width: 100%;
+  /* background: skyblue; */
+  height: 500px;
+}
+
+/* .charts canvas {
+  width: 100% !important;
+} */
