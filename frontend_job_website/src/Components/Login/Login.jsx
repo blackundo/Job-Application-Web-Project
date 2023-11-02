@@ -29,7 +29,7 @@ const FormContent = ({ Title, setIsRegistered }) => {
       setError(false);
       let accounts = res.data;
       let findUser = accounts.find((f) => f.Email === formData.email);
-
+      console.log(findUser.Password, formData.password);
       if (findUser && findUser.Password === formData.password) {
         dispatch({
           type: "LOGIN",
@@ -37,6 +37,7 @@ const FormContent = ({ Title, setIsRegistered }) => {
         });
         navigate("/");
       } else {
+        console.log("sai");
         setError(true);
       }
     } catch (error) {
