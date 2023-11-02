@@ -7,6 +7,6 @@
   display: none;
 }
 .previewPdf html body {
-  -ms-overflow-style: none; /* IE and Edge */
+  -ms-overflow-style: none;
   scrollbar-width: none;
 }
