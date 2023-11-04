@@ -101,8 +101,7 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        var user = repoAccount.findByEmail(request.getEmail())
-                .orElseThrow();
+        var user = repoAccount.findByEmail(request.getEmail()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
