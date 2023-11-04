@@ -1,6 +1,6 @@
 package com.vn.BackEnd_Job_Website.Service.impl;
 
-import com.vn.BackEnd_Job_Website.Dto.AccountDTO;
+import com.vn.BackEnd_Job_Website.Dto.AccountDto;
 import com.vn.BackEnd_Job_Website.Service.AccountService;
 
 import org.springframework.stereotype.Service;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountServiceImpl implements AccountService {
     @Override
-    public String save(AccountDTO accountDTO) {
+    public String save(AccountDto accountDto) {
         return null;
     }
 //

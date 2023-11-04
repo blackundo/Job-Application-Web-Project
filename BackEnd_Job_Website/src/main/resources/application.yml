@@ -1,11 +1,10 @@
 spring:
+  config:
+    import: optional:secrets.yml
   security:
     user:
       password: 123
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=Application_Job;encrypt=true;trustServerCertificate=true
-    Username: sa
-    password: khanhuy123
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate:
@@ -22,5 +21,5 @@ spring:
   main:
     banner-mode: off
 server:
-  port: 8080
+  port: 80
 
