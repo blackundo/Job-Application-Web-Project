@@ -7,7 +7,7 @@ import logo2 from "../../Assets/JustLogo.svg";
 import { AiOutlineClose } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { IoIosNotifications } from "react-icons/io";
-import { BiSolidMessageDetail, BiSolidUser } from "react-icons/bi";
+import { BiSearchAlt, BiSolidMessageDetail, BiSolidUser } from "react-icons/bi";
 import { RxAvatar } from "react-icons/rx";
 
 function Navbar() {
@@ -39,16 +39,21 @@ function Navbar() {
         </div>
 
         <div className="flex border border-slate-700 rounded-lg col-span-4 max-xl:col-span-4 max-lg:col-span-3 max-md:col-span-4">
-          <input
-            type="text"
-            placeholder="Find a job"
-            className="outline-none rounded-l-lg h-9  w-1/2  text-[12px] px-3 border-r  border-slate-500"
-          />
-          <input
-            type="text"
-            placeholder="Find a Employee"
-            className="outline-none rounded-r-lg h-9 w-1/2  text-[12px] px-3 "
-          />
+          <div
+            className="mx-4 rounded-lg   border-black relative w-full h-10 text-center 
+            
+          "
+          >
+            {/* <input
+              type="text"
+              placeholder="Search by Vacancies"
+              className="rounded-lg outline-none absolute w-full h-9 text-sm px-3"
+            />
+            <BiSearchAlt className="absolute top-1/2 right-0 -translate-y-1/2 " /> */}
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-500 via-rose-500 to-sky-500 bg-clip-text text-transparent tracking-[0.2em]">
+              Group Hunter
+            </h1>
+          </div>
         </div>
         <div
           className={`col-span-5 max-xl:col-span-6 max-lg:col-span-7 max-md:hidden _navbarMenu ${

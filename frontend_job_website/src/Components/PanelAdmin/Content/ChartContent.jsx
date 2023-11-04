@@ -1,29 +1,79 @@
-import ChartBar from "../../Chart/ChartBar";
 import ChartLine from "../../Chart/ChartLine";
 import styles from "./ChartContent.module.css";
-import ChartPie from "../../Chart/ChartPie";
+import LabelDashboard from "../LabelDashboard/LabelDashboard";
+import Overview from "../Overview/Overview";
+import CharDoughnut from "../../Chart/CharDoughnut";
 
 function ChartContent() {
   return (
-    <>
-      <div
-        className={`grid grid-cols-12 place-items-center ${styles.charts} gap-3`}
-      >
-        <div className="col-span-6">
-          <ChartBar />
-        </div>
-        <div className="col-span-6">
-          <ChartLine />
-        </div>
-        <div className="col-span-6">
-          <ChartPie />
-        </div>
-        <div className="col-span-6">chart4</div>
-        <div className="col-span-12">chart5</div>
-        <div className="col-span-12">chart6</div>
-        <div className="col-span-7">chart7</div>
+    <div
+      className={` grid grid-cols-10 pt-3 place-items-center ${styles.charts} gap-1`}
+    >
+      <LabelDashboard />
+      <Overview />
+      <div className="col-span-10 w-full h-[27rem] ">
+        <ChartLine />
       </div>
-    </>
+      <div className="col-span-6 w-full h-[27rem] ">
+        <div className=" py-5">
+          <span className="text-xl font-bold">Rank Company</span>
+        </div>
+        <table className="w-full text-center ">
+          <thead className="bg-[#EBEBEB] h-14">
+            <tr>
+              <th className="text-start pl-4">Name</th>
+              <th>Cost</th>
+              <th>Job</th>
+              <th>Candidate</th>
+            </tr>
+          </thead>
+          <tbody className={styles.tbody}>
+            <tr>
+              <td>Ecomdy</td>
+              <td>$10.687</td>
+              <td>13.354</td>
+              <td>$10.687</td>
+            </tr>
+            <tr>
+              <td>Ecomdy</td>
+              <td>$10.687</td>
+              <td>13.354</td>
+              <td>$10.687</td>
+            </tr>
+            <tr>
+              <td>Ecomdy</td>
+              <td>$10.687</td>
+              <td>13.354</td>
+              <td>$10.687</td>
+            </tr>
+            <tr>
+              <td>Ecomdy</td>
+              <td>$10.687</td>
+              <td>13.354</td>
+              <td>$10.687</td>
+            </tr>
+            <tr>
+              <td>Ecomdy</td>
+              <td>$10.687</td>
+              <td>13.354</td>
+              <td>$10.687</td>
+            </tr>
+            <tr>
+              <td>Ecomdy</td>
+              <td>$10.687</td>
+              <td>13.354</td>
+              <td>$10.687</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div className="col-span-4 w-full h-[27rem] ">
+        <div className=" py-5">
+          <span className="text-xl font-bold">Country</span>
+        </div>
+        <CharDoughnut />
+      </div>
+    </div>
   );
 }
 

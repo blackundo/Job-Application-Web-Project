@@ -4,7 +4,7 @@ import DisplayJobs from "../../Components/FindJob/DisplayJobs/DisplayJobs";
 import FooterHome from "../../Components/Home/FooterHome";
 import { useEffect, useState } from "react";
 
-import useJobs from "../../Components/FindJob/BoxFindJob/useJobs";
+import useJobs from "../../Hook/useJobs";
 import axios from "axios";
 
 function FindJobPage() {

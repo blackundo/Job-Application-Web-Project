@@ -1,15 +1,4 @@
-.charts div:nth-child(odd) {
-  width: 100%;
-  /* background: blueviolet; */
-  height: 500px;
+.tbody tr td:nth-child(1) {
+  text-align: start;
+  padding-left: 1rem;
 }
-
-.charts div:nth-child(even) {
-  width: 100%;
-  /* background: skyblue; */
-  height: 500px;
-}
-
-/* .charts canvas {
-  width: 100% !important;
-} */

@@ -10,6 +10,7 @@ import logoFile from "../../Assets/logoFile.svg";
 import styles from "./InputCV.module.css";
 function InputCV({ initFile }) {
   const [option, setOption] = useState(false);
+  const [currentFile, setCurrentFile] = useState(initFile[0]?.file_CV);
   const [nameFile, setNameFile] = useState(initFile[0]?.file_CV);
   const [file, setFile] = useState(null);
 
@@ -18,9 +19,9 @@ function InputCV({ initFile }) {
   };
 
   const handleOnchangeFile = (e) => {
-    console.log(e.target.value.length);
     if (e.target.value.length === 0) {
-      setNameFile("You have not uploaded your CV file yet ");
+      // setFile(currentFile)
+      setNameFile(currentFile);
     } else {
       const selectFile = e.target.files[0];
       setFile(selectFile);
@@ -29,7 +30,7 @@ function InputCV({ initFile }) {
   };
 
   return (
-    <div className="flex flex-col  gap-3">
+    <div className="flex flex-col  gap-3 ">
       <span className="text-2xl font-bold">CV</span>
       <div className="border-[1.5px] border-black shadow-md rounded-lg h-[7.81rem] flex items-center justify-between px-3">
         <div className="flex items-center justify-center">
@@ -74,7 +75,7 @@ function InputCV({ initFile }) {
               <object
                 data={URL.createObjectURL(file)}
                 type="application/pdf"
-                className={styles.previewPdf}
+                className={`${styles.previewPdf} `}
               >
                 <p>
                   Alternative text - include a link{" "}
@@ -103,11 +104,13 @@ function InputCV({ initFile }) {
           <ul className="flex flex-col items-start justify-evenly h-full px-2">
             <li className="flex items-center justify-start text-[1rem] gap-2 cursor-pointer hover:text-blue-600">
               <RiPhoneFindFill className="text-2xl" />
-              See
+              <a href={file && URL.createObjectURL(file)}>See</a>
             </li>
             <li className="flex items-center justify-start text-[1rem] gap-2 cursor-pointer hover:text-blue-600">
               <AiOutlineDownload className="text-2xl" />
-              Download
+              <a href={file && URL.createObjectURL(file)} download={file?.name}>
+                Download
+              </a>
             </li>
             <li className="flex items-center justify-start text-[1rem] gap-2 cursor-pointer hover:text-blue-600">
               <TbReplace className="text-2xl" />

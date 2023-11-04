@@ -2,7 +2,7 @@ import Navbar from "../../Components/Home/Navbar";
 import FooterHome from "../../Components/Home/FooterHome";
 import { useState } from "react";
 
-import useJobs from "../../Components/FindJob/BoxFindJob/useJobs";
+import useJobs from "../../Hook/useJobs";
 import DetailJobOnMobile from "../../Components/FindJob/DetailJobOnMobile/DetailJobOnMobile";
 
 function JobDetailForMobile() {
