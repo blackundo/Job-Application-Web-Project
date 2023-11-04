@@ -9,6 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { faker } from "@faker-js/faker";
 function ChartLine() {
   ChartJS.register(
     CategoryScale,
@@ -22,42 +23,55 @@ function ChartLine() {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "top",
+        display: false,
       },
       title: {
-        display: true,
+        display: false,
         text: "Chart.js Line Chart",
       },
     },
   };
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-  ];
 
-  const valueDate = [1000, 2058, 2333, 7777, 85343, 97867, 102324];
+  const labels = [
+    "2023-10-26",
+    "2023-10-27",
+    "2023-10-28",
+    "2023-10-29",
+    "2023-10-30",
+    "2023-10-31",
+    "2023-11-1",
+  ];
 
   const data = {
     labels,
     datasets: [
       {
-        label: "Dataset 1",
-        data: valueDate.map((v) => v),
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        label: "Revenue",
+        data: labels.map(() => faker.number.int({ min: 1000, max: 3000 })),
+        borderColor: "#000084",
+        backgroundColor: "#000084",
       },
       {
-        label: "Dataset 2",
-        data: valueDate.map((v) => v),
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        label: "Total Jobs",
+        data: labels.map(() => faker.number.int({ min: 1000, max: 3000 })),
+        borderColor: "#1CB8FF",
+        backgroundColor: "#1CB8FF",
+      },
+      {
+        label: "Job Done",
+        data: labels.map(() => faker.number.int({ min: 1000, max: 3000 })),
+        borderColor: "#00A15C",
+        backgroundColor: "#00A15C",
+      },
+      {
+        label: "Job Close",
+        data: labels.map(() => faker.number.int({ min: 1000, max: 3000 })),
+        borderColor: "#EA4300",
+        backgroundColor: "#EA4300",
       },
     ],
   };

@@ -43,7 +43,7 @@
 }
 
 @media not all and (min-width: 1280px) {
-  .menu li span {
+  .menu li a {
     font-size: 0.67rem;
   }
   .menu li div {
@@ -51,7 +51,7 @@
   }
 }
 @media not all and (min-width: 640px) {
-  .menu li span {
+  .menu li a {
     display: none;
   }
   .menu li div {
