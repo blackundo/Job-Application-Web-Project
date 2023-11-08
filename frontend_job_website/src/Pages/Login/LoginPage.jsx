@@ -1,5 +1,5 @@
 import Layout from "../../Layouts/Layout";
-import FormContent from "../../Components/Login/Login";
+import FormLogin from "../../Components/Login/Login";
 import { useSelector } from "react-redux";
 
 const Login = () => {
@@ -7,7 +7,7 @@ const Login = () => {
   console.log(user);
   return (
     <Layout>
-      <FormContent Title={"Login"} titleBtn={"Login"} />
+      <FormLogin Title={"Login"} titleBtn={"Login"} />
     </Layout>
   );
 };

@@ -11,6 +11,8 @@ import JobDetailForMobile from "./Pages/FindJobPage/JobDetailForMobile";
 import LoginAdminPage from "./Pages/LoginAdmin/LoginAdminPage";
 import PanelAdminPage from "./Pages/PanelAdminPage/PanelAdminPage";
 import ChartContent from "./Components/PanelAdmin/Content/ChartContent";
+import CompanyManager from "./Components/PanelAdmin/CompanyManager/CompanyManager";
+import DetailsCompany from "./Components/PanelAdmin/CompanyManager/Details/DetailsCompany";
 
 const Home = lazy(() => import("./Pages/Home/Home"));
 const RolePage = lazy(() => import("./Pages/ChooseRole/RolePage"));
@@ -51,6 +53,12 @@ function App() {
                 <Route path="login/Admin" element={<LoginAdminPage />} />
                 <Route path="/admin" element={<PanelAdminPage />}>
                   <Route index element={<ChartContent />} />
+                  <Route path="dashboard" element={<ChartContent />} />
+                  <Route path="companyManager" element={<CompanyManager />} />
+                  <Route
+                    path="companyManager/details/:id"
+                    element={<DetailsCompany />}
+                  />
                 </Route>
                 <Route path="/*" element={<NotFoundPage />} />
               </Route>

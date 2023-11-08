@@ -2,7 +2,7 @@ import { createStore } from "redux";
 const initialState = {
   isLoggedIn: false,
   user: null,
-  profile: null,
+  token: null,
 };
 function LoginReducer(state = initialState, action) {
   switch (action.type) {
@@ -13,7 +13,7 @@ function LoginReducer(state = initialState, action) {
       localStorage.removeItem("user");
       return { ...state, isLoggedIn: false, user: null };
     case "PROFILE":
-      return { ...state, profile: action.payload };
+      return { ...state, token: action.payload };
     default:
       return state;
   }

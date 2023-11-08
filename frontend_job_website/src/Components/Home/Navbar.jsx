@@ -30,7 +30,7 @@ function Navbar() {
 
   return (
     <header className=" max-md:backdrop-blur-lg max-md:drop-shadow-2xl ">
-      <div className=" grid grid-cols-12 items-center  menu py-4 max-md:grid-cols-8">
+      <div className=" grid grid-cols-12 items-center   menu py-4 max-md:grid-cols-8">
         <div className="logo col-span-3 max-xl:col-span-2 flex justify-center items-center">
           <Link to={"/"}>
             <img src={logo} alt="" className="max-md:hidden" />
@@ -38,25 +38,8 @@ function Navbar() {
           </Link>
         </div>
 
-        <div className="flex border border-slate-700 rounded-lg col-span-4 max-xl:col-span-4 max-lg:col-span-3 max-md:col-span-4">
-          <div
-            className="mx-4 rounded-lg   border-black relative w-full h-10 text-center 
-            
-          "
-          >
-            {/* <input
-              type="text"
-              placeholder="Search by Vacancies"
-              className="rounded-lg outline-none absolute w-full h-9 text-sm px-3"
-            />
-            <BiSearchAlt className="absolute top-1/2 right-0 -translate-y-1/2 " /> */}
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-500 via-rose-500 to-sky-500 bg-clip-text text-transparent tracking-[0.2em]">
-              Group Hunter
-            </h1>
-          </div>
-        </div>
         <div
-          className={`col-span-5 max-xl:col-span-6 max-lg:col-span-7 max-md:hidden _navbarMenu ${
+          className={`col-span-9 max-xl:col-span-6 max-lg:col-span-7 max-md:hidden _navbarMenu ${
             toggleActive ? "active" : ""
           }  `}
         >
@@ -73,9 +56,18 @@ function Navbar() {
               <div
                 className={`flex items-center justify-evenly w-full font-sans  text-[16px] flex-nowrap `}
               >
-                <Link to={"/findJobs"}>Find Job </Link>
-                <span>Find Talent</span>
-                <span>Why JobHunter</span>
+                <Link
+                  to={"/findJobs"}
+                  className="hover:border-b-2 hover:border-t-2 border-sky-400 transition-all cursor-pointer"
+                >
+                  Find Job
+                </Link>
+                <span className="hover:border-b-2 hover:border-t-2 border-sky-400 transition-all cursor-pointer">
+                  Find Talent
+                </span>
+                <span className="hover:border-b-2 hover:border-t-2 border-sky-400 transition-all cursor-pointer">
+                  Why JobHunter
+                </span>
               </div>
             </div>
 
