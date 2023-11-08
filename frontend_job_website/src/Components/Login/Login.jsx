@@ -6,7 +6,7 @@ import axios from "axios";
 import "./Login.css";
 import { useDispatch } from "react-redux";
 
-const FormContent = ({ Title, setIsRegistered }) => {
+const FormContent = () => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
@@ -24,26 +24,24 @@ const FormContent = ({ Title, setIsRegistered }) => {
   };
 
   const handleLogin = async () => {
-    try {
-      const res = await axios.get("http://localhost:9003/Accounts");
-      setError(false);
-      let accounts = res.data;
-      let findUser = accounts.find((f) => f.Email === formData.email);
-      console.log(findUser.Password, formData.password);
-      if (findUser && findUser.Password === formData.password) {
+    await axios({
+      method: "POST",
+      url: "http://localhost:80/api/auth/authenticate",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      data: formData,
+    })
+      .then((res) => {
+        console.log(res.data);
         dispatch({
           type: "LOGIN",
-          payload: findUser,
+          payload: res.data,
         });
         navigate("/");
-      } else {
-        console.log("sai");
-        setError(true);
-      }
-    } catch (error) {
-      setError(true);
-      console.log(error);
-    }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -56,7 +54,7 @@ const FormContent = ({ Title, setIsRegistered }) => {
       </span>
 
       <div className="box-login w-[23rem] ">
-        <h1 className="text-2xl font-semibold font-serif pb-7">{Title}</h1>
+        <h1 className="text-2xl font-semibold font-serif pb-7">Login</h1>
         {error && (
           <p className="text-red-600">
             Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.
