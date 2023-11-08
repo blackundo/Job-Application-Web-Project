@@ -39,6 +39,7 @@ public class ProfileService {
             var company = repoCompany.findByAccountID(account.getId()).orElseThrow();
             authResponse = AccountCompanyDto.builder()
                     .email(userEmail)
+                    .role(account.getRole())
                     .companyName(company.getCompanyName())
                     .introduction(company.getIntroduction())
                     .address(company.getAddress())
@@ -51,6 +52,7 @@ public class ProfileService {
             var candidate = repoCandidate.findByAccountID(account.getId()).orElseThrow();
             authResponse = AccountCandidateDto.builder()
                     .email(userEmail)
+                    .role(account.getRole())
                     .fullName(candidate.getFullname())
                     .age(candidate.getAge())
                     .gender(candidate.getGender())

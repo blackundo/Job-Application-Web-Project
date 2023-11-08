@@ -1,5 +1,6 @@
 package com.vn.BackEnd_Job_Website.Dto;
 
+import com.vn.BackEnd_Job_Website.Model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class AccountCompanyDto {
     private String email;
+    private Role role;
     private String companyName;
     private String introduction;
     private String address;

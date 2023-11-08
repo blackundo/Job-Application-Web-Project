@@ -27,7 +27,7 @@ public class Account implements UserDetails {
     @Column(name = "AccountID", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roleID")
     private Role role;
 
