@@ -1,25 +1,26 @@
 package com.vn.BackEnd_Job_Website.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vn.BackEnd_Job_Website.Controller.auth.AuthenticationRequest;
 import com.vn.BackEnd_Job_Website.Controller.auth.AuthenticationResponse;
 import com.vn.BackEnd_Job_Website.Controller.auth.RegisterRequest;
 import com.vn.BackEnd_Job_Website.Model.Account;
 import com.vn.BackEnd_Job_Website.Model.Candidate;
 import com.vn.BackEnd_Job_Website.Model.Company;
-import com.vn.BackEnd_Job_Website.Model.Role;
 import com.vn.BackEnd_Job_Website.Respository.AccountRepository;
 import com.vn.BackEnd_Job_Website.Respository.CandidateRepository;
 import com.vn.BackEnd_Job_Website.Respository.CompanyRepository;
 import com.vn.BackEnd_Job_Website.Respository.RoleRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +52,7 @@ public class AuthenticationService {
 //                    request.getFounding(),
 //                    request.getBusinessEmail(),
 //                    request.getOrgn(),
-//                    request.getPhone()); //contractor này need id, giải pháp tạo 1 actrac base id sài tạm setter
+//                    request.getPhone()); //contractor này need id, solution tạo 1 actract base id sài tạm setter
 
         Company company = new Company();
         company.setAccountID(user);
@@ -64,9 +65,12 @@ public class AuthenticationService {
         company.setPhoneNumber(request.getPhone());
         repoCompany.save(company);
 
-        var jwtToken = jwtService.generateToken(user);
+
+        var accessToken = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -88,9 +92,11 @@ public class AuthenticationService {
 
         repoCandidate.save(candidate);
 
-        var jwtToken = jwtService.generateToken(user);
+        var accessToken = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -102,9 +108,42 @@ public class AuthenticationService {
                 )
         );
         var user = repoAccount.findByEmail(request.getEmail()).orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
+        var accessToken = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
+    }
+
+
+
+
+    public void refreshToken(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws IOException {
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String refreshToken;
+        final String userEmail;
+        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+            return;
+        }
+        refreshToken = authHeader.substring(7);
+        userEmail = jwtService.extractUsername(refreshToken);
+        if (userEmail != null) {
+            var user = this.repoAccount.findByEmail(userEmail).orElseThrow();
+
+            if (jwtService.isTokenValid(refreshToken, user)) {
+                var accessToken = jwtService.generateToken(user);
+//                revokeAllUserTokens(user);
+//                saveUserToken(user, accessToken);
+                var authResponse = AuthenticationResponse.builder()
+                        .accessToken(accessToken)
+                        .refreshToken(refreshToken)
+                        .build();
+                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
+            }
+        }
     }
 }
