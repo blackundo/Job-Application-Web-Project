@@ -27,7 +27,7 @@ public class Account implements UserDetails {
     @Column(name = "AccountID", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roleID")
     private Role role;
 
@@ -42,8 +42,8 @@ public class Account implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getRoleName()));
-//        return null;
+//        return List.of(new SimpleGrantedAuthority(role.getRoleName()));
+        return null;
     }
 
     @Override
