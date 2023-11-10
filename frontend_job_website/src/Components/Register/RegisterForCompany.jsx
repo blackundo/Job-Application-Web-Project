@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import Social from "../Social/Social";
+import { toast, ToastContainer } from "react-toastify";
 
-const FormContent = ({ Title, setIsRegistered }) => {
+const FormRegisterCompany = ({ setIsRegistered }) => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const role = searchParams.get("role");
@@ -13,51 +14,46 @@ const FormContent = ({ Title, setIsRegistered }) => {
     name: "",
     email: "",
     password: "",
-    rePassword: "",
-    role: {
-      roleName: "User",
-    },
   });
   const [error, setError] = useState(false);
-  const [load, setLoad] = useState(false);
-  const [uniqueId, setUniqueId] = useState("");
 
-  useEffect(() => {
-    axios.get("http://localhost:9000/Users").then((res) => {
-      let newId;
-      do {
-        newId = generateUniqueId();
-      } while (res.data.includes());
-      setUniqueId(newId);
+  const handleRegister = () => {
+    const loadingToastId = toast.loading("Please wait...", {
+      autoClose: false,
     });
-  }, []);
-
-  const handleRegister = async () => {
-    setLoad(true);
-    const dataToSend = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      role: {
-        role_id: uniqueId,
-        roleName: "User",
-      },
-    };
-    await axios
-      .post("http://localhost:9000/Users", dataToSend)
+    axios
+      .post(`http://localhost:80/api/auth/register?role=${role}`, formData)
       .then((res) => {
-        setLoad(false);
-        console.log("success", res.data);
+        toast.dismiss(loadingToastId);
+        toast("🦄 Register Success!", {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+
         setIsRegistered(true);
       })
       .catch((err) => {
-        setLoad(true);
+        toast.dismiss(loadingToastId);
+        toast.error("🦄 Registration failed. Please try again.", {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
         console.log(err);
       });
   };
-  function generateUniqueId() {
-    return "id_" + Math.random().toString(36).substr(2, 9);
-  }
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -68,6 +64,18 @@ const FormContent = ({ Title, setIsRegistered }) => {
 
   return (
     <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={1600}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <span className="absolute top-6 right-14">
         Have already account?
         <Link to={"/login"} className="text-[#000084] cursor-pointer">
@@ -76,13 +84,13 @@ const FormContent = ({ Title, setIsRegistered }) => {
       </span>
 
       <div className="box-login w-[23rem] ">
-        <h1 className="text-2xl font-semibold font-serif pb-7">{Title}</h1>
+        <h1 className="text-2xl font-semibold font-serif pb-7">Company</h1>
         {error && (
           <p className="text-red-600">
             Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.
           </p>
         )}
-        {load && <span>Loader</span>}
+
         <div className="form-login w-full ">
           <div className="flex flex-col py-2">
             <label htmlFor="" className="font-normal text-x">
@@ -139,8 +147,6 @@ const FormContent = ({ Title, setIsRegistered }) => {
                 name="rePassword"
                 placeholder="Re-enter password"
                 className="pl-3 w-full h-[40px] rounded-md"
-                value={formData.rePassword}
-                onChange={handleInputChange}
               />
             </div>
           </div>
@@ -162,4 +168,4 @@ const FormContent = ({ Title, setIsRegistered }) => {
   );
 };
 
-export default FormContent;
+export default FormRegisterCompany;

@@ -100,7 +100,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-export default function TableCustom({ rows }) {
+export default function TableCandidateCustom({ rows, setDetailSummary }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -129,6 +129,7 @@ export default function TableCustom({ rows }) {
     <motion.div
       initial={{ scale: 0.5 }}
       whileInView={{ scale: 1 }}
+      viewport={{ once: true }}
       transition={{ duration: 1, type: "spring", bounce: 0.2 }}
     >
       <TableContainer>
@@ -136,14 +137,15 @@ export default function TableCustom({ rows }) {
           <TableHead>
             <TableRow>
               <StyledTableCell>CompanyID</StyledTableCell>
-              <StyledTableCell align="right">CompanyName</StyledTableCell>
-              <StyledTableCell align="right">CompanyLink</StyledTableCell>
+              <StyledTableCell align="right">Candidate ID</StyledTableCell>
+              <StyledTableCell align="right">FullName</StyledTableCell>
+              <StyledTableCell align="right">
+                UniversityOrCollege
+              </StyledTableCell>
               <StyledTableCell align="right">Status</StyledTableCell>
-              <StyledTableCell align="right">Founding</StyledTableCell>
-              <StyledTableCell align="right">Post</StyledTableCell>
+              <StyledTableCell align="right">Job Apply</StyledTableCell>
               <StyledTableCell align="right">Spending</StyledTableCell>
               <StyledTableCell align="right">Country</StyledTableCell>
-              <StyledTableCell align="right">Action</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -151,15 +153,21 @@ export default function TableCustom({ rows }) {
               ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : rows
             ).map((row, index) => (
-              <TableRow key={row.CompanyID}>
+              <TableRow
+                key={row.candidateId}
+                className="hover:bg-slate-300 cursor-pointer"
+                onClick={() => {
+                  setDetailSummary(row || null);
+                }}
+              >
                 <TableCell component="th" scope="row">
-                  {row.CompanyID}
+                  {row.candidateId}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {row.CompanyName}
+                  {row.fullName}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {row.CompanyLink}
+                  {row.universityOrCollege}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
                   {/* {row.Status} */}
@@ -176,16 +184,13 @@ export default function TableCustom({ rows }) {
                   )}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {row.Founding}
+                  {row.jobApply}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {row.Post}
+                  {row.spending}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {row.Spending}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {row.Country}
+                  {row.country}
                 </TableCell>
                 <TableCell
                   style={{ width: 160 }}

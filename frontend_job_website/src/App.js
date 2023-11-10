@@ -14,6 +14,8 @@ import ChartContent from "./Components/PanelAdmin/Content/ChartContent";
 import CompanyManager from "./Components/PanelAdmin/CompanyManager/CompanyManager";
 import DetailsCompany from "./Components/PanelAdmin/CompanyManager/Details/DetailsCompany";
 
+import "react-toastify/dist/ReactToastify.css";
+import CandidateManager from "./Components/PanelAdmin/CandidateManager/CandidateManager";
 const Home = lazy(() => import("./Pages/Home/Home"));
 const RolePage = lazy(() => import("./Pages/ChooseRole/RolePage"));
 const Login = lazy(() => import("./Pages/Login/LoginPage"));
@@ -55,6 +57,10 @@ function App() {
                   <Route index element={<ChartContent />} />
                   <Route path="dashboard" element={<ChartContent />} />
                   <Route path="companyManager" element={<CompanyManager />} />
+                  <Route
+                    path="candidateManager"
+                    element={<CandidateManager />}
+                  />
                   <Route
                     path="companyManager/details/:id"
                     element={<DetailsCompany />}
