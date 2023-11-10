@@ -1,10 +1,11 @@
-import { useEffect, useReducer, useState } from "react";
+import { useState } from "react";
 
 import Social from "../Social/Social";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
 import { useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 
 const FormContent = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,6 @@ const FormContent = () => {
     email: "",
     password: "",
   });
-  const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -24,6 +24,9 @@ const FormContent = () => {
   };
 
   const handleLogin = async () => {
+    const loadingToastId = toast.loading("Please wait...", {
+      autoClose: false,
+    });
     await axios({
       method: "POST",
       url: "http://localhost:80/api/auth/authenticate",
@@ -34,6 +37,17 @@ const FormContent = () => {
       data: formData,
     })
       .then((res) => {
+        toast.dismiss(loadingToastId);
+        toast("🦄 Register Success!", {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
         console.log(res.data);
         dispatch({
           type: "LOGIN",
@@ -41,11 +55,37 @@ const FormContent = () => {
         });
         navigate("/");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.dismiss(loadingToastId);
+        toast.error("🦄 Registration failed. Please try again.", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        console.log(err);
+      });
   };
 
   return (
     <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={1600}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        limit={1}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <span className="absolute top-6 right-14">
         Don’t have an account?
         <Link to={"/chooseRole"} className="text-[#000084] cursor-pointer">
@@ -53,13 +93,13 @@ const FormContent = () => {
         </Link>
       </span>
 
-      <div className="box-login w-[23rem] ">
+      <div className="box-login w-[23rem] pt-20 max-md:w-[19rem]">
         <h1 className="text-2xl font-semibold font-serif pb-7">Login</h1>
-        {error && (
+        {/* {error && (
           <p className="text-red-600">
             Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.
           </p>
-        )}
+        )} */}
         <div className="form-login w-full ">
           <div className="flex flex-col py-2">
             <label htmlFor="" className="font-normal text-x">
