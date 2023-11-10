@@ -14,6 +14,7 @@ function Home() {
   const dispatch = useDispatch();
 
   const user = JSON.parse(localStorage.getItem("user"));
+  useEffect(() => {}, []);
 
   // useEffect(() => {
   //   async function fetchProfile() {
