@@ -1,7 +1,5 @@
 package com.vn.BackEnd_Job_Website.Config;
 
-import com.vn.BackEnd_Job_Website.Exception.CustomAccessDeniedHandler;
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +21,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-    private final CustomAccessDeniedHandler accessDeniedHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -31,19 +28,16 @@ public class SecurityConfiguration {
                 .cors(CorsConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req -> req.requestMatchers("/api/auth/**", "/").permitAll()
+                        auth -> auth.requestMatchers("/api/auth/**", "/").permitAll()
                                 .requestMatchers("/api/admin/**").hasRole("Admin")
                                 .requestMatchers("/api/company/**").hasRole("Company")
                                 .requestMatchers("/api/candidate/**").hasRole("Candidate")
-                                .anyRequest()
-                                .authenticated()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler)
-                .and()
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+//                .exceptionHandling(configurer -> configurer.accessDeniedHandler(accessDeniedHandler()));
         return http.build();
     }
 
