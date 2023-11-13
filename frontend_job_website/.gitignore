@@ -1,4 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+#.gitignore
+../BackEnd_Job_Website/
 
 # dependencies
 /node_modules
@@ -21,6 +23,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# .gitignore
-../BackEnd_Job_Website/

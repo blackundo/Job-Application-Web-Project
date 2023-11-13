@@ -4,7 +4,7 @@
   font-size: 0.875rem;
   font-weight: 500;
 }
-.form label input {
+.form input {
   border: 1px solid black;
   height: 2.75rem;
   border-radius: 8px;

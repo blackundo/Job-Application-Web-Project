@@ -2,25 +2,27 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../../Assets/Logo.svg";
 import { GiHamburgerMenu } from "react-icons/gi";
 import "./Navbar.css";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import logo2 from "../../Assets/JustLogo.svg";
 import { AiOutlineClose } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { IoIosNotifications } from "react-icons/io";
-import { BiSearchAlt, BiSolidMessageDetail, BiSolidUser } from "react-icons/bi";
+import { BiSolidMessageDetail, BiSolidUser } from "react-icons/bi";
 import { RxAvatar } from "react-icons/rx";
+import Gravatar from "react-gravatar";
+import { MenuCustoms } from "../MenuCustoms/MenuCustoms";
 
 function Navbar() {
   const [toggleActive, setToggleActive] = useState(false);
-  const pf = useSelector((state) => state.profile);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("user"));
-
+  const user = JSON.parse(localStorage.getItem("Profile"));
+  const containerRef = useRef(null);
   const toggleButtonClick = () => {
     setToggleActive(!toggleActive);
   };
-
+  // console.log(user?.profile.email);
   const handleLogOut = () => {
     dispatch({
       type: "LOGOUT",
@@ -30,8 +32,8 @@ function Navbar() {
 
   return (
     <header className=" max-md:backdrop-blur-lg max-md:drop-shadow-2xl ">
-      <div className=" grid grid-cols-12 items-center   menu py-4 max-md:grid-cols-8">
-        <div className="logo col-span-3 max-xl:col-span-2 flex justify-center items-center">
+      <div className=" grid grid-cols-12 items-center  menu py-4 max-md:grid-cols-8 ">
+        <div className="logo col-span-3  flex justify-center items-center max-md:col-span-4">
           <Link to={"/"}>
             <img src={logo} alt="" className="max-md:hidden" />
             <img src={logo2} alt="" className="md:hidden" />
@@ -39,7 +41,7 @@ function Navbar() {
         </div>
 
         <div
-          className={`col-span-9 max-xl:col-span-6 max-lg:col-span-7 max-md:hidden _navbarMenu ${
+          className={`col-span-9  max-lg:col-span-7 max-md:hidden _navbarMenu ${
             toggleActive ? "active" : ""
           }  `}
         >
@@ -101,11 +103,13 @@ function Navbar() {
                     <BiSolidUser className="text-2xl" />
                   </li>
                   <li className="relative avatarMenu">
-                    {pf && pf != undefined ? (
-                      <img
-                        src={`${pf[0].avatar}`}
-                        alt=""
-                        className="text-5xl rounded-full border drop-shadow-xl"
+                    {user.profile && user ? (
+                      <Gravatar
+                        email={`${user.profile.email}`}
+                        size={48}
+                        rating="pg"
+                        default="monsterid"
+                        className="border-x-2 rounded-full border-separate border-x-sky-500"
                       />
                     ) : (
                       <RxAvatar className="text-5xl" />
@@ -140,9 +144,10 @@ function Navbar() {
           </div>
         </div>
         <div
-          className="toggle hidden  max-md:flex  items-center justify-center pr-5 text-3xl font-bold max-md:col-span-2"
+          className="toggle hidden  max-md:flex  items-center justify-center pr-5 text-3xl font-bold max-md:col-span-4 relative "
           onClick={toggleButtonClick}
         >
+          {/* <MenuCustoms /> */}
           <span className="rounded-full border w-12 h-12 flex items-center justify-center bg-blue-300/60 hover:bg-blue-500/70 hover:text-white">
             <GiHamburgerMenu />
           </span>

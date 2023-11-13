@@ -43,9 +43,20 @@
     height: 2.3rem;
     padding-left: 5px;
   }
+  .menu ._navbarMenu.active .optionMenu div:nth-child(1) a {
+    width: 100%;
+    border-radius: 10px;
+    height: 2.3rem;
+    padding-left: 5px;
+  }
   .menu ._navbarMenu.active .optionMenu div:nth-child(1) span:hover {
     background: rgb(20, 20, 126);
-    background: linear-gradient(90deg, rgb(20, 20, 126) 0%, rgb(12, 12, 168) 64%, rgb(0, 212, 255) 100%);
+    background: linear-gradient(
+      90deg,
+      rgb(20, 20, 126) 0%,
+      rgb(12, 12, 168) 64%,
+      rgb(0, 212, 255) 100%
+    );
     color: white;
   }
   header {

@@ -3,9 +3,10 @@ import { useState } from "react";
 import Social from "../Social/Social";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Login.css";
 import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
+import { informationUser } from "../../Utils/TokenToProfile";
+import { ToastCustom } from "../ToastCustom/ToastCustom";
 
 const FormContent = () => {
   const dispatch = useDispatch();
@@ -29,44 +30,31 @@ const FormContent = () => {
     });
     await axios({
       method: "POST",
+      maxBodyLength: Infinity,
       url: "http://localhost:80/api/auth/authenticate",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
       },
       data: formData,
     })
       .then((res) => {
         toast.dismiss(loadingToastId);
-        toast("🦄 Register Success!", {
-          position: "top-center",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-        console.log(res.data);
+        const token = res.data.access_token;
         dispatch({
           type: "LOGIN",
-          payload: res.data,
+          payload: token,
         });
-        navigate("/");
+        toast.dismiss(loadingToastId);
+        ToastCustom.success("Welcome to back!");
+        console.log(res.data);
+        dispatch(informationUser(token));
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       })
       .catch((err) => {
         toast.dismiss(loadingToastId);
-        toast.error("🦄 Registration failed. Please try again.", {
-          position: "top-center",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+        ToastCustom.error("🙅‍♂️Registration failed. Please try again.");
         console.log(err);
       });
   };
@@ -79,7 +67,6 @@ const FormContent = () => {
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
-        limit={1}
         rtl={false}
         pauseOnFocusLoss
         draggable

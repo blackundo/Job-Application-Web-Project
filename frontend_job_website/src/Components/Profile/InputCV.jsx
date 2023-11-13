@@ -10,15 +10,18 @@ import logoFile from "../../Assets/logoFile.svg";
 import styles from "./InputCV.module.css";
 function InputCV({ initFile }) {
   const [option, setOption] = useState(false);
-  const [currentFile, setCurrentFile] = useState(initFile[0]?.file_CV);
-  const [nameFile, setNameFile] = useState(initFile[0]?.file_CV);
+
+  const [nameFile, setNameFile] = useState(initFile || "default");
   const [file, setFile] = useState(null);
 
   const handleDisplayOption = () => {
     setOption((o) => !o);
   };
+  const currentFile = initFile || "default";
 
   const handleOnchangeFile = (e) => {
+    console.log(e.target.value);
+
     if (e.target.value.length === 0) {
       // setFile(currentFile)
       setNameFile(currentFile);
@@ -84,9 +87,7 @@ function InputCV({ initFile }) {
               </object>
             ) : (
               <>
-                <span className="text-lg font-bold">
-                  CV-DoPhuocDat-Junior.Pdf
-                </span>
+                <span className="text-lg font-bold">Your CV.Pdf</span>
                 <small>Important today</small>
               </>
             )}
