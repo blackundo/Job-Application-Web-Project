@@ -1,6 +1,5 @@
 package com.vn.BackEnd_Job_Website.Config;
 
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,11 +9,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
-import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
-import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -30,14 +28,17 @@ public class SecurityConfiguration {
                 .cors(CorsConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req -> req
-                                .requestMatchers("/api/auth/**", "/").permitAll()
-                                .anyRequest()
-                                .authenticated()
+                        auth -> auth.requestMatchers("/api/auth/**", "/").permitAll()
+                                .requestMatchers("/api/admin/**").hasRole("Admin")
+                                .requestMatchers("/api/company/**").hasRole("Company")
+                                .requestMatchers("/api/candidate/**").hasRole("Candidate")
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+//                .exceptionHandling(configurer -> configurer.accessDeniedHandler(accessDeniedHandler()));
         return http.build();
     }
+
 }
