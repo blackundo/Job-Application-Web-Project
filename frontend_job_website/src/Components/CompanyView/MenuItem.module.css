@@ -1,10 +1,15 @@
 .menu div {
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: start;
   padding: 0 30px;
-  gap: 20px;
+  gap: 15px;
 }
-.menu div span:nth-child(1) {
-  font-size: 1.5rem;
+.menu div > a:nth-child(1) {
+  font-size: 1.3rem;
+}
+.menu div span {
+  font-size: 0.8rem;
+  font-weight: 700;
 }

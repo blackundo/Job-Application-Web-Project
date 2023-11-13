@@ -28,6 +28,10 @@ import SpinnerFullPage from "../Components/SpinnerFullPage/SpinnerFullPage";
 import RouterRole from "./RouterRole";
 import CompanyPages from "../Pages/CompanyPages/CompanyPages";
 import Content from "../Components/CompanyView/Content";
+import NewJob from "../Components/CompanyView/Content/NewJob";
+import Jobs from "../Components/CompanyView/Content/Jobs";
+import Candidate from "../Components/CompanyView/Content/Candidate";
+import Interview from "../Components/CompanyView/Content/Interview";
 
 // const roles = ["Candidate", "Company", "admin", null];
 function DefaultRouter({ role }) {
@@ -104,6 +108,10 @@ function DefaultRouter({ role }) {
           )}
           <Route path="/company" element={<CompanyPages />}>
             <Route index element={<Content />} />
+            <Route path="createjob" element={<NewJob />} />
+            <Route path="jobs" element={<Jobs />} />
+            <Route path="candidate" element={<Candidate />} />
+            <Route path="interview" element={<Interview />} />
           </Route>
           <Route path="/*" element={<NotFoundPage />} />
         </Route>
