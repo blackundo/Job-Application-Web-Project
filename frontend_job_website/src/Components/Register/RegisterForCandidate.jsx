@@ -93,7 +93,7 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
         <div className="form-login w-full ">
           <div className="flex flex-col py-2">
             <label htmlFor="" className="font-normal text-x">
-              Name
+              FullName:
             </label>
             <div className="relative">
               <input
@@ -108,7 +108,7 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
           </div>
           <div className="flex flex-col py-2">
             <label htmlFor="" className="font-normal text-x">
-              Email
+              Email:
             </label>
             <div className="relative">
               <input
@@ -123,7 +123,7 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
           </div>
           <div className="flex flex-col py-2">
             <label htmlFor="" className="font-normal text-x">
-              Password
+              Password:
             </label>
             <div className="relative">
               <input
@@ -136,7 +136,7 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
               />
             </div>
           </div>
-          <div className="flex flex-col py-2">
+          {/* <div className="flex flex-col py-2">
             <label htmlFor="" className="font-normal text-x">
               Re-enter Password
             </label>
@@ -148,7 +148,7 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
                 className="pl-3 w-full h-[40px] rounded-md"
               />
             </div>
-          </div>
+          </div> */}
           <button
             className="bg-[#133FA0] w-full h-12 rounded-md text-white my-3 text-[1.2rem] font-normal"
             onClick={handleRegister}

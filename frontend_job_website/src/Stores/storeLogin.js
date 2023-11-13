@@ -1,23 +1,51 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import {
+  REFRESH_TOKEN_FAILURE,
+  REFRESH_TOKEN_SUCCESS,
+} from "../Utils/RefreshToken";
+import { PROFILE } from "../Utils/TokenToProfile";
+import thunk from "redux-thunk";
+
 const initialState = {
   isLoggedIn: false,
-  user: null,
   token: null,
+  profile: null,
+  error: null,
+  role: null,
 };
 function LoginReducer(state = initialState, action) {
   switch (action.type) {
     case "LOGIN":
-      localStorage.setItem("user", JSON.stringify(action.payload));
-      return { ...state, isLoggedIn: true, user: action.payload };
+      localStorage.setItem("accessToken", JSON.stringify(action.payload));
+      return { ...state, isLoggedIn: true, token: action.payload };
     case "LOGOUT":
-      localStorage.removeItem("user");
-      return { ...state, isLoggedIn: false, user: null };
-    case "PROFILE":
-      return { ...state, token: action.payload };
+      localStorage.removeItem("Profile");
+      localStorage.removeItem("accessToken");
+      return { ...state, isLoggedIn: false, token: null };
+    case PROFILE:
+      localStorage.setItem("Profile", JSON.stringify(action.payload));
+      console.log(action.payload);
+      return {
+        ...state,
+        profile: action.payload.profile,
+        role: action.payload.role,
+      };
+    case REFRESH_TOKEN_SUCCESS:
+      return {
+        ...state,
+        token: action.payload,
+        error: null,
+      };
+    case REFRESH_TOKEN_FAILURE:
+      return {
+        ...state,
+        token: null,
+        error: "Refresh token failed.",
+      };
     default:
       return state;
   }
 }
 
-const store = createStore(LoginReducer);
+const store = createStore(LoginReducer, applyMiddleware(thunk));
 export default store;

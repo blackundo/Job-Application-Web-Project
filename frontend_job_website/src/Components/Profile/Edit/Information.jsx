@@ -1,13 +1,32 @@
 /* eslint-disable react/prop-types */
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import "./information.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-function Information({ back }) {
+function Information() {
   const [resettle, setResettle] = useState(false);
+  const [changeEmail, setChangeEmail] = useState(true);
+  const [email, setEmail] = useState("example@gmail.com");
+  const [isValidEmail, setIsValidEmail] = useState(true);
+
   const navigate = useNavigate();
   const handleDisplayResettle = () => {
     setResettle((r) => !r);
+  };
+  useEffect(() => {
+    if (changeEmail) {
+      const isValid = validateEmail(email);
+      setIsValidEmail(isValid);
+      if (!isValid) {
+        console.log("Invalid Email");
+      } else {
+        console.log("Email is valid, save it");
+      }
+    }
+  }, [changeEmail, email]);
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
   return (
     <div className="flex items-center justify-center  ">
@@ -20,21 +39,45 @@ function Information({ back }) {
           <span className="font-bold text-[1.75rem]">Contact information</span>
           <div className="flex flex-col form w-full gap-3">
             <label htmlFor="lastName" className="">
-              Last Name
-              <input type="text" placeholder="Dat" />
+              FullName
             </label>
-            <label htmlFor="firstName">
-              First Name
-              <input type="text" placeholder="Do" />
-            </label>
-            <label htmlFor="headings">
-              Headings
-              <input type="text" placeholder="Phuoc" />
-            </label>
-            <label htmlFor="numPhone">
-              Phone Number
-              <input type="text" placeholder="+325235258" />
-            </label>
+            <input type="text" placeholder="Do Phuoc Dat" />
+            <label htmlFor="firstName">Your Birthday</label>
+            <input type="date" />
+            <label htmlFor="headings">Address</label>
+            <input type="text" placeholder="Phuoc" />
+            <label htmlFor="numPhone">Phone Number</label>
+            <input type="text" placeholder="+325235258" />
+            <label htmlFor="numPhone">Gender</label>
+            <div className="flex items-center justify-start gap-3">
+              <div className="flex items-center justify-center gap-2">
+                <input
+                  type="radio"
+                  name="gender"
+                  value={"male"}
+                  className="w-4"
+                />{" "}
+                male
+              </div>
+              <div className="flex items-center justify-center gap-2">
+                <input
+                  type="radio"
+                  name="gender"
+                  value={"female"}
+                  className="w-4"
+                />{" "}
+                Female
+              </div>
+              <div className="flex items-center justify-center gap-2">
+                <input
+                  type="radio"
+                  name="gender"
+                  value={"xxx"}
+                  className="w-4"
+                />{" "}
+                xxx
+              </div>
+            </div>
             <div className="flex flex-col items-start justify-center gap-1 ">
               <div className="flex items-center gap-3">
                 <input type="checkbox" className="w-[1.56rem] h-[1.56rem] " />
@@ -58,9 +101,25 @@ function Information({ back }) {
                 Email
               </label>
               <div className="flex items-center justify-between w-full">
-                <input type="email" disabled placeholder="Dat@gmail.com" />
-                <span className="flex items-center justify-center text-blue-400 gap-3 cursor-pointer font-bold">
-                  Correct <AiOutlineArrowRight />
+                <input
+                  type="email"
+                  disabled={changeEmail}
+                  placeholder="Dat@gmail.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={`w-full ${
+                    isValidEmail ? "" : "border-2 border-red-300 "
+                  } px-2`}
+                />
+                <span
+                  className={`flex items-center justify-center@ text-blue-400 gap-3 cursor-pointer font-bold ${
+                    isValidEmail ? "" : "text-red-500"
+                  }`}
+                  onClick={() => {
+                    setChangeEmail((i) => !i);
+                  }}
+                >
+                  {changeEmail ? "Correct" : "Save"} <AiOutlineArrowRight />
                 </span>
               </div>
             </div>
@@ -130,6 +189,7 @@ function Information({ back }) {
                       id=""
                       className="w-5 h-5"
                     />
+                    {""}
                     Any where
                   </label>
                   <label
@@ -142,11 +202,17 @@ function Information({ back }) {
                       id=""
                       className="w-5 h-5"
                     />
+                    {""}
                     Just close...
                   </label>
                 </div>
               )}
             </div>
+          </div>
+          <div className="flex items-center justify-center pt-8">
+            <button className="border p-1 w-28 bg-slate-400 text-xl font-bold text-white rounded-lg hover:bg-sky-400">
+              save
+            </button>
           </div>
         </div>
       </div>

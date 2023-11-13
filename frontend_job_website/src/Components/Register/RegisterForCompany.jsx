@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import Social from "../Social/Social";
 import { toast, ToastContainer } from "react-toastify";
+import { ToastCustom } from "../ToastCustom/ToastCustom";
 
 const FormRegisterCompany = ({ setIsRegistered }) => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const role = searchParams.get("role");
-  console.log(role);
+  // console.log(role);
   const [formData, setFormData] = useState({
-    name: "",
+    companyName: "",
     email: "",
     password: "",
   });
-  const [error, setError] = useState(false);
 
   const handleRegister = () => {
     const loadingToastId = toast.loading("Please wait...", {
@@ -25,31 +25,18 @@ const FormRegisterCompany = ({ setIsRegistered }) => {
       .post(`http://localhost:80/api/auth/register?role=${role}`, formData)
       .then((res) => {
         toast.dismiss(loadingToastId);
-        toast("🦄 Register Success!", {
-          position: "top-center",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-
-        setIsRegistered(true);
+        ToastCustom.success("🦄 Register Success!", { autoClose: 1500 });
+        setTimeout(() => {
+          setIsRegistered(true);
+        }, 2000);
+        console.log(res.data);
       })
       .catch((err) => {
         toast.dismiss(loadingToastId);
-        toast.error("🦄 Registration failed. Please try again.", {
-          position: "top-center",
+        ToastCustom.error("🦄 Registration failed. Please try again.", {
           autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
         });
+
         console.log(err);
       });
   };
@@ -85,24 +72,18 @@ const FormRegisterCompany = ({ setIsRegistered }) => {
 
       <div className="box-login w-[23rem] ">
         <h1 className="text-2xl font-semibold font-serif pb-7">Company</h1>
-        {error && (
-          <p className="text-red-600">
-            Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.
-          </p>
-        )}
-
         <div className="form-login w-full ">
           <div className="flex flex-col py-2">
             <label htmlFor="" className="font-normal text-x">
-              Name
+              Company Name
             </label>
             <div className="relative">
               <input
                 type="text"
-                name="name"
-                placeholder="Your name"
+                name="companyName"
+                placeholder="DPD"
                 className="pl-3 w-full h-[40px] rounded-md"
-                value={formData.name}
+                value={formData.companyName}
                 onChange={handleInputChange}
               />
             </div>
@@ -137,7 +118,7 @@ const FormRegisterCompany = ({ setIsRegistered }) => {
               />
             </div>
           </div>
-          <div className="flex flex-col py-2">
+          {/* <div className="flex flex-col py-2">
             <label htmlFor="" className="font-normal text-x">
               Re-enter Password
             </label>
@@ -149,7 +130,7 @@ const FormRegisterCompany = ({ setIsRegistered }) => {
                 className="pl-3 w-full h-[40px] rounded-md"
               />
             </div>
-          </div>
+          </div> */}
           <button
             className="bg-[#133FA0] w-full h-12 rounded-md text-white my-3 text-[1.2rem] font-normal"
             onClick={handleRegister}

@@ -5,7 +5,7 @@ function DetailsJob({ job, load }) {
   const urlDecodeData = decodeURIComponent(job?.image_company);
 
   return (
-    <div className="col-span-7 border-2 border-slate-600 w-full h-[59rem] pt-2 rounded-2xl  sticky top-4 max-md:hidden overflow-y-hidden ">
+    <div className="col-span-7 border-2 border-slate-600 w-full h-[46rem] pt-2 rounded-2xl  sticky top-4 max-md:hidden overflow-y-hidden ">
       {load && job === null ? (
         <div className="flex items-center justify-center h-1/2 text-2xl">
           <button
@@ -79,11 +79,11 @@ function DetailsJob({ job, load }) {
           </div>
           <div className=" h-[28rem]">
             <div className="border-t-4 border-slate-700/40 pt-1">
-              <div className=" p-3  flex flex-col items-start justify-center gap-2">
-                <span className="font-bold text-[1.5rem]">Job Details</span>
-                <span className="text-[#2D2D2D] font-sans ">
+              <span className="p-3 font-bold text-[1.5rem]">Job Details</span>
+              <div className=" p-3  flex items-center justify-evenly gap-2">
+                {/* <span className="text-[#2D2D2D] font-sans ">
                   {job.description}
-                </span>
+                </span> */}
                 <div>
                   <div className="flex items-center justify-center gap-2">
                     <FaSuitcase />
@@ -123,7 +123,7 @@ function DetailsJob({ job, load }) {
                 </div>
               </div>
             </div>
-            <div className="description border-t-2 border-slate-700/40 overflow-y-auto h-full pb-[5rem] px-4">
+            <div className="description border-t-2 border-slate-700/40 overflow-y-auto h-full pb-[12rem] px-4">
               <span className="text-2xl font-bold">{job.job_title}</span>
               <span>{job.experience_years}</span>
               <br />

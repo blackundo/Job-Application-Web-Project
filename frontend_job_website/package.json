@@ -20,11 +20,13 @@
     "react-chartjs-2": "^5.2.0",
     "react-countup": "^6.5.0",
     "react-dom": "^18.2.0",
+    "react-gravatar": "^2.6.3",
     "react-icons": "^4.11.0",
     "react-image": "^4.1.0",
     "react-paginate": "^8.2.0",
     "react-redux": "^8.1.3",
     "react-toastify": "^9.1.3",
+    "redux-thunk": "^2.4.2",
     "styled-components": "^6.1.1",
     "vite-plugin-env-compatible": "^1.1.1",
     "vite-plugin-eslint": "^1.8.1",
@@ -35,6 +37,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vite test",
+    "clear": "vite clear",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "server": "json-server --watch data/Users.json --port 9000",
     "server2": "json-server --watch data/Jobs.json --port 9001 --Delay 500",
@@ -42,8 +45,8 @@
     "server4": "json-server --watch data/CompanyData.json --port 9003",
     "serverAccount": "json-server --watch data/AccountData.json --port 9003",
     "serverProfile": "json-server --watch data/ProfileData.json --port 9004",
-    "predeploy" : "npm run build",
-    "deploy" : "gh-pages -d dist"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "eslintConfig": {
     "extends": [

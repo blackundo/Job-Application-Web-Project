@@ -6,43 +6,70 @@ import { AiFillPhone } from "react-icons/ai";
 import { FaLocationDot } from "react-icons/fa6";
 import { Link, NavLink } from "react-router-dom";
 import InputCV from "./InputCV";
+import Gravatar from "react-gravatar";
+import { BsGenderAmbiguous } from "react-icons/bs";
+import { LuSchool } from "react-icons/lu";
 
 function Profile() {
-  const pf = JSON.parse(localStorage.getItem("profile"));
+  const info = JSON.parse(localStorage.getItem("Profile"));
+  // console.log(info);
+  const {
+    email,
+    fullName,
+    age,
+    gender,
+    universityOrCollege,
+    city,
+    uploadCv: fileCV,
+  } = info.profile;
+  // console.log(fileCV);
 
-  // console.log(URL.createObjectURL(file.name));
-
-  if (pf === null && pf === undefined) return;
+  if (info === null && info === undefined) return;
 
   return (
     <div className="  flex items-center justify-center max-md:mt-[5.625rem]">
       <div className="max-w-[34.81rem] ">
         <div className="flex items-center justify-center pt-10 w-full">
           <div className="flex items-center justify-evenly w-full">
-            <span className="text-3xl font-bold">{pf[0].full_name}</span>
+            <span className="text-3xl font-bold">{fullName}</span>
             <div className="h-[6.25rem] ms-w-[6.25rem] flex items-center justify-center border rounded-full">
-              <img
-                src={pf[0].avatar}
+              {/* <img
+                src={avatar}
                 alt=""
                 className="shadow rounded-full max-w-full h-full align-middle border-none"
+              /> */}
+              <Gravatar
+                email={`${email}`}
+                size={100}
+                rating="pg"
+                default="monsterid"
+                className=" rounded-full max-w-full h-full align-middle border-2 shadow-xl border-slate-300"
               />
             </div>
           </div>
         </div>
-        <div className="summaryContact border bg-[#f3f2f1] px-4 my-4 shadow-md rounded-lg ">
+        <div className="summaryContact border bg-[#f3f2f1] p-4 my-4 shadow-md rounded-lg ">
           <div className="flex items-center  justify-between">
             <ul className="flex flex-col gap-4 items-start justify-center">
               <li className="flex items-center justify-start gap-3 text-[#767676]">
                 <HiMail />
-                Email: <span>{pf[0].email}</span>
+                Email: <span>{email}</span>
               </li>
               <li className="flex items-center justify-start gap-3 text-[#767676]">
                 <AiFillPhone />
-                Number Phone: <span>{pf[0].phone}</span>
+                Age: <span>{age}</span>
               </li>
               <li className="flex items-center justify-start gap-3 text-[#767676]">
                 <FaLocationDot />
-                Address: <span>{pf[0].address}</span>
+                Address: <span>{city}</span>
+              </li>
+              <li className="flex items-center justify-start gap-3 text-[#767676]">
+                <BsGenderAmbiguous />
+                Gender: <span>{gender ? "Male" : "Female"}</span>
+              </li>
+              <li className="flex items-center justify-start gap-3 text-[#767676]">
+                <LuSchool />
+                University or College: <span>{universityOrCollege}</span>
               </li>
             </ul>
             <Link to={"editP"}>
@@ -50,7 +77,7 @@ function Profile() {
             </Link>
           </div>
         </div>
-        <InputCV initFile={pf} />
+        <InputCV initFile={fileCV} />
 
         <div className="py-4 flex flex-col gap-7">
           <div className="border-b-2 border-slate-500 w-full">
