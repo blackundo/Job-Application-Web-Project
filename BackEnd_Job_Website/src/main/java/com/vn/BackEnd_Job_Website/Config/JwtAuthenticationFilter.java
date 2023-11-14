@@ -1,8 +1,10 @@
 package com.vn.BackEnd_Job_Website.Config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vn.BackEnd_Job_Website.Exception.CustomAccessDeniedHandler;
 import com.vn.BackEnd_Job_Website.Service.JwtService;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -44,6 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 filterChain.doFilter(request, response);
+//                throw new AccessDeniedException("Please put your token");
                 return;
             }
             jwt = authHeader.substring(7);
@@ -58,6 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     );
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
+
                 }
             }
             filterChain.doFilter(request, response);
@@ -88,7 +92,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 response.setContentType("application/json");
                 errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
-                errDetail.setProperty("access_denied_reason", "JWT token already expired !");
+                errDetail.setProperty("access_denied_reason", "JWT already expired !");
+                errDetail.setInstance(URI.create(request.getRequestURI()));
+                new ObjectMapper().writeValue(response.getOutputStream(), errDetail);
+            }
+            if (ex instanceof MalformedJwtException){
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.setContentType("application/json");
+                errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
+                errDetail.setProperty("access_denied_reason", "JWT Wrong !");
                 errDetail.setInstance(URI.create(request.getRequestURI()));
                 new ObjectMapper().writeValue(response.getOutputStream(), errDetail);
             }
