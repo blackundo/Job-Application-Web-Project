@@ -4,7 +4,6 @@ import com.vn.BackEnd_Job_Website.Exception.CustomAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,6 +32,7 @@ public class SecurityConfiguration {
                         auth -> auth.requestMatchers("/api/auth/**", "/","/api/profile/download/**").permitAll()
                                 .requestMatchers("/api/admin/**").hasRole("Admin")
                                 .requestMatchers("/api/company/**").hasRole("Company")
+                                .requestMatchers("/api/hiring/**").hasRole("Company")
                                 .requestMatchers("/api/candidate/**").hasRole("Candidate")
                                 .requestMatchers("/api/profile/uploadcv").hasRole("Candidate")
                                 .anyRequest().authenticated()
