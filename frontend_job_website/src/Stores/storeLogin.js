@@ -5,6 +5,7 @@ import {
 } from "../Utils/RefreshToken";
 import { PROFILE } from "../Utils/TokenToProfile";
 import thunk from "redux-thunk";
+import authMiddleware from "../Middleware/authMiddleware";
 
 const initialState = {
   isLoggedIn: false,
@@ -13,14 +14,15 @@ const initialState = {
   error: null,
   role: null,
 };
-function LoginReducer(state = initialState, action) {
+const LoginReducer = (state = initialState, action) => {
   switch (action.type) {
     case "LOGIN":
-      localStorage.setItem("accessToken", JSON.stringify(action.payload));
+      localStorage.setItem("Token", JSON.stringify(action.payload));
+      console.log("Login");
       return { ...state, isLoggedIn: true, token: action.payload };
     case "LOGOUT":
       localStorage.removeItem("Profile");
-      localStorage.removeItem("accessToken");
+      localStorage.removeItem("Token");
       return { ...state, isLoggedIn: false, token: null };
     case PROFILE:
       localStorage.setItem("Profile", JSON.stringify(action.payload));
@@ -45,7 +47,8 @@ function LoginReducer(state = initialState, action) {
     default:
       return state;
   }
-}
+};
+export default LoginReducer;
 
-const store = createStore(LoginReducer, applyMiddleware(thunk));
-export default store;
+// const store = createStore(LoginReducer, applyMiddleware(thunk, authMiddleware));
+// export default store;

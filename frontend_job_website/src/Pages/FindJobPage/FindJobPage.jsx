@@ -5,7 +5,7 @@ import FooterHome from "../../Components/Home/FooterHome";
 import { useEffect, useState } from "react";
 
 import useJobs from "../../Hook/useJobs";
-import axios from "axios";
+import axiosPrivate from "../../api/axios";
 
 function FindJobPage() {
   const [cities, setCities] = useState(null);
@@ -19,7 +19,7 @@ function FindJobPage() {
 
   useEffect(() => {
     async function citiesFetch() {
-      await axios.get("http://localhost:9001/Jobs").then((res) => {
+      await axiosPrivate.get("http://localhost:9001/Jobs").then((res) => {
         const data = res.data;
         const citiesNew = data?.map((d) => d.location);
         setCities([...new Set(citiesNew)]);

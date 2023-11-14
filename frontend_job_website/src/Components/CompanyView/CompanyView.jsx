@@ -51,7 +51,7 @@ function CompanyView() {
         </AnimatePresence>
       </div>
 
-      <div className="w-full ">
+      <div className="w-full h-screen ">
         <HeaderPageCompany toggleMenu={toggleMenu} isOpenMenu={isOpenMenu} />
         <div className="flex items-center justify-center pt-2">
           <div className="w-[98%]  p-2">

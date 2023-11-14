@@ -1,5 +1,7 @@
+import axiosPrivate from "../api/axios";
+import axios from "../api/axios";
+
 export const PROFILE = "PROFILE_USER";
-import axios from "axios";
 
 export const showProfile = (info, role) => ({
   type: PROFILE,
@@ -10,6 +12,7 @@ export const showProfile = (info, role) => ({
 });
 
 export const informationUser = (accessToken) => async (dispatch) => {
+  // const controller = new AbortController();
   let config = {
     method: "post",
     maxBodyLength: Infinity,
@@ -17,16 +20,19 @@ export const informationUser = (accessToken) => async (dispatch) => {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
+    // signal: controller.signal,
   };
 
-  axios
+  await axiosPrivate
     .request(config)
     .then((res) => {
       const data = res.data;
       const role = res.data.role.roleName;
+      console.log(data);
       dispatch(showProfile(data, role));
     })
     .catch((error) => {
       console.log(error);
     });
+  // controller.abort();
 };

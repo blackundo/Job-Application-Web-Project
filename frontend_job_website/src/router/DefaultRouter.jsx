@@ -32,9 +32,16 @@ import NewJob from "../Components/CompanyView/Content/NewJob";
 import Jobs from "../Components/CompanyView/Content/Jobs";
 import Candidate from "../Components/CompanyView/Content/Candidate";
 import Interview from "../Components/CompanyView/Content/Interview";
+import PostJobs from "../Components/CompanyView/Post/PostJobs";
+import InformationJob from "../Components/CompanyView/Post/InformationJob";
+import DetailsJobs from "../Components/CompanyView/Post/DetailsJobs";
+import WriteJobs from "../Components/CompanyView/Post/WriteJobs";
+import PreviewPost from "../Components/CompanyView/Post/PreviewPost";
 
 // const roles = ["Candidate", "Company", "admin", null];
-function DefaultRouter({ role }) {
+function DefaultRouter() {
+  const profile = JSON.parse(localStorage.getItem("Profile"));
+  const role = profile && profile != undefined ? profile.role : null;
   console.log(role);
   return (
     <Suspense fallback={<SpinnerFullPage />}>
@@ -112,6 +119,12 @@ function DefaultRouter({ role }) {
             <Route path="jobs" element={<Jobs />} />
             <Route path="candidate" element={<Candidate />} />
             <Route path="interview" element={<Interview />} />
+            <Route path="post_jobs" element={<PostJobs />}>
+              <Route index element={<InformationJob />} />
+              <Route path="details" element={<DetailsJobs />} />
+              <Route path="description" element={<WriteJobs />} />
+              <Route path="preview" element={<PreviewPost />} />
+            </Route>
           </Route>
           <Route path="/*" element={<NotFoundPage />} />
         </Route>

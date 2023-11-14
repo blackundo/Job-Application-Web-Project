@@ -2,15 +2,16 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../../Assets/Logo.svg";
 import { GiHamburgerMenu } from "react-icons/gi";
 import "./Navbar.css";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import logo2 from "../../Assets/JustLogo.svg";
 import { AiOutlineClose } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { IoIosNotifications } from "react-icons/io";
 import { BiSolidMessageDetail, BiSolidUser } from "react-icons/bi";
 import { RxAvatar } from "react-icons/rx";
 import Gravatar from "react-gravatar";
-import { MenuCustoms } from "../MenuCustoms/MenuCustoms";
+import axiosPrivate from "../../api/axios";
+import axios from "axios";
 
 function Navbar() {
   const [toggleActive, setToggleActive] = useState(false);
@@ -18,7 +19,7 @@ function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("Profile"));
-  const containerRef = useRef(null);
+
   const toggleButtonClick = () => {
     setToggleActive(!toggleActive);
   };
@@ -28,6 +29,42 @@ function Navbar() {
       type: "LOGOUT",
     });
     navigate("/");
+  };
+
+  //  const showProfile = (info, role) => ({
+  //   type: PROFILE,
+  //   payload: {
+  //     profile: info,
+  //     role: role,
+  //   },
+  // });
+
+  const informationUser = () => {
+    const accessToken = JSON.parse(localStorage.getItem("Token"))?.access_token;
+    // console.log(accessToken);
+    axiosPrivate
+      .get(
+        "/api/candidate/test",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        const data = res.data;
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+
+        // Check if the error response contains the expected structure
+        if (error.response && error.response.data) {
+          const errorData = error.response.data;
+          console.log("Server error data:", errorData);
+        }
+      });
   };
 
   return (
@@ -119,6 +156,7 @@ function Navbar() {
                       <Link
                         to={"/profileU"}
                         className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all"
+                        onClick={informationUser}
                       >
                         Profile
                       </Link>
