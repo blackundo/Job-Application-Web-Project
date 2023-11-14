@@ -17,7 +17,7 @@ import java.util.function.Function;
 public class JwtService {
     //Hex Key:	EA4D0954F62668B7305D70FBEAE824A06BAA6B93AB7AD1DB4C1DAD5ED981BCF6
     //Plain text key:	THEN COAL BECK TINE CHUG BOLT OTT TIER TAB SAIL FLEA BABY COVE BASE SULK BEST LENT TONY AMES TONE BIEN LOST HOP EMIL
-    private static final String SECRET_KEY = "EA4D0954F62668B7305D70FBEAE824A06BAA6B93AB7AD1DB4C1DAD5ED981BCF6";
+//    private static final String SECRET_KEY = "EA4D0954F62668B7305D70FBEAE824A06BAA6B93AB7AD1DB4C1DAD5ED981BCF6";
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
     @Value("${application.security.jwt.expiration}")
@@ -94,7 +94,7 @@ public class JwtService {
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

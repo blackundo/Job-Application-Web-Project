@@ -1,3 +1,4 @@
+
 spring:
   config:
     import: optional:secrets.yml
@@ -20,5 +21,11 @@ spring:
     database-platform: org.hibernate.dialect.SQLServer2012Dialect
   main:
     banner-mode: off
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 10MB
+      max-request-size: 15MB
 server:
   port: 80

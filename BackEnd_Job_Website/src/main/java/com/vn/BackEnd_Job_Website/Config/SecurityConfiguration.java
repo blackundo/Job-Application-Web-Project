@@ -1,8 +1,10 @@
 package com.vn.BackEnd_Job_Website.Config;
 
+import com.vn.BackEnd_Job_Website.Exception.CustomAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,16 +30,20 @@ public class SecurityConfiguration {
                 .cors(CorsConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/api/auth/**", "/").permitAll()
+                        auth -> auth.requestMatchers("/api/auth/**", "/","/api/profile/download/**").permitAll()
                                 .requestMatchers("/api/admin/**").hasRole("Admin")
                                 .requestMatchers("/api/company/**").hasRole("Company")
                                 .requestMatchers("/api/candidate/**").hasRole("Candidate")
+                                .requestMatchers("/api/profile/uploadcv").hasRole("Candidate")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-//                .exceptionHandling(configurer -> configurer.accessDeniedHandler(accessDeniedHandler()));
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(e -> {
+                    e.accessDeniedHandler(new CustomAccessDeniedHandler()); //403
+//                    e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.NOT_FOUND)); //404
+                });
         return http.build();
     }
 
