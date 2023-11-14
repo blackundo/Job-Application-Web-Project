@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../api/axios";
 
 export const REFRESH_TOKEN_SUCCESS = "REFRESH_TOKEN_SUCCESS";
 export const REFRESH_TOKEN_FAILURE = "REFRESH_TOKEN_FAILURE";
@@ -13,12 +13,12 @@ export const refreshFailure = () => ({
 });
 
 export const refreshAccessToken = (refreshToken) => async (dispatch) => {
-  console.log(refreshToken);
   try {
-    const response = await axios.post("http://localhost:80/api/refresh-token", {
+    const response = await axios.post("/refresh-token", {
       refreshToken,
+      withCredentials: true,
     });
-    const accessToken = response.data;
+    const { accessToken } = response.data;
     console.log(accessToken);
     dispatch(refreshSuccess(accessToken));
   } catch (err) {

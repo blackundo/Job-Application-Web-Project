@@ -2,11 +2,13 @@ import { useState } from "react";
 
 import Social from "../Social/Social";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+
 import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { informationUser } from "../../Utils/TokenToProfile";
 import { ToastCustom } from "../ToastCustom/ToastCustom";
+import axios from "axios";
+import axiosPrivate from "../../api/axios";
 
 const FormContent = () => {
   const dispatch = useDispatch();
@@ -28,10 +30,10 @@ const FormContent = () => {
     const loadingToastId = toast.loading("Please wait...", {
       autoClose: false,
     });
-    await axios({
+    await axiosPrivate({
       method: "POST",
       maxBodyLength: Infinity,
-      url: "http://localhost:80/api/auth/authenticate",
+      url: "http://localhost:80/api/authenticate",
       headers: {
         "Content-Type": "application/json",
       },
@@ -39,18 +41,19 @@ const FormContent = () => {
     })
       .then((res) => {
         toast.dismiss(loadingToastId);
-        const token = res.data.access_token;
+        const token = res.data;
+        // console.log(token.access_token);
         dispatch({
           type: "LOGIN",
           payload: token,
         });
         toast.dismiss(loadingToastId);
-        ToastCustom.success("Welcome to back!");
+        ToastCustom.success("Welcome to back!", { autoClose: 2500 });
         console.log(res.data);
-        dispatch(informationUser(token));
+        dispatch(informationUser(token?.access_token));
         setTimeout(() => {
           navigate("/");
-        }, 2000);
+        }, 2500);
       })
       .catch((err) => {
         toast.dismiss(loadingToastId);
