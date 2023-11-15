@@ -15,15 +15,15 @@ import axios from "axios";
 
 function Navbar() {
   const [toggleActive, setToggleActive] = useState(false);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("Profile"));
+  const role = user && user != undefined ? user.role : null;
 
   const toggleButtonClick = () => {
     setToggleActive(!toggleActive);
   };
-  // console.log(user?.profile.email);
+
   const handleLogOut = () => {
     dispatch({
       type: "LOGOUT",
@@ -31,17 +31,9 @@ function Navbar() {
     navigate("/");
   };
 
-  //  const showProfile = (info, role) => ({
-  //   type: PROFILE,
-  //   payload: {
-  //     profile: info,
-  //     role: role,
-  //   },
-  // });
-
   const informationUser = () => {
     const accessToken = JSON.parse(localStorage.getItem("Token"))?.access_token;
-    // console.log(accessToken);
+
     axiosPrivate
       .get(
         "/api/candidate/test",
@@ -58,8 +50,6 @@ function Navbar() {
       })
       .catch((error) => {
         console.error(error);
-
-        // Check if the error response contains the expected structure
         if (error.response && error.response.data) {
           const errorData = error.response.data;
           console.log("Server error data:", errorData);
@@ -113,7 +103,7 @@ function Navbar() {
             <div
               className={`flex gap-4  w-2/5 max-md:w-full max-md:flex-col items-start justify-center`}
             >
-              {user === null ? (
+              {role === null && (
                 <>
                   <Link
                     to={"/login"}
@@ -128,7 +118,8 @@ function Navbar() {
                     Sign up
                   </Link>
                 </>
-              ) : (
+              )}
+              {role === "Candidate" && (
                 <ul className="flex items-center justify-center gap-3">
                   <NavLink to={"/Message/3423"}>
                     <BiSolidMessageDetail className="text-2xl" />
@@ -151,7 +142,6 @@ function Navbar() {
                     ) : (
                       <RxAvatar className="text-5xl" />
                     )}
-
                     <ul className="absolute z-30 border-2 border-collapse p-2 w-52  right-1/4 max-md:left-full max-md:top-3 bg-white/50  rounded-lg backdrop-blur-md  grid-cols-1 place-items-center place-content-start gap-3 pt-2 hidden">
                       <Link
                         to={"/profileU"}
@@ -166,6 +156,48 @@ function Navbar() {
                       <li className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all">
                         Find Jobs
                       </li>
+                      <Link
+                        to={"/"}
+                        onClick={handleLogOut}
+                        className="font-bold text-white md:text-sm bg-[#1CB8FF] h-12 w-full rounded-2xl flex justify-center items-center
+                        "
+                      >
+                        Logout
+                      </Link>
+                    </ul>
+                  </li>
+                </ul>
+              )}
+              {role === "Company" && (
+                <ul className="flex items-center justify-center gap-3">
+                  <NavLink to={"/Message/3423"}>
+                    <BiSolidMessageDetail className="text-2xl" />
+                  </NavLink>
+                  <li>
+                    <IoIosNotifications className="text-2xl" />
+                  </li>
+                  <li>
+                    <BiSolidUser className="text-2xl" />
+                  </li>
+                  <li className="relative avatarMenu">
+                    {user.profile && user ? (
+                      <Gravatar
+                        email={`${user.profile.email}`}
+                        size={48}
+                        rating="pg"
+                        default="monsterid"
+                        className="border-x-2 rounded-full border-separate border-x-sky-500"
+                      />
+                    ) : (
+                      <RxAvatar className="text-5xl" />
+                    )}
+                    <ul className="absolute z-30 border-2 border-collapse p-2 w-52  right-1/4 max-md:left-full max-md:top-3 bg-white/50  rounded-lg backdrop-blur-md  grid-cols-1 place-items-center place-content-start gap-3 pt-2 hidden">
+                      <Link
+                        to={"/company"}
+                        className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all"
+                      >
+                        Page Comapany
+                      </Link>
                       <Link
                         to={"/"}
                         onClick={handleLogOut}

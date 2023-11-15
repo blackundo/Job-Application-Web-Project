@@ -1,5 +1,4 @@
 import img from "../../../Assets/descriptinjobs.png";
-import "react-quill/dist/quill.snow.css";
 import QuillCustoms from "../../Suneditor/QuillCustoms";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";

@@ -41,7 +41,7 @@ import PreviewPost from "../Components/CompanyView/Post/PreviewPost";
 // const roles = ["Candidate", "Company", "admin", null];
 function DefaultRouter() {
   const profile = JSON.parse(localStorage.getItem("Profile"));
-  const role = profile && profile != undefined ? profile.role : null;
+  const role = "Candidate";
   console.log(role);
   return (
     <Suspense fallback={<SpinnerFullPage />}>
@@ -101,18 +101,19 @@ function DefaultRouter() {
               </RouterRole>
             }
           />
-          {role === "Admin" && (
-            <Route path="/admin" element={<PanelAdminPage />}>
-              <Route index element={<ChartContent />} />
-              <Route path="dashboard" element={<ChartContent />} />
-              <Route path="companyManager" element={<CompanyManager />} />
-              <Route path="candidateManager" element={<CandidateManager />} />
-              <Route
-                path="companyManager/details/:id"
-                element={<DetailsCompany />}
-              />
-            </Route>
-          )}
+          <Route path="/admin" element={<PanelAdminPage />}>
+            <Route index element={<ChartContent />} />
+            <Route path="dashboard" element={<ChartContent />} />
+            <Route path="companyManager" element={<CompanyManager />} />
+            <Route path="candidateManager" element={<CandidateManager />} />
+            <Route
+              path="companyManager/details/:id"
+              element={<DetailsCompany />}
+            />
+          </Route>
+          {/* {role === "Admin" && (
+           
+          )} */}
           <Route path="/company" element={<CompanyPages />}>
             <Route index element={<Content />} />
             <Route path="createjob" element={<NewJob />} />

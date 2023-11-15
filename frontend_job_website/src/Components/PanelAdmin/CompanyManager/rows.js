@@ -78,4 +78,8 @@ export const rows = [
   ),
   createData(331468, "Dr", "5abeZJ", "true", "12/2/2020", 6, "II", "Sweden"),
   createData(979423, "Mrs", "Db9dKG", "true", "12/2/2020", 19, "II", "Nigeria"),
+  createData(12321321, "Dr", "5abeZJ", "true", "12/2/2020", 6, "II", "Sweden"),
+  createData(13231, "Mrs", "Db9dKG", "true", "12/2/2020", 19, "II", "Nigeria"),
+  createData(54353, "Dr", "5abeZJ", "true", "12/2/2020", 6, "II", "Sweden"),
+  createData(545342, "Mrs", "Db9dKG", "true", "12/2/2020", 19, "II", "Nigeria"),
 ].sort((a, b) => (a.Post > b.Post ? -1 : 1));

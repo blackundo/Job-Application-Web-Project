@@ -1,8 +1,31 @@
 import { Link } from "react-router-dom";
 import img from "../../../Assets/imgPostJobs.png";
 import { FiAlertCircle, FiArrowRight } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import PickDateCustoms from "../../PickDateCustoms/PickDateCustoms";
 
 function InformationJob() {
+  // const jobs = useSelector((state) => state.job);
+  const dispatch = useDispatch();
+
+  const [details, setDetails] = useState({
+    title: "",
+    candidateLimit: "",
+  });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setDetails({
+      ...details,
+      [name]: value,
+    });
+  };
+  const handleNextPage = () => {
+    dispatch({
+      type: "SET_DETAILS",
+      payload: details,
+    });
+  };
   return (
     <>
       <div>
@@ -10,10 +33,11 @@ function InformationJob() {
           <img src={img} alt="" className="" />
         </div>
         <span>
-          Job postings in <strong>VietNamese</strong> in{" "}
-          <strong>vietnam</strong>
+          Job postings in <strong>VietNamese</strong> in
         </span>
+        <strong>vietnam</strong>
       </div>
+
       <div className="border-t mt-3">
         <div className="pb-3 pt-6 flex flex-col items-start justify-center gap-2">
           <label htmlFor="" className="text-sm font-semibold">
@@ -21,23 +45,28 @@ function InformationJob() {
           </label>
           <input
             type="text"
-            name="titleJob"
+            name="title"
             className="w-full border h-10 rounded-lg px-2"
             placeholder="Title Job"
+            value={details.title}
+            onChange={handleInputChange}
           />
         </div>
         <div className="py-5 flex flex-col items-start justify-center gap-2">
           <label htmlFor="" className="text-sm font-semibold">
-            The number of people recruited fot job <span>*</span>
+            Candidate limit <span>*</span>
           </label>
           <input
             type="number"
-            name="people"
+            name="candidateLimit"
             className="w-full border h-10 rounded-lg px-2"
             placeholder="The number of people"
+            value={details.candidateLimit}
+            onChange={handleInputChange}
           />
         </div>
-        <div className="py-5 flex flex-col items-start justify-center gap-2 border-t">
+        <PickDateCustoms label={"Choose active hiring"} />
+        {/* <div className="py-5 flex flex-col items-start justify-center gap-2 border-t">
           <div className="flex flex-col items-start justify-center">
             <label htmlFor="" className="text-sm font-semibold">
               Where would you live to advertise this job <span>*</span>
@@ -50,7 +79,7 @@ function InformationJob() {
             className="w-full border h-10 rounded-lg px-3"
             placeholder="Location"
           />
-        </div>
+        </div> */}
       </div>
       <div className="border border-red-400 p-2 m-0">
         <div className="flex items-center justify-start gap-3">
@@ -64,8 +93,10 @@ function InformationJob() {
         </ul>
       </div>
       <div className="pt-16 flex items-center justify-end">
+        <button onClick={handleNextPage}>Test</button>
         <Link
           to={"details"}
+          state={{ fDetails: details }}
           className="h-12 p-3 bg-[#1CB8FF] text-white font-bold rounded-lg flex items-center justify-between gap-2 hover:scale-110 transition-all"
         >
           Continue

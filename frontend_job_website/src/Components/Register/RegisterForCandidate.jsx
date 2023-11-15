@@ -20,7 +20,7 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
       autoClose: false,
     });
     await axios
-      .post(`http://localhost:80/api/auth/register?role=${role}`, formData)
+      .post(`http://localhost:80/api/register?role=${role}`, formData)
       .then((res) => {
         toast.dismiss(loadingToastId);
         toast("🦄 Register Success!", {
