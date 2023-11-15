@@ -1,9 +1,36 @@
 import { FiAlertCircle, FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import img from "../../../Assets/jobdetails.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 function DetailsJobs() {
   const navigate = useNavigate();
+  const jobs = useSelector((state) => state.job);
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  const details = location.state?.fDetails || "";
+  console.log(details);
+  const [moreDetails, setMoreDetails] = useState({
+    ...details,
+    hours: 0,
+    salaryMax: 0,
+    salaryMin: 0,
+  });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setMoreDetails({
+      ...moreDetails,
+      [name]: value,
+    });
+  };
+  const handleNextPage = () => {
+    dispatch({
+      type: "SET_DETAILS",
+      payload: moreDetails,
+    });
+  };
   return (
     <>
       <div className="flex items-center justify-center">
@@ -44,6 +71,8 @@ function DetailsJobs() {
             className="w-full border h-10 rounded-lg px-3"
             placeholder="Hours"
             min={0}
+            value={moreDetails.hours}
+            onChange={handleInputChange}
           />
         </div>
         <div>
@@ -55,9 +84,11 @@ function DetailsJobs() {
                 <input
                   type="number"
                   placeholder="1000"
-                  name="minimum"
+                  name="salaryMin"
                   min={0}
                   className="h-10 border px-3 rounded-l-lg"
+                  value={moreDetails.salaryMin}
+                  onChange={handleInputChange}
                 />
                 <button className="h-10 border w-10 absolute top-0 left-full bg-slate-400 rounded-r-lg text-white font-bold">
                   $
@@ -70,9 +101,11 @@ function DetailsJobs() {
                 <input
                   type="number"
                   placeholder="1000"
-                  name="maximal"
+                  name="salaryMax"
                   min={0}
                   className="h-10 border px-3 rounded-l-lg"
+                  value={moreDetails.salaryMax}
+                  onChange={handleInputChange}
                 />
                 <button className="h-10 border w-10 absolute top-0 left-full bg-slate-400 rounded-r-lg text-white font-bold">
                   $
@@ -90,6 +123,7 @@ function DetailsJobs() {
           <FiArrowLeft className="text-xl " />
           Back
         </button>
+        <button onClick={handleNextPage}>test</button>
         <Link
           to={"/company/post_jobs/description"}
           className="h-12 p-3 bg-[#1CB8FF] text-white font-bold rounded-lg flex items-center justify-between gap-2 hover:scale-110 transition-all"
