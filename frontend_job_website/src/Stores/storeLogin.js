@@ -25,6 +25,7 @@ const LoginReducer = (state = initialState, action) => {
       localStorage.removeItem("Token");
       return { ...state, isLoggedIn: false, token: null };
     case PROFILE:
+      console.log("Profile");
       localStorage.setItem("Profile", JSON.stringify(action.payload));
       console.log(action.payload);
       return {

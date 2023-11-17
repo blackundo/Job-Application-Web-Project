@@ -11,8 +11,18 @@ import Gravatar from "react-gravatar";
 import { RiPagesFill } from "react-icons/ri";
 import { BiMessageAltDetail, BiSolidUser } from "react-icons/bi";
 import { LuLogOut } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 function HeaderPageCompany({ toggleMenu, isOpenMenu }) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleLogOut = () => {
+    dispatch({
+      type: "LOGOUT",
+    });
+    navigate("/");
+  };
   return (
     <div className=" flex items-center justify-between border-b pb-2 border-slate-200 shadow-lg px-7 relative h-16">
       <div className="w-1/3 max-md:w-2/3 ">
@@ -121,7 +131,7 @@ function HeaderPageCompany({ toggleMenu, isOpenMenu }) {
             <span className="text-xl">
               <LuLogOut />
             </span>
-            <span>Logout</span>
+            <span onClick={handleLogOut}>Logout</span>
           </li>
         </ul>
       </div>

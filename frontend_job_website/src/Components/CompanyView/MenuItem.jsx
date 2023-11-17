@@ -7,11 +7,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const items = [
-  {
-    icon: <AiOutlinePlus />,
-    title: "New Create",
-    toPath: "createjob",
-  },
+  // {
+  //   icon: <AiOutlinePlus />,
+  //   title: "New Create",
+  //   toPath: "post_jobs/create",
+  // },
   {
     icon: <FaSuitcase />,
     title: "Jobs",
@@ -57,9 +57,9 @@ function MenuItem({ open }) {
               {open && (
                 <motion.span
                   initial={{ width: 0, opacity: 1 }}
-                  animate={{ width: "100%", opacity: 1 }}
+                  animate={{ width: "100px", opacity: 1 }}
                   exit={{ width: 0, opacity: 0 }}
-                  transition={{ duration: 0.5 }}
+                  transition={{ duration: 0.6, type: "spring" }}
                   className="whitespace-nowrap overflow-hidden"
                 >
                   <Link to={item.toPath}>{item.title}</Link>

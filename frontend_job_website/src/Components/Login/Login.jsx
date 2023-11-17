@@ -49,7 +49,8 @@ const FormContent = () => {
         });
         toast.dismiss(loadingToastId);
         ToastCustom.success("Welcome to back!", { autoClose: 2500 });
-        console.log(res.data);
+        // console.log(res.data);
+        // console.log(token?.access_token);
         dispatch(informationUser(token?.access_token));
         setTimeout(() => {
           navigate("/");

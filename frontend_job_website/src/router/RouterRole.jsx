@@ -5,7 +5,7 @@ const RouterRole = ({ role, roles = [], children }) => {
   return !roles.length || roles.includes(role) ? (
     <Fragment> {children}</Fragment>
   ) : (
-    <Navigate to="/login" replace />
+    <Navigate to="/" replace />
   );
 };
 

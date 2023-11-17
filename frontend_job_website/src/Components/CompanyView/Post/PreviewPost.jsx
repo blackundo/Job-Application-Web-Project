@@ -8,7 +8,7 @@ function PreviewPost() {
   const previewContent = location.state?.previewContent || "";
   const navigate = useNavigate();
   return (
-    <div className="flex items-center justify-center flex-col">
+    <div className="flex items-center justify-center flex-col ">
       <div className=" w-[46.98rem] ">
         <div className="pb-6">
           <img src={img} alt="" />
