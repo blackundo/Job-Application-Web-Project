@@ -42,10 +42,10 @@ function CompanyView() {
           {isOpen && (
             <motion.div
               initial={{ width: 0, opacity: 1 }}
-              animate={{ width: "auto", opacity: 1 }}
+              animate={{ width: "50px", opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
               transition={{ duration: 0.6, type: "spring" }}
-              style={{ transition: "width 0.6s ease-out" }}
+              style={{ transition: "width 0.6s ease-in-out" }}
             ></motion.div>
           )}
         </AnimatePresence>

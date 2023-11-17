@@ -3,7 +3,6 @@ import BoxFindJob from "../../Components/FindJob/BoxFindJob/BoxFindJob";
 import DisplayJobs from "../../Components/FindJob/DisplayJobs/DisplayJobs";
 import FooterHome from "../../Components/Home/FooterHome";
 import { useEffect, useState } from "react";
-
 import useJobs from "../../Hook/useJobs";
 import axiosPrivate from "../../api/axios";
 
@@ -12,10 +11,6 @@ function FindJobPage() {
   const [query, setQuery] = useState({ query: "", location: "" });
 
   const { isLoading, jobs, error } = useJobs(query);
-
-  // const [jobs, setJobs] = useState(null);
-  // const [load, setLoad] = useState(true);
-  // const [error, setError] = useState(false);
 
   useEffect(() => {
     async function citiesFetch() {

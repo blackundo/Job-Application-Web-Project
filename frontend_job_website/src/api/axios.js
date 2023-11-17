@@ -7,8 +7,6 @@ const BASE_URL = "http://localhost:80";
 const axiosPrivate = axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
-  withCredentials: true,
-  logLevel: "debug",
 });
 
 axiosPrivate.interceptors.request.use(
@@ -21,7 +19,7 @@ axiosPrivate.interceptors.request.use(
     return config;
   },
   (err) => {
-    console.log("error: " + err);
+    // console.log("error: " + err);
     return Promise.reject(err);
   }
 );
@@ -35,8 +33,26 @@ axiosPrivate.interceptors.response.use(
     const refreshToken = JSON.parse(
       localStorage.getItem("Token")
     )?.refresh_token;
-    console.log("RefreshToken", refreshToken);
-    try {
+    if (err.response.data.status === 401) {
+      console.log("err response");
+    }
+    if (err.response.data.status === 403) {
+      const refreshResponse = await axios.post(
+        "http://localhost:80/api/refresh-token",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${refreshToken}`,
+          },
+        }
+      );
+      const data = refreshResponse?.data;
+      console.log(data);
+      localStorage.setItem("Token", JSON.stringify(data));
+      originalConfig.headers["Authorization"] = `Bearer ${data.access_token}`;
+      return axios(originalConfig);
+    }
+    /*   try {
       const refreshResponse = await axios.post(
         "http://localhost:80/api/refresh-token",
         {},
@@ -54,9 +70,9 @@ axiosPrivate.interceptors.response.use(
     } catch (refreshError) {
       console.log(err);
       localStorage.removeItem("Token");
-      window.location.href = "/";
+      // window.location.href = "/";
       Promise.reject(refreshError);
-    }
+    } */
     /*    console.log("LogErr", err);
     if (err && err.request && !err.response && navigator.onLine !== false) {
       console.log("NetworkError", err);

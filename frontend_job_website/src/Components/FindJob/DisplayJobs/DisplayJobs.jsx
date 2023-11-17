@@ -7,14 +7,6 @@ import ReactPaginate from "react-paginate";
 import "./DisplayJobs.css";
 import { Link } from "react-router-dom";
 
-// const calculator = (start_date) => {
-//   const currentDate = new Date();
-//   console.log(currentDate);
-//   const startDate = start_date?.split("-").reverse().join("-");
-//   console.log(new Date(startDate || startDate));
-//   console.log(differenceInDays(currentDate, new Date(startDate)));
-// };
-
 function DisplayJobs({ Jobs, load, error }) {
   const [jobDetail, setJobDetail] = useState(null);
   const [loadDetail, setLoadDetail] = useState(true);

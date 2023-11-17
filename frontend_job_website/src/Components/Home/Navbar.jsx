@@ -5,7 +5,7 @@ import "./Navbar.css";
 import { useState } from "react";
 import logo2 from "../../Assets/JustLogo.svg";
 import { AiOutlineClose } from "react-icons/ai";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IoIosNotifications } from "react-icons/io";
 import { BiSolidMessageDetail, BiSolidUser } from "react-icons/bi";
 import { RxAvatar } from "react-icons/rx";
@@ -19,7 +19,8 @@ function Navbar() {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("Profile"));
   const role = user && user != undefined ? user.role : null;
-
+  const location = useSelector((state) => state.login);
+  console.log(role);
   const toggleButtonClick = () => {
     setToggleActive(!toggleActive);
   };
@@ -33,7 +34,6 @@ function Navbar() {
 
   const informationUser = () => {
     const accessToken = JSON.parse(localStorage.getItem("Token"))?.access_token;
-
     axiosPrivate
       .get(
         "/api/candidate/test",

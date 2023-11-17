@@ -41,7 +41,7 @@ import PreviewPost from "../Components/CompanyView/Post/PreviewPost";
 // const roles = ["Candidate", "Company", "admin", null];
 function DefaultRouter() {
   const profile = JSON.parse(localStorage.getItem("Profile"));
-  const role = "Candidate";
+  const role = profile && profile != undefined ? profile.role : null;
   console.log(role);
   return (
     <Suspense fallback={<SpinnerFullPage />}>
@@ -62,7 +62,7 @@ function DefaultRouter() {
           <Route
             path="findJobs"
             element={
-              <RouterRole role={role} roles={["Candidate", null]}>
+              <RouterRole role={role} roles={["Candidate", "Company", null]}>
                 <FindJobPage />
               </RouterRole>
             }
@@ -76,15 +76,21 @@ function DefaultRouter() {
             }
           />
 
-          {role != null ? (
-            <Route path="profileU" element={<ProfilePage />}>
-              <Route index element={<Profile />} />
-              <Route path="degree" element={<Degree />} />
-              <Route path="editP" element={<Information />} />
-            </Route>
-          ) : (
-            <Route path="/*" element={<NotFoundPage />} />
-          )}
+          <Route
+            path="profileU"
+            element={
+              <RouterRole role={role} roles={["Candidate"]}>
+                <ProfilePage />
+              </RouterRole>
+            }
+          >
+            <Route index element={<Profile />} />
+            <Route path="degree" element={<Degree />} />
+            <Route path="editP" element={<Information />} />
+          </Route>
+
+          <Route path="/*" element={<NotFoundPage />} />
+
           <Route
             path="Message/:id"
             element={
@@ -101,7 +107,14 @@ function DefaultRouter() {
               </RouterRole>
             }
           />
-          <Route path="/admin" element={<PanelAdminPage />}>
+          <Route
+            path="/admin"
+            element={
+              <RouterRole role={role} roles={["Admin"]}>
+                <PanelAdminPage />
+              </RouterRole>
+            }
+          >
             <Route index element={<ChartContent />} />
             <Route path="dashboard" element={<ChartContent />} />
             <Route path="companyManager" element={<CompanyManager />} />
@@ -115,13 +128,13 @@ function DefaultRouter() {
            
           )} */}
           <Route path="/company" element={<CompanyPages />}>
-            <Route index element={<Content />} />
-            <Route path="createjob" element={<NewJob />} />
+            <Route index element={<Jobs />} />
             <Route path="jobs" element={<Jobs />} />
             <Route path="candidate" element={<Candidate />} />
             <Route path="interview" element={<Interview />} />
             <Route path="post_jobs" element={<PostJobs />}>
               <Route index element={<InformationJob />} />
+
               <Route path="details" element={<DetailsJobs />} />
               <Route path="description" element={<WriteJobs />} />
               <Route path="preview" element={<PreviewPost />} />

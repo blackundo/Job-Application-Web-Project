@@ -22,10 +22,7 @@ function InputCV({ initFile }) {
   const handleOnchangeFile = (e) => {
     console.log(e.target.value);
 
-    if (e.target.value.length === 0) {
-      // setFile(currentFile)
-      setNameFile(currentFile);
-    } else {
+    if (e.target.value.length != 0) {
       const selectFile = e.target.files[0];
       setFile(selectFile);
       setNameFile(selectFile.name);
