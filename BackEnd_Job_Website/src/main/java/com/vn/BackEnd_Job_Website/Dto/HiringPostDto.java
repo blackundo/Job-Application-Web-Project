@@ -1,6 +1,5 @@
 package com.vn.BackEnd_Job_Website.Dto;
 
-import com.vn.BackEnd_Job_Website.Model.HiringStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

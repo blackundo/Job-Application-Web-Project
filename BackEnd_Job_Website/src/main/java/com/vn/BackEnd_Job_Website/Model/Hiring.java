@@ -1,23 +1,20 @@
 package com.vn.BackEnd_Job_Website.Model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@Entity
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Hiring {
     @Id
-    @Column(name = "HiringID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "HiringID", nullable = false)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,20 +28,27 @@ public class Hiring {
     @Column(name = "ApplicationLimit")
     private Integer applicationLimit;
 
-    @Column(name = "DateSubmit")
+    @Column(name = "DateSubmit", nullable = false)
     private LocalDate dateSubmit;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "HiringContentID")
     private HiringContent hiringContentID;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "StatusID")
-    private HiringStatus statusID;
+    @Column(name = "DateEnd", nullable = false)
+    private LocalDate dateEnd;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FieldHiringID")
-    private FieldHiring fieldHiringID;
+    @Column(name = "MinSlaray")
+    private Double minSlaray;
+
+    @Column(name = "MaxSlaray")
+    private Double maxSlaray;
+
+    @Column(name = "Status", nullable = false, length = 20)
+    private String status;
+
+    @Column(name = "FieldName")
+    private String fieldName;
 
     public Hiring(Company companyID, String hiringName, Integer applicationLimit, LocalDate dateSubmit, HiringContent hiringContentID, HiringStatus statusID, FieldHiring fieldHiringID) {
         this.companyID = companyID;
@@ -52,7 +56,5 @@ public class Hiring {
         this.applicationLimit = applicationLimit;
         this.dateSubmit = dateSubmit;
         this.hiringContentID = hiringContentID;
-        this.statusID = statusID;
-        this.fieldHiringID = fieldHiringID;
     }
 }
