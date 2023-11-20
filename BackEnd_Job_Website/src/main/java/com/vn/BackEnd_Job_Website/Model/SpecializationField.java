@@ -8,18 +8,14 @@ import org.hibernate.annotations.Nationalized;
 @Getter
 @Setter
 @Entity
-public class Field {
+public class SpecializationField {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "FieldID", nullable = false)
+    @Column(name = "SpecializationID", nullable = false)
     private Integer id;
 
     @Nationalized
-    @Column(name = "FieldName")
-    private String fieldName;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SpecializationID")
-    private SpecializationField specializationID;
+    @Column(name = "SpecializationName")
+    private String specializationName;
 
 }

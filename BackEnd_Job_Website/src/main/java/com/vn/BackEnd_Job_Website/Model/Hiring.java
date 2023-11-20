@@ -39,10 +39,10 @@ public class Hiring {
     private LocalDate dateEnd;
 
     @Column(name = "MinSlaray")
-    private Double minSlaray;
+    private Double minSalary;
 
     @Column(name = "MaxSlaray")
-    private Double maxSlaray;
+    private Double maxSalary;
 
     @Column(name = "Status", nullable = false, length = 20)
     private String status;
@@ -50,11 +50,16 @@ public class Hiring {
     @Column(name = "FieldName")
     private String fieldName;
 
-    public Hiring(Company companyID, String hiringName, Integer applicationLimit, LocalDate dateSubmit, HiringContent hiringContentID, HiringStatus statusID, FieldHiring fieldHiringID) {
+    public Hiring(Company companyID, String hiringName, Integer applicationLimit, LocalDate dateSubmit, HiringContent hiringContentID, LocalDate dateEnd, Double minSalary, Double maxSalary, String status, String fieldName) {
         this.companyID = companyID;
         this.hiringName = hiringName;
         this.applicationLimit = applicationLimit;
         this.dateSubmit = dateSubmit;
         this.hiringContentID = hiringContentID;
+        this.dateEnd = dateEnd;
+        this.minSalary = minSalary;
+        this.maxSalary = maxSalary;
+        this.status = status;
+        this.fieldName = fieldName;
     }
 }

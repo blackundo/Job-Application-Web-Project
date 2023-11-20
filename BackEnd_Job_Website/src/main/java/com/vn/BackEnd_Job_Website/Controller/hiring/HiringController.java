@@ -18,8 +18,6 @@ import java.util.Optional;
 public class HiringController {
     private final HiringRepository hiringRepository;
     private final HiringContentRepository hiringContentRepository;
-    private final HiringStatusRepository hiringStatusRepository;
-    private final FieldHiringRepository fieldHiringRepository;
     private final CompanyRepository companyRepository;
     @GetMapping
     public List<Hiring> getAllHirings() {
@@ -39,15 +37,9 @@ public class HiringController {
     @PostMapping("/create")
     public Hiring createHiring(@RequestBody HiringPostDto request) {
 
-
-
-        HiringStatus status = hiringStatusRepository.save(new HiringStatus(request.getStatus()));
         HiringContent content = hiringContentRepository.save(new HiringContent(
                 request.getTitlePost(),
                 request.getContentPost()
-        ));
-        FieldHiring field = fieldHiringRepository.save(new FieldHiring(
-                request.getFieldName()
         ));
         Account acc = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Company company = companyRepository.findByAccountID(acc.getId()).orElseThrow();
@@ -57,8 +49,11 @@ public class HiringController {
                 request.getApplicationLimit(),
                 LocalDate.now(),
                 content,
-                status,
-                field
+                LocalDate.now(),
+                request.getMinSalary(),
+                request.getMaxSalary(),
+                request.getStatus(),
+                request.getFieldName()
         ));
         return hiring;
     }
