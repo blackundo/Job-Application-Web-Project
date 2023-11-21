@@ -1,13 +1,10 @@
 import { useState } from "react";
-
 import Social from "../Social/Social";
 import { Link, useNavigate } from "react-router-dom";
-
 import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { informationUser } from "../../Utils/TokenToProfile";
 import { ToastCustom } from "../ToastCustom/ToastCustom";
-import axios from "axios";
 import axiosPrivate from "../../api/axios";
 
 const FormContent = () => {
@@ -86,11 +83,7 @@ const FormContent = () => {
 
       <div className="box-login w-[23rem] pt-20 max-md:w-[19rem]">
         <h1 className="text-2xl font-semibold font-serif pb-7">Login</h1>
-        {/* {error && (
-          <p className="text-red-600">
-            Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.
-          </p>
-        )} */}
+
         <div className="form-login w-full ">
           <div className="flex flex-col py-2">
             <label htmlFor="" className="font-normal text-x">

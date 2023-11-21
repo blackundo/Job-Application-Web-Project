@@ -6,7 +6,7 @@ import { FaGlobeAmericas } from "react-icons/fa";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import DialogForm from "../../Dialog/DialogForm";
+import DialogForm from "./DialogForm";
 import AccordionCustom from "../../Accordion/AccordionCustom";
 
 function Degree() {
@@ -59,8 +59,8 @@ function Degree() {
 
   const navigate = useNavigate();
   return (
-    <div className="  flex items-center justify-center max-md:mt-[5.625rem]">
-      <div className="max-w-[34.81rem] ">
+    <div className="flex items-center justify-center max-md:mt-[5.625rem]">
+      <div className="max-w-[34.81rem]  max-md:w-[25rem] max-sm:w-[20rem]">
         <div>
           <span className="cursor-pointer">
             <AiOutlineArrowLeft onClick={() => navigate(-1)} />

@@ -27,7 +27,7 @@ function Jobs() {
     setOrderVisible(false);
   };
   return (
-    <div className="h-[calc(100vh-6rem)]">
+    <>
       <Header Title={"Jobs"} />
       <div className="border w-fit rounded-lg tabs flex items-center max-md:w-full">
         <button className="h-12 p-3 bg-blue-600 text-white font-bold rounded-l-lg max-md:w-1/2">
@@ -123,7 +123,7 @@ function Jobs() {
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
