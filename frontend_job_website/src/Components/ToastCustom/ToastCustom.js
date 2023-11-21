@@ -7,7 +7,7 @@ const defaultOptions = {
   pauseOnHover: true,
   draggable: true,
   progress: undefined,
-  theme: "colored",
+  theme: "light",
 };
 export const ToastCustom = {
   loading: (message, options) => {

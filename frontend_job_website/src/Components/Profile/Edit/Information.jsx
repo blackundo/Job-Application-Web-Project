@@ -1,43 +1,43 @@
-/* eslint-disable react/prop-types */
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-import "./information.css";
-import { useEffect, useState } from "react";
+import { GoArrowLeft } from "react-icons/go";
+import styles from "./Information.module.css";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastCustom } from "../../ToastCustom/ToastCustom";
+import { ToastContainer } from "react-toastify";
 function Information() {
   const [resettle, setResettle] = useState(false);
-  const [changeEmail, setChangeEmail] = useState(true);
-  const [email, setEmail] = useState("example@gmail.com");
-  const [isValidEmail, setIsValidEmail] = useState(true);
 
   const navigate = useNavigate();
   const handleDisplayResettle = () => {
     setResettle((r) => !r);
   };
-  useEffect(() => {
-    if (changeEmail) {
-      const isValid = validateEmail(email);
-      setIsValidEmail(isValid);
-      if (!isValid) {
-        console.log("Invalid Email");
-      } else {
-        console.log("Email is valid, save it");
-      }
-    }
-  }, [changeEmail, email]);
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  const handleUpdateProfile = () => {
+    ToastCustom.success("Update Success!", { autoClose: 2500 });
+    //ToastCustom.error("Update Error, Please check filed!", { autoClose: 2500 });
   };
+
   return (
-    <div className="flex items-center justify-center  ">
-      <div className="w-[34.81rem]  flex items-center justify-center">
+    <div className="flex items-center justify-center max-md:mt-[5.625rem] ">
+      <ToastContainer
+        position="bottom-right"
+        autoClose={1600}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        limit={1}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+      <div className="w-[34.81rem] max-md:w-[25rem] max-sm:w-[20rem] flex items-center justify-center">
         <div className="w-full pt-3">
-          <AiOutlineArrowLeft
-            className="text-xl font-bold cursor-pointer"
-            onClick={() => navigate(-1)}
-          />
+          <span className="text-2xl font-bold cursor-pointer">
+            <GoArrowLeft onClick={() => navigate(-1)} />
+          </span>
           <span className="font-bold text-[1.75rem]">Contact information</span>
-          <div className="flex flex-col form w-full gap-3">
+          <div className={`flex flex-col w-full gap-3 ${styles.form}`}>
             <label htmlFor="lastName" className="">
               FullName
             </label>
@@ -96,32 +96,15 @@ function Information() {
             </div>
           </div>
           <div className="flex flex-col  gap-4">
-            <div className="flex flex-col items-start justify-center pt-5  gap-2 border-b border-black pb-2">
-              <label htmlFor="Email" className="text-lg font-bold">
+            <div className="flex flex-col items-start justify-center pt-5  gap-2  pb-2">
+              <label htmlFor="email" className="text-lg font-bold">
                 Email
               </label>
-              <div className="flex items-center justify-between w-full">
-                <input
-                  type="email"
-                  disabled={changeEmail}
-                  placeholder="Dat@gmail.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className={`w-full ${
-                    isValidEmail ? "" : "border-2 border-red-300 "
-                  } px-2`}
-                />
-                <span
-                  className={`flex items-center justify-center@ text-blue-400 gap-3 cursor-pointer font-bold ${
-                    isValidEmail ? "" : "text-red-500"
-                  }`}
-                  onClick={() => {
-                    setChangeEmail((i) => !i);
-                  }}
-                >
-                  {changeEmail ? "Correct" : "Save"} <AiOutlineArrowRight />
-                </span>
-              </div>
+              <input
+                type="email"
+                placeholder="dat@gmail.com"
+                className={`w-full h-[2.75rem] px-3 outline-none border border-black rounded-md `}
+              />
             </div>
             <div className="flex flex-col items-start justify-center">
               <span className="font-bold text-lg">Work location</span>
@@ -189,7 +172,6 @@ function Information() {
                       id=""
                       className="w-5 h-5"
                     />
-                    {""}
                     Any where
                   </label>
                   <label
@@ -202,7 +184,6 @@ function Information() {
                       id=""
                       className="w-5 h-5"
                     />
-                    {""}
                     Just close...
                   </label>
                 </div>
@@ -210,7 +191,10 @@ function Information() {
             </div>
           </div>
           <div className="flex items-center justify-center pt-8">
-            <button className="border p-1 w-28 bg-slate-400 text-xl font-bold text-white rounded-lg hover:bg-sky-400">
+            <button
+              className="border p-1 w-28 bg-slate-400 text-xl font-bold text-white rounded-lg hover:bg-sky-400"
+              onClick={handleUpdateProfile}
+            >
               save
             </button>
           </div>

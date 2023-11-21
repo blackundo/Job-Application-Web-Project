@@ -1,17 +1,23 @@
-import dayjs from "dayjs";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { AdapterDateFns } from "@mui/x-date-pickers-pro/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDateRangePicker } from "@mui/x-date-pickers-pro/MobileDateRangePicker";
 
-export default function PickDateCustoms({ label }) {
+export default function PickDateCustoms({ label, onChange }) {
+  const handleDateChange = (newDates) => {
+    // Extract start and end dates and pass them to the parent component
+    const [start, end] = newDates;
+    console.log(start, end);
+    onChange({ start, end });
+  };
   return (
     <div className="py-3">
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DemoContainer components={["MobileDateRangePicker"]}>
           <DemoItem label={label} component="MobileDateRangePicker">
             <MobileDateRangePicker
-              defaultValue={[dayjs("2022-04-17"), dayjs("2022-04-21")]}
+              defaultValue={[new Date(2022, 3, 17), new Date(2022, 3, 21)]}
+              onChange={handleDateChange}
             />
           </DemoItem>
         </DemoContainer>

@@ -19,6 +19,13 @@
 .header td {
   font-weight: 700;
   font: 1em;
+  border: unset;
+  width: 100%;
+}
+.header td * {
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 
 .header {
@@ -27,6 +34,7 @@
   align-items: center !important;
   justify-content: space-around !important;
   height: 50px;
+  border-bottom: solid 1px grey;
 }
 .actionBar {
   display: flex;

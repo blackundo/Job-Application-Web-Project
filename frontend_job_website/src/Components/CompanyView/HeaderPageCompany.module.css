@@ -1,0 +1,13 @@
+.menu li:not(li:nth-child(6)):hover {
+  color: black;
+  scale: 1.1;
+  cursor: pointer;
+}
+
+.menu li {
+  width: 100%;
+  height: 50px;
+}
+.menu {
+  width: 100% !important;
+}

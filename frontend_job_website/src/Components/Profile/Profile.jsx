@@ -22,7 +22,6 @@ function Profile() {
     city,
     uploadCv: fileCV,
   } = info.profile;
-  // console.log(fileCV);
 
   if (info === null && info === undefined) return;
 
@@ -31,7 +30,13 @@ function Profile() {
       <div className="max-w-[34.81rem] ">
         <div className="flex items-center justify-center pt-10 w-full">
           <div className="flex items-center justify-evenly w-full">
-            <span className="text-3xl font-bold">{fullName}</span>
+            <span
+              className={`text-3xl font-bold ${
+                fullName ? "" : "text-rose-400"
+              }`}
+            >
+              {fullName || "Update Your Profile"}
+            </span>
             <div className="h-[6.25rem] ms-w-[6.25rem] flex items-center justify-center border rounded-full">
               {/* <img
                 src={avatar}

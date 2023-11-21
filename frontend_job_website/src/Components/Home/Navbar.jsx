@@ -11,7 +11,6 @@ import { BiSolidMessageDetail, BiSolidUser } from "react-icons/bi";
 import { RxAvatar } from "react-icons/rx";
 import Gravatar from "react-gravatar";
 import axiosPrivate from "../../api/axios";
-import axios from "axios";
 
 function Navbar() {
   const [toggleActive, setToggleActive] = useState(false);
@@ -19,8 +18,8 @@ function Navbar() {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("Profile"));
   const role = user && user != undefined ? user.role : null;
-  const location = useSelector((state) => state.login);
-  console.log(role);
+  // const location = useSelector((state) => state.login);
+  // console.log(role);
   const toggleButtonClick = () => {
     setToggleActive(!toggleActive);
   };
@@ -45,8 +44,7 @@ function Navbar() {
         }
       )
       .then((res) => {
-        const data = res.data;
-        console.log(data);
+        navigate("/user");
       })
       .catch((error) => {
         console.error(error);
@@ -60,7 +58,7 @@ function Navbar() {
   return (
     <header className=" max-md:backdrop-blur-lg max-md:drop-shadow-2xl ">
       <div className=" grid grid-cols-12 items-center  menu py-4 max-md:grid-cols-8 ">
-        <div className="logo col-span-3  flex justify-center items-center max-md:col-span-4">
+        <div className="logo max-lg:col-start-2 col-span-3  flex justify-center items-center max-md:col-span-4">
           <Link to={"/"}>
             <img src={logo} alt="" className="max-md:hidden" />
             <img src={logo2} alt="" className="md:hidden" />
@@ -143,16 +141,18 @@ function Navbar() {
                       <RxAvatar className="text-5xl" />
                     )}
                     <ul className="absolute z-30 border-2 border-collapse p-2 w-52  right-1/4 max-md:left-full max-md:top-3 bg-white/50  rounded-lg backdrop-blur-md  grid-cols-1 place-items-center place-content-start gap-3 pt-2 hidden">
-                      <Link
-                        to={"/profileU"}
+                      <li
                         className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all"
                         onClick={informationUser}
                       >
                         Profile
-                      </Link>
-                      <li className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all">
-                        Job Applied
                       </li>
+                      <Link
+                        to={"job_applied"}
+                        className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all"
+                      >
+                        Job Applied
+                      </Link>
                       <li className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all">
                         Find Jobs
                       </li>

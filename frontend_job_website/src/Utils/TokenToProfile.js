@@ -27,7 +27,7 @@ export const informationUser = (accessToken) => async (dispatch) => {
     .request(config)
     .then((res) => {
       const data = res.data;
-      console.log(res);
+      // console.log(res);
       const role = res.data.role.roleName;
 
       dispatch(showProfile(data, role));

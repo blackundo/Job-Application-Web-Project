@@ -46,12 +46,14 @@ axiosPrivate.interceptors.response.use(
           },
         }
       );
+      console.log(refreshResponse);
       const data = refreshResponse?.data;
       console.log(data);
       localStorage.setItem("Token", JSON.stringify(data));
       originalConfig.headers["Authorization"] = `Bearer ${data.access_token}`;
       return axios(originalConfig);
     }
+
     /*   try {
       const refreshResponse = await axios.post(
         "http://localhost:80/api/refresh-token",
