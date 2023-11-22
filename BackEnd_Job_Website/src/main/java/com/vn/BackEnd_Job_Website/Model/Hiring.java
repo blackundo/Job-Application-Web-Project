@@ -1,5 +1,6 @@
 package com.vn.BackEnd_Job_Website.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
@@ -13,11 +14,12 @@ import java.time.LocalDate;
 @Entity
 public class Hiring {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "HiringID", nullable = false)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "CompanyID")
     private Company companyID;
 
@@ -31,18 +33,12 @@ public class Hiring {
     @Column(name = "DateSubmit", nullable = false)
     private LocalDate dateSubmit;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "HiringContentID")
-    private HiringContent hiringContentID;
-
     @Column(name = "DateEnd", nullable = false)
     private LocalDate dateEnd;
 
-    @Column(name = "MinSlaray")
-    private Double minSalary;
-
-    @Column(name = "MaxSlaray")
-    private Double maxSalary;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "HiringContentID")
+    private HiringContent hiringContentID;
 
     @Column(name = "Status", nullable = false, length = 20)
     private String status;
@@ -50,16 +46,29 @@ public class Hiring {
     @Column(name = "FieldName")
     private String fieldName;
 
-    public Hiring(Company companyID, String hiringName, Integer applicationLimit, LocalDate dateSubmit, HiringContent hiringContentID, LocalDate dateEnd, Double minSalary, Double maxSalary, String status, String fieldName) {
-        this.companyID = companyID;
-        this.hiringName = hiringName;
-        this.applicationLimit = applicationLimit;
-        this.dateSubmit = dateSubmit;
-        this.hiringContentID = hiringContentID;
-        this.dateEnd = dateEnd;
-        this.minSalary = minSalary;
-        this.maxSalary = maxSalary;
-        this.status = status;
-        this.fieldName = fieldName;
-    }
+    @Column(name = "MinSalary")
+    private Double minSalary;
+
+    @Column(name = "MaxSalary")
+    private Double maxSalary;
+
+    @Column(name = "ErrollmentStatus")
+    private String errollmentStatus;
+
+
+
+
+//    public Hiring(Integer id, Company companyID, String hiringName, Integer applicationLimit, LocalDate dateSubmit, HiringContent hiringContentID, LocalDate dateEnd, Double minSalary, Double maxSalary, String status, String fieldName) {
+//        this.id = id;
+//        this.companyID = companyID;
+//        this.hiringName = hiringName;
+//        this.applicationLimit = applicationLimit;
+//        this.dateSubmit = dateSubmit;
+//        this.hiringContentID = hiringContentID;
+//        this.dateEnd = dateEnd;
+//        this.minSalary = minSalary;
+//        this.maxSalary = maxSalary;
+//        this.status = status;
+//        this.fieldName = fieldName;
+//    }
 }

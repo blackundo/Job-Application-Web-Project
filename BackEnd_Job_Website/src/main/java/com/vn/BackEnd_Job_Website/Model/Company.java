@@ -5,12 +5,12 @@ import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class Company {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AccountID")
-    private Account accountID;
+    private Account account;
 
     @Nationalized
     @Column(name = "CompanyName")
@@ -37,7 +37,7 @@ public class Company {
     private String address;
 
     @Column(name = "Fouding")
-    private Date fouding;
+    private Integer fouding;
 
     @Column(name = "BusinessEmail")
     private String businessEmail;
@@ -47,5 +47,11 @@ public class Company {
 
     @Column(name = "PhoneNumber")
     private String phoneNumber;
+
+    @Column(name = "Avatar")
+    private byte[] avatar;
+
+    @Column(name = "Cover")
+    private byte[] cover;
 
 }
