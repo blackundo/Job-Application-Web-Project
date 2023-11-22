@@ -55,20 +55,21 @@ public class HiringController {
         ));
         Account acc = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Company company = companyRepository.findByAccountID(acc.getId()).orElseThrow();
-        Hiring hiring = hiringRepository.save(new Hiring(
-                23,
-                company,
-                request.getHiringName(),
-                request.getApplicationLimit(),
-                LocalDate.now(),
-                content,
-                LocalDate.now(),
-                request.getMinSalary(),
-                request.getMaxSalary(),
-                request.getStatus(),
-                request.getFieldName()
-        ));
-        return hiring;
+//        Hiring hiring = hiringRepository.save(new Hiring(
+//                23,
+//                company,
+//                request.getHiringName(),
+//                request.getApplicationLimit(),
+//                LocalDate.now(),
+//                content,
+//                LocalDate.now(),
+//                request.getMinSalary(),
+//                request.getMaxSalary(),
+//                request.getStatus(),
+//                request.getFieldName()
+//        ));
+
+        return new Hiring();
     }
 
 

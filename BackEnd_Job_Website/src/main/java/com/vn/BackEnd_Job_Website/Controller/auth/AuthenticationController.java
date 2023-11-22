@@ -44,4 +44,11 @@ public class AuthenticationController {
     ) throws IOException {
         service.refreshToken(request, response);
     }
+
+    @GetMapping("/verify")
+    public void verifyEmail(
+            @RequestParam String token
+    ) throws Exception{
+        service.verifyEmail(token);
+    }
 }

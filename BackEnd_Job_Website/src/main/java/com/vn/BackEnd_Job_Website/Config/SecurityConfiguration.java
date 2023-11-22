@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 
 @Configuration
@@ -32,7 +33,8 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(CorsConfigurer::disable)
+                .cors(cors -> cors
+                        .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers(WHITE_LIST_URL).permitAll()
@@ -40,7 +42,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/api/company/**").hasRole("Company")
                                 .requestMatchers("/api/hiring/**").hasRole("Company")
                                 .requestMatchers("/api/candidate/**").hasRole("Candidate")
-//                                .requestMatchers("/api/profile/uploadcv").hasRole("Candidate")
+                                .requestMatchers("/api/profile/uploadcv").hasRole("Candidate")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

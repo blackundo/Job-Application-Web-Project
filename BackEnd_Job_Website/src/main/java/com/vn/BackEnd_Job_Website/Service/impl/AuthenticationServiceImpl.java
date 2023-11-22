@@ -7,15 +7,14 @@ import com.vn.BackEnd_Job_Website.Controller.auth.RegisterRequest;
 import com.vn.BackEnd_Job_Website.Model.Account;
 import com.vn.BackEnd_Job_Website.Model.Candidate;
 import com.vn.BackEnd_Job_Website.Model.Company;
-import com.vn.BackEnd_Job_Website.Respository.AccountRepository;
-import com.vn.BackEnd_Job_Website.Respository.CandidateRepository;
-import com.vn.BackEnd_Job_Website.Respository.CompanyRepository;
-import com.vn.BackEnd_Job_Website.Respository.RoleRepository;
+import com.vn.BackEnd_Job_Website.Model.EmailTokenVeri;
+import com.vn.BackEnd_Job_Website.Respository.*;
 import com.vn.BackEnd_Job_Website.Service.AuthenticationService;
 import com.vn.BackEnd_Job_Website.Service.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -31,14 +33,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final CompanyRepository repoCompany;
     private final CandidateRepository repoCandidate;
     private final RoleRepository repoRole;
+    private final EmailTokenVeriRepository repoEmailVeri;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    @Value("${application.security.verify.expiration}")
+    private long verifyExpiration;
 
     @Override
     public AuthenticationResponse regCompany(RegisterRequest request, String role) {
 //        var claimRole = Role.builder().roleName(role).build();
-        System.out.println(repoRole.findById(2).get());
         var user = Account.builder()
                 .role(repoRole.findById(2).get()) // 1- ADMIN | 2- Company | 3- Candidate
                 .email(request.getEmail())
@@ -88,7 +92,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .status(false)
                 .build();
 
+
         repoAccount.save(user);
+        generateVerificationToken(user); ///nfhdsfghsdjfg
+
+
 
         Candidate candidate = new Candidate();
         candidate.setAccount(user);
@@ -153,5 +161,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }
+    }
+
+    private String generateVerificationToken(Account acc){
+        EmailTokenVeri tokenVeri = new EmailTokenVeri(null, LocalDateTime.now(),acc);
+        repoEmailVeri.save(tokenVeri);
+        return String.valueOf(tokenVeri.getId());
+    }
+
+    @Override
+    public void verifyEmail(String token) throws Exception {
+        EmailTokenVeri verificationToken = repoEmailVeri.findById(UUID.fromString(token)).orElseThrow(() -> new Exception("token invalid"));
+            if (verificationToken != null){
+                LocalDateTime createAt = verificationToken.getCreatedAt();
+                LocalDateTime expiredAt = createAt.plus(Duration.ofSeconds(verifyExpiration));
+                if (expiredAt.isBefore(LocalDateTime.now())){
+                    throw new RuntimeException("Token expired");
+                }
+
+                Account account = verificationToken.getAccount();
+                account.setStatus(true);
+                repoAccount.save(account);
+            }
+
     }
 }
