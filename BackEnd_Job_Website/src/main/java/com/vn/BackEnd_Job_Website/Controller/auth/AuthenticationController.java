@@ -1,7 +1,5 @@
 package com.vn.BackEnd_Job_Website.Controller.auth;
 
-import com.vn.BackEnd_Job_Website.Model.Account;
-import com.vn.BackEnd_Job_Website.Model.Company;
 import com.vn.BackEnd_Job_Website.Service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

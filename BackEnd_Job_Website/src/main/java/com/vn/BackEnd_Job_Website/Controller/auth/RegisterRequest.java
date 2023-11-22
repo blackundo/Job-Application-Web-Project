@@ -18,7 +18,7 @@ public class RegisterRequest {
     private String companyName;
     private String introduction;
     private String address;
-    private Date founding;
+    private Integer founding;
     private String businessEmail;
     private String orgn;
     private String phone;

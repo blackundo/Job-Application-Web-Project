@@ -20,7 +20,6 @@ public class Role {
     @Column(name = "roleID", nullable = false)
     private Integer id;
 
-    @Nationalized
     @Column(name = "roleName")
     private String roleName;
 

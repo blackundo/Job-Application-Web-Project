@@ -4,6 +4,8 @@ import com.vn.BackEnd_Job_Website.Dto.HiringPostDto;
 import com.vn.BackEnd_Job_Website.Model.*;
 import com.vn.BackEnd_Job_Website.Respository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +21,19 @@ public class HiringController {
     private final HiringRepository hiringRepository;
     private final HiringContentRepository hiringContentRepository;
     private final CompanyRepository companyRepository;
+
     @GetMapping
     public List<Hiring> getAllHirings() {
         return hiringRepository.findAll();
+    }
+
+    @GetMapping("/get")
+    public Page<Hiring> getHiringsPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return hiringRepository.findAll(pageRequest);
     }
 
     @GetMapping("/{id}")
@@ -44,6 +56,7 @@ public class HiringController {
         Account acc = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Company company = companyRepository.findByAccountID(acc.getId()).orElseThrow();
         Hiring hiring = hiringRepository.save(new Hiring(
+                23,
                 company,
                 request.getHiringName(),
                 request.getApplicationLimit(),

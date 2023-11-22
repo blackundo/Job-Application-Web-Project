@@ -38,10 +38,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AuthenticationResponse regCompany(RegisterRequest request, String role) {
 //        var claimRole = Role.builder().roleName(role).build();
+        System.out.println(repoRole.findById(2).get());
         var user = Account.builder()
                 .role(repoRole.findById(2).get()) // 1- ADMIN | 2- Company | 3- Candidate
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .status(false)
                 .build();
 
         repoAccount.save(user);
@@ -58,7 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 //                    request.getPhone()); //contractor này need id, solution tạo 1 actract base id sài tạm setter
 
         Company company = new Company();
-        company.setAccountID(user);
+        company.setAccount(user);
         company.setCompanyName(request.getCompanyName());
         company.setIntroduction(request.getIntroduction());
         company.setAddress(request.getAddress());
@@ -83,17 +85,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .role(repoRole.findById(3).get()) // 1- ADMIN | 2- Company | 3- Candidate
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .status(false)
                 .build();
 
         repoAccount.save(user);
 
         Candidate candidate = new Candidate();
-        candidate.setAccountID(user);
+        candidate.setAccount(user);
         candidate.setFullname(request.getFullName());
         candidate.setAge(Integer.valueOf(request.getAge()));
         candidate.setGender(request.isGender());
         candidate.setCity(request.getCity());
-
         repoCandidate.save(candidate);
 
         var accessToken = jwtService.generateToken(user);
