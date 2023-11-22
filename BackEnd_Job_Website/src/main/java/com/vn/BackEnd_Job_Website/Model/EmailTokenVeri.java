@@ -20,6 +20,9 @@ public class EmailTokenVeri {
     @Column(name = "CreatedAt")
     private LocalDateTime createdAt;
 
+    @Column(name = "ConfirmedAt")
+    private LocalDateTime confirmedAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AccountID")
     private Account account;

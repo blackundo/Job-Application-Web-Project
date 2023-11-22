@@ -46,9 +46,10 @@ public class AuthenticationController {
     }
 
     @GetMapping("/verify")
-    public void verifyEmail(
+    public ResponseEntity<?> verifyEmail(
             @RequestParam String token
     ) throws Exception{
-        service.verifyEmail(token);
+        String result = service.verifyEmail(token);
+        return ResponseEntity.ok().body(result);
     }
 }

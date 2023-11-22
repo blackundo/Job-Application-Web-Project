@@ -10,7 +10,9 @@ import com.vn.BackEnd_Job_Website.Model.Company;
 import com.vn.BackEnd_Job_Website.Model.EmailTokenVeri;
 import com.vn.BackEnd_Job_Website.Respository.*;
 import com.vn.BackEnd_Job_Website.Service.AuthenticationService;
+import com.vn.BackEnd_Job_Website.Service.EmailService;
 import com.vn.BackEnd_Job_Website.Service.JwtService;
+import com.vn.BackEnd_Job_Website.Utils.buildEmail;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final EmailService emailSender;
+
     @Value("${application.security.verify.expiration}")
     private long verifyExpiration;
 
@@ -94,7 +98,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
         repoAccount.save(user);
-        generateVerificationToken(user); ///nfhdsfghsdjfg
+        String tokenVeri = generateVerificationToken(user); ///nfhdsfghsdjfg
 
 
 
@@ -105,6 +109,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         candidate.setGender(request.isGender());
         candidate.setCity(request.getCity());
         repoCandidate.save(candidate);
+
+        //send mail
+        String link = "http://localhost/api/auth/verify?token=" + tokenVeri;
+        emailSender.send(
+                request.getEmail(),
+                buildEmail.build(request.getFullName(), link));
 
         var accessToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
@@ -164,25 +174,36 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private String generateVerificationToken(Account acc){
-        EmailTokenVeri tokenVeri = new EmailTokenVeri(null, LocalDateTime.now(),acc);
+        EmailTokenVeri tokenVeri = new EmailTokenVeri(null, LocalDateTime.now(),null,acc);
         repoEmailVeri.save(tokenVeri);
         return String.valueOf(tokenVeri.getId());
     }
 
     @Override
-    public void verifyEmail(String token) throws Exception {
+    public String verifyEmail(String token) throws Exception {
         EmailTokenVeri verificationToken = repoEmailVeri.findById(UUID.fromString(token)).orElseThrow(() -> new Exception("token invalid"));
             if (verificationToken != null){
+                if (verificationToken.getConfirmedAt() != null){
+//                    throw new IllegalStateException("Email already confirmed");
+                    return "Email already confirmed";
+                }
+
                 LocalDateTime createAt = verificationToken.getCreatedAt();
-                LocalDateTime expiredAt = createAt.plus(Duration.ofSeconds(verifyExpiration));
+                LocalDateTime expiredAt = createAt.plus(Duration.ofMillis(verifyExpiration));
                 if (expiredAt.isBefore(LocalDateTime.now())){
-                    throw new RuntimeException("Token expired");
+                    return "Token expired";
+//                    throw new RuntimeException("Token expired");
                 }
 
                 Account account = verificationToken.getAccount();
                 account.setStatus(true);
-                repoAccount.save(account);
-            }
 
+                verificationToken.setConfirmedAt(LocalDateTime.now());
+                repoEmailVeri.save(verificationToken);
+                repoAccount.save(account);
+                return  "Verified done !!!";
+            }
+        return null;
     }
+
 }
