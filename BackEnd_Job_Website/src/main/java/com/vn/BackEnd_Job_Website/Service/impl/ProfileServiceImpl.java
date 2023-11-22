@@ -31,10 +31,6 @@ public class ProfileServiceImpl implements ProfileService {
 //        var userEmail = jwtService.extractUsername(accessToken);
 
         var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(account.getUsername());
-        System.out.println(account.getUsername());
-        System.out.println(account.getUsername());
-        System.out.println(account.getUsername());
         Object authResponse;
         if (account.getRole().getId() == 2){
             var company = repoCompany.findByAccountID(account.getId()).orElseThrow();
@@ -48,6 +44,7 @@ public class ProfileServiceImpl implements ProfileService {
                     .businessEmail(company.getBusinessEmail())
                     .orgn(company.getOrganizational())
                     .phone(company.getPhoneNumber())
+                    .status(account.isStatus())
                     .build();
         }else {
             var candidate = repoCandidate.findByAccountID(account.getId()).orElseThrow();
@@ -59,6 +56,7 @@ public class ProfileServiceImpl implements ProfileService {
                     .gender(candidate.getGender())
                     .universityOrCollege(candidate.getUniversityOrCollege())
                     .city(candidate.getCity())
+                    .status(account.isStatus())
                     .build();
         }
         response.setContentType("application/json");

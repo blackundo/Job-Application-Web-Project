@@ -22,4 +22,5 @@ public class AccountCompanyDto {
     private String businessEmail;
     private String orgn;
     private String phone;
+    private boolean status;
 }
