@@ -33,24 +33,30 @@ public class Hiring {
     @Column(name = "DateSubmit", nullable = false)
     private LocalDate dateSubmit;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "HiringContentID")
-    private HiringContent hiringContentID;
-
     @Column(name = "DateEnd", nullable = false)
     private LocalDate dateEnd;
 
-    @Column(name = "MinSlaray")
-    private Double minSalary;
-
-    @Column(name = "MaxSlaray")
-    private Double maxSalary;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "HiringContentID")
+    private HiringContent hiringContentID;
 
     @Column(name = "Status", nullable = false, length = 20)
     private String status;
 
     @Column(name = "FieldName")
     private String fieldName;
+
+    @Column(name = "MinSalary")
+    private Double minSalary;
+
+    @Column(name = "MaxSalary")
+    private Double maxSalary;
+
+    @Column(name = "ErrollmentStatus")
+    private String errollmentStatus;
+
+
+
 
 //    public Hiring(Integer id, Company companyID, String hiringName, Integer applicationLimit, LocalDate dateSubmit, HiringContent hiringContentID, LocalDate dateEnd, Double minSalary, Double maxSalary, String status, String fieldName) {
 //        this.id = id;
