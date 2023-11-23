@@ -60,4 +60,6 @@ public class AuthenticationController {
         Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.ok().body(account.isStatus());
     }
+
+
 }

@@ -206,4 +206,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return null;
     }
 
+    public void resendMail(){
+
+    }
+
 }
