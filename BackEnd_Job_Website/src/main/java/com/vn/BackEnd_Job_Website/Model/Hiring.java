@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Entity
 public class Hiring {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "HiringID", nullable = false)
     private Integer id;
 
@@ -55,20 +55,17 @@ public class Hiring {
     @Column(name = "ErrollmentStatus")
     private String errollmentStatus;
 
-
-
-
-//    public Hiring(Integer id, Company companyID, String hiringName, Integer applicationLimit, LocalDate dateSubmit, HiringContent hiringContentID, LocalDate dateEnd, Double minSalary, Double maxSalary, String status, String fieldName) {
-//        this.id = id;
-//        this.companyID = companyID;
-//        this.hiringName = hiringName;
-//        this.applicationLimit = applicationLimit;
-//        this.dateSubmit = dateSubmit;
-//        this.hiringContentID = hiringContentID;
-//        this.dateEnd = dateEnd;
-//        this.minSalary = minSalary;
-//        this.maxSalary = maxSalary;
-//        this.status = status;
-//        this.fieldName = fieldName;
-//    }
+    public Hiring(Company companyID, String hiringName, Integer applicationLimit, LocalDate dateSubmit, LocalDate dateEnd, HiringContent hiringContentID, String status, String fieldName, Double minSalary, Double maxSalary, String errollmentStatus) {
+        this.companyID = companyID;
+        this.hiringName = hiringName;
+        this.applicationLimit = applicationLimit;
+        this.dateSubmit = dateSubmit;
+        this.dateEnd = dateEnd;
+        this.hiringContentID = hiringContentID;
+        this.status = status;
+        this.fieldName = fieldName;
+        this.minSalary = minSalary;
+        this.maxSalary = maxSalary;
+        this.errollmentStatus = errollmentStatus;
+    }
 }

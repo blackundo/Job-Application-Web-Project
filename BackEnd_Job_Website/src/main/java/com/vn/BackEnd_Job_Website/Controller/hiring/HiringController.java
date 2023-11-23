@@ -3,9 +3,13 @@ package com.vn.BackEnd_Job_Website.Controller.hiring;
 import com.vn.BackEnd_Job_Website.Dto.HiringPostDto;
 import com.vn.BackEnd_Job_Website.Model.*;
 import com.vn.BackEnd_Job_Website.Respository.*;
+import com.vn.BackEnd_Job_Website.Specification.HiringSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -23,18 +27,38 @@ public class HiringController {
     private final CompanyRepository companyRepository;
 
     @GetMapping
-    public List<Hiring> getAllHirings() {
-        return hiringRepository.findAll();
+    public ResponseEntity<List<Hiring>> getAllHirings() {
+        return new ResponseEntity<>(hiringRepository.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/get")
-    public Page<Hiring> getHiringsPage(
+    public ResponseEntity<List<Hiring>> getHiringsPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        PageRequest pageRequest = PageRequest.of(page, size);
-        return hiringRepository.findAll(pageRequest);
+        Pageable paging = PageRequest.of(page, size);
+
+        Page<Hiring> pageHiring = hiringRepository.findAll(paging);
+        List<Hiring> hirings = pageHiring.getContent();
+        return new ResponseEntity<>(hirings, HttpStatus.OK);
     }
+
+    @GetMapping("/find-hirings")
+    public ResponseEntity<?> findHirings(
+            @RequestParam(required = false) String text,
+            @RequestParam(required = false) Double salary,
+            Specification<Hiring> spec){
+        if (text != null) {
+            spec = spec.and(HiringSpecification.titleContains(text));
+        }
+
+        if (salary != null) {
+            spec = spec.and(HiringSpecification.salaryGreaterThan(salary));
+        }
+        List<Hiring> hirings = hiringRepository.findAll(spec);
+        return new ResponseEntity<>(hirings, HttpStatus.OK);
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Hiring> getHiringById(@PathVariable int id) {
@@ -55,21 +79,23 @@ public class HiringController {
         ));
         Account acc = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Company company = companyRepository.findByAccountID(acc.getId()).orElseThrow();
-//        Hiring hiring = hiringRepository.save(new Hiring(
-//                23,
-//                company,
-//                request.getHiringName(),
-//                request.getApplicationLimit(),
-//                LocalDate.now(),
-//                content,
-//                LocalDate.now(),
-//                request.getMinSalary(),
-//                request.getMaxSalary(),
-//                request.getStatus(),
-//                request.getFieldName()
-//        ));
+        request.getDateEnd();
 
-        return new Hiring();
+        Hiring hiring = hiringRepository.save(new Hiring(
+                company,
+                request.getHiringName(),
+                request.getApplicationLimit(),
+                LocalDate.now(),
+                request.getDateEnd(),
+                content,
+                request.getStatus(),
+                request.getFieldName(),
+                request.getMinSalary(),
+                request.getMaxSalary(),
+                request.getErrollmentStatus()
+        ));
+
+        return hiring;
     }
 
 

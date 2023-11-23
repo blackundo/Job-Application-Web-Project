@@ -46,16 +46,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Value("${application.security.verify.expiration}")
     private long verifyExpiration;
 
-    private void getToken(HttpServletRequest request){
-        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        final String refreshToken;
-        final String userEmail;
-        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
-            return;
-        }
-        refreshToken = authHeader.substring(7);
-    }
-
     @Override
     public AuthenticationResponse regCompany(RegisterRequest request, String role) {
 //        var claimRole = Role.builder().roleName(role).build();
