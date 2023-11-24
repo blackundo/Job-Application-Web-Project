@@ -23,4 +23,6 @@ public interface AuthenticationService {
     ) throws IOException;
 
     String verifyEmail(String token) throws Exception;
+
+    String resendMail(HttpServletRequest request);
 }

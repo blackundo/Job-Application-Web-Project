@@ -60,4 +60,14 @@ public class AuthenticationController {
         Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.ok().body(account.isStatus());
     }
+
+
+    @GetMapping("/resend-verify")
+    public ResponseEntity<?> resendVerify(HttpServletRequest request){
+        String result = service.resendMail(request);
+        if (result.contains("error")){
+            return ResponseEntity.badRequest().body(result);
+        }
+        return ResponseEntity.ok().body(result);
+    }
 }

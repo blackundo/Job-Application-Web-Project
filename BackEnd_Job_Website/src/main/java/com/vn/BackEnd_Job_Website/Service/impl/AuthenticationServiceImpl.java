@@ -12,7 +12,9 @@ import com.vn.BackEnd_Job_Website.Respository.*;
 import com.vn.BackEnd_Job_Website.Service.AuthenticationService;
 import com.vn.BackEnd_Job_Website.Service.EmailService;
 import com.vn.BackEnd_Job_Website.Service.JwtService;
-import com.vn.BackEnd_Job_Website.Utils.buildEmail;
+import com.vn.BackEnd_Job_Website.Utils.BuildEmail;
+import com.vn.BackEnd_Job_Website.Utils.TokenFromRequest;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +41,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final EmailService emailSender;
+    private final EmailService emailService;
 
     @Value("${application.security.verify.expiration}")
     private long verifyExpiration;
@@ -112,9 +114,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         //send mail
         String link = "http://localhost/api/auth/verify?token=" + tokenVeri;
-        emailSender.send(
+        emailService.send(
                 request.getEmail(),
-                buildEmail.build(request.getFullName(), link));
+                BuildEmail.build(request.getFullName(), link));
 
         var accessToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
@@ -149,21 +151,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {
-        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        final String refreshToken;
-        final String userEmail;
-        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
-            return;
-        }
-        refreshToken = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(refreshToken);
+//        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+//        final String refreshToken;
+//        final String userEmail;
+//        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+//            return;
+//        }
+//        refreshToken = authHeader.substring(7);
+        final String refreshToken = (TokenFromRequest.getToken(request) != null) ? TokenFromRequest.getToken(request) : null;
+        final String userEmail = jwtService.extractUsername(refreshToken);
+
         if (userEmail != null) {
             var user = this.repoAccount.findByEmail(userEmail).orElseThrow();
 
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
-//                revokeAllUserTokens(user);
-//                saveUserToken(user, accessToken);
                 var authResponse = AuthenticationResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
@@ -204,6 +206,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 return  "Verified done !!!";
             }
         return null;
+    }
+
+    @Override
+    public String resendMail(HttpServletRequest request){
+        final String accessToken = (TokenFromRequest.getToken(request) != null) ? TokenFromRequest.getToken(request) : null;
+        final String userEmail = jwtService.extractUsername(accessToken);
+
+        Account account = repoAccount.findByEmail(userEmail).orElseThrow(() -> new EntityNotFoundException("Account not exist!!"));
+        EmailTokenVeri tokenVeri = repoEmailVeri.findByAccount(account).orElseThrow(() -> new EntityNotFoundException("Token not found !!"));
+
+        if (tokenVeri.getConfirmedAt() != null) return "error !! Email already confirm";
+        //send mail
+        String link = "http://localhost/api/auth/verify?token=" + tokenVeri.getId();
+        emailService.send(
+                userEmail,
+                BuildEmail.build("Bro", link));
+
+        return "Email has send !!!";
     }
 
 }
