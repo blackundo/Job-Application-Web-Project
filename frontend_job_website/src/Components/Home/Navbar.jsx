@@ -5,7 +5,7 @@ import "./Navbar.css";
 import { useState } from "react";
 import logo2 from "../../Assets/JustLogo.svg";
 import { AiOutlineClose } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { IoIosNotifications } from "react-icons/io";
 import { BiSolidMessageDetail, BiSolidUser } from "react-icons/bi";
 import { RxAvatar } from "react-icons/rx";
@@ -16,10 +16,9 @@ function Navbar() {
   const [toggleActive, setToggleActive] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("Profile"));
-  const role = user && user != undefined ? user.role : null;
-  // const location = useSelector((state) => state.login);
-  // console.log(role);
+  const acc = JSON.parse(localStorage.getItem("Profile"));
+  const role = acc?.user?.role?.roleName ?? null;
+  console.log(acc?.user?.email);
   const toggleButtonClick = () => {
     setToggleActive(!toggleActive);
   };
@@ -44,14 +43,10 @@ function Navbar() {
         }
       )
       .then((res) => {
-        navigate("/user");
+        console.log(res.data);
       })
       .catch((error) => {
         console.error(error);
-        if (error.response && error.response.data) {
-          const errorData = error.response.data;
-          console.log("Server error data:", errorData);
-        }
       });
   };
 
@@ -129,9 +124,16 @@ function Navbar() {
                     <BiSolidUser className="text-2xl" />
                   </li>
                   <li className="relative avatarMenu">
-                    {user.profile && user ? (
+                    <Gravatar
+                      email={`${acc?.user?.email}`}
+                      size={48}
+                      rating="pg"
+                      default="monsterid"
+                      className="border-x-2 rounded-full border-separate border-x-sky-500"
+                    />
+                    {/*   {acc.user && acc ? (
                       <Gravatar
-                        email={`${user.profile.email}`}
+                        email={`${acc.user.email}`}
                         size={48}
                         rating="pg"
                         default="monsterid"
@@ -139,14 +141,15 @@ function Navbar() {
                       />
                     ) : (
                       <RxAvatar className="text-5xl" />
-                    )}
+                    )} */}
                     <ul className="absolute z-30 border-2 border-collapse p-2 w-52  right-1/4 max-md:left-full max-md:top-3 bg-white/50  rounded-lg backdrop-blur-md  grid-cols-1 place-items-center place-content-start gap-3 pt-2 hidden">
-                      <li
+                      <Link
+                        to={"/user"}
                         className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all"
                         onClick={informationUser}
                       >
                         Profile
-                      </li>
+                      </Link>
                       <Link
                         to={"job_applied"}
                         className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all"
@@ -180,9 +183,16 @@ function Navbar() {
                     <BiSolidUser className="text-2xl" />
                   </li>
                   <li className="relative avatarMenu">
-                    {user.profile && user ? (
+                    <Gravatar
+                      email={`${acc?.user?.email}`}
+                      size={48}
+                      rating="pg"
+                      default="monsterid"
+                      className="border-x-2 rounded-full border-separate border-x-sky-500"
+                    />
+                    {/* {acc.profile && acc ? (
                       <Gravatar
-                        email={`${user.profile.email}`}
+                        email={`${acc?.user?.email}`}
                         size={48}
                         rating="pg"
                         default="monsterid"
@@ -190,7 +200,7 @@ function Navbar() {
                       />
                     ) : (
                       <RxAvatar className="text-5xl" />
-                    )}
+                    )} */}
                     <ul className="absolute z-30 border-2 border-collapse p-2 w-52  right-1/4 max-md:left-full max-md:top-3 bg-white/50  rounded-lg backdrop-blur-md  grid-cols-1 place-items-center place-content-start gap-3 pt-2 hidden">
                       <Link
                         to={"/company"}

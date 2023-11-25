@@ -11,11 +11,10 @@ function RolePage() {
     setSelected(e);
   };
 
-  useEffect(() => {
-    //navigate(`?role=${selected}`);
+  // useEffect(() => {
 
-    console.log(selected);
-  }, [selected]);
+  //   console.log(selected);
+  // }, [selected]);
 
   return (
     <>

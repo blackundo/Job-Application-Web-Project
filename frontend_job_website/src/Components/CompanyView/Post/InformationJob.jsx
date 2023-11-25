@@ -1,18 +1,31 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import img from "../../../Assets/imgPostJobs.png";
 import { FiAlertCircle, FiArrowRight } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import PickDateCustoms from "../../PickDateCustoms/PickDateCustoms";
+import { useState, useEffect } from "react";
+import BasicDatePicker from "../../PickDateCustoms/BasicDatePicker";
 
 function InformationJob() {
-  // const jobs = useSelector((state) => state.job);
-  const dispatch = useDispatch();
-
   const [details, setDetails] = useState({
-    title: "",
-    candidateLimit: "",
+    titlePost: "",
+    applicationLimit: 0,
+    dateEnd: "",
   });
+  const [errors, setErrors] = useState({
+    titlePost: "",
+    applicationLimit: "",
+    dateEnd: "",
+  });
+  const navigate = useNavigate();
+  const [isDateSelected, setIsDateSelected] = useState(false);
+
+  useEffect(() => {
+    const storedDetails = localStorage.getItem("jobDetails");
+
+    if (storedDetails) {
+      setDetails(JSON.parse(storedDetails));
+    }
+  }, []);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setDetails({
@@ -20,12 +33,62 @@ function InformationJob() {
       [name]: value,
     });
   };
-  const handleNextPage = () => {
-    dispatch({
-      type: "SET_DETAILS",
-      payload: details,
-    });
+
+  const handleDateChange = (date) => {
+    const formattedDate = date ? date.format("YYYY-MM-DD") : null;
+
+    setDetails((prevDetails) => ({
+      ...prevDetails,
+      dateEnd: formattedDate,
+    }));
+    //kiem tra xem date da duoc chọn hay chua
+    setIsDateSelected(!!formattedDate);
   };
+  const handleNextStep = () => {
+    let hasInputErrors = false;
+
+    // Kiểm tra giá trị của các trường input và cập nhật errors
+    Object.entries(details).forEach(([name, value]) => {
+      if (value.trim() === "") {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: `${name} is required`,
+        }));
+
+        hasInputErrors = true;
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "",
+        }));
+      }
+    });
+
+    if (!isDateSelected) {
+      setErrors((prev) => ({
+        ...prev,
+        dateEnd: "Choose active hiring is required",
+      }));
+
+      hasInputErrors = true;
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        dateEnd: "",
+      }));
+    }
+
+    if (hasInputErrors) {
+      console.log("Please fix the error");
+    } else {
+      localStorage.setItem("jobDetails", JSON.stringify(details));
+      navigate("details", { state: { fDetails: details } });
+    }
+  };
+  const hasErrors = () => {
+    return Object.values(errors).some((error) => error !== "");
+  };
+
   return (
     <>
       <div>
@@ -45,27 +108,35 @@ function InformationJob() {
           </label>
           <input
             type="text"
-            name="title"
+            name="titlePost"
             className="w-full border h-10 rounded-lg px-2"
             placeholder="Title Job"
-            value={details.title}
-            onChange={handleInputChange}
+            value={details.titlePost}
+            onChange={(e) => handleInputChange(e)}
           />
         </div>
+
         <div className="py-5 flex flex-col items-start justify-center gap-2">
           <label htmlFor="" className="text-sm font-semibold">
             Candidate limit <span>*</span>
           </label>
           <input
             type="number"
-            name="candidateLimit"
+            name="applicationLimit"
+            value={details.applicationLimit}
             className="w-full border h-10 rounded-lg px-2"
             placeholder="The number of people"
-            value={details.candidateLimit}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e)}
           />
         </div>
-        <PickDateCustoms label={"Choose active hiring"} />
+
+        <div>
+          <span className="text-sm font-semibold">Choose active hiring</span>
+          <BasicDatePicker
+            label={"Choose active hiring"}
+            handleDateChange={handleDateChange}
+          />
+        </div>
         {/* <div className="py-5 flex flex-col items-start justify-center gap-2 border-t">
           <div className="flex flex-col items-start justify-center">
             <label htmlFor="" className="text-sm font-semibold">
@@ -81,27 +152,38 @@ function InformationJob() {
           />
         </div> */}
       </div>
-      <div className="border border-red-400 p-2 m-0">
-        <div className="flex items-center justify-start gap-3">
-          <FiAlertCircle className="fill-red-600 text-white text-2xl" />
-          <span className="text-[0.875rem] font-semibold ">
-            You need to pay attention to the items above to continue
-          </span>
+
+      {hasErrors() && (
+        <div className="border border-red-400 p-2 m-0 mt-4 rounded-lg">
+          <div className="flex items-center justify-start gap-3">
+            <FiAlertCircle className="fill-red-600 text-white text-2xl" />
+            <span className="text-[0.875rem] font-semibold">
+              You need to pay attention to the items above to continue
+            </span>
+          </div>
+          <ul className="list-disc pl-16 text-sm font-light ">
+            {Object.entries(errors).map(([field, error]) => {
+              if (error) {
+                return (
+                  <li key={field}>
+                    <span className="text-red-600">{error}</span>
+                  </li>
+                );
+              }
+              return null;
+            })}
+          </ul>
         </div>
-        <ul className="list-disc pl-16 text-sm font-light">
-          <li className="">Title job</li>
-        </ul>
-      </div>
+      )}
+
       <div className="pt-16 flex items-center justify-end">
-        <button onClick={handleNextPage}>Test</button>
-        <Link
-          to={"details"}
-          state={{ fDetails: details }}
+        <button
           className="h-12 p-3 bg-[#1CB8FF] text-white font-bold rounded-lg flex items-center justify-between gap-2 hover:scale-110 transition-all"
+          onClick={handleNextStep}
         >
           Continue
           <FiArrowRight className="text-xl " />
-        </Link>
+        </button>
       </div>
     </>
   );

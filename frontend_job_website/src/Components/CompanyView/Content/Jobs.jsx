@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import img from "../../../Assets/postJob.svg";
 import Header from "./Header";
+import axiosPrivate from "../../../api/axios";
+import TableCollapsible from "../../TableCustom/TableCollapsible";
 function Jobs() {
   const [sortByVisible, setSortByVisible] = useState(false);
   const [orderVisible, setOrderVisible] = useState(false);
   const [selectedSortBy, setSelectedSortBy] = useState("Date Posted");
   const [selectedOrder, setSelectedOrder] = useState("Descending");
+  const [myJobs, setMyJobs] = useState([]);
+  const [statusJobs, setStatusJobs] = useState("Open");
 
   const toggleSortBy = () => {
     setSortByVisible(!sortByVisible);
@@ -26,14 +30,69 @@ function Jobs() {
     setSelectedOrder(value);
     setOrderVisible(false);
   };
+
+  useEffect(() => {
+    async function getHiring() {
+      await axiosPrivate
+        .get("api/hiring/get")
+        .then((res) => {
+          const data = res.data;
+          const transformedData = data?.map((job) => {
+            return createData(
+              job.id,
+              job.dateEnd,
+              job.dateSubmit,
+              job.errollmentStatus,
+              job.fieldName,
+              job.hiringName,
+              job.applicationLimit,
+              job.maxSalary,
+              job.minSalary,
+              job.status,
+              job.hiringContentID.id,
+              job.hiringContentID.content,
+              job.hiringContentID.title
+            );
+          });
+          const filteredData =
+            statusJobs === "Close"
+              ? transformedData.filter((job) => job.status === "Close")
+              : transformedData;
+
+          setMyJobs(filteredData);
+        })
+        .catch((err) => console.log(err));
+    }
+    getHiring();
+  }, [statusJobs]);
+
+  const handleOnChangeStatusJobs = (e) => {
+    setStatusJobs(e);
+  };
+  useEffect(() => {
+    console.log(statusJobs);
+  }, [statusJobs]);
+
   return (
     <>
       <Header Title={"Jobs"} />
       <div className="border w-fit rounded-lg tabs flex items-center max-md:w-full">
-        <button className="h-12 p-3 bg-blue-600 text-white font-bold rounded-l-lg max-md:w-1/2">
+        <button
+          className={`h-12 p-3 ${
+            statusJobs === "OpenAndClose"
+              ? "bg-blue-600 text-white"
+              : "text-blue-500 "
+          }  font-bold rounded-l-lg max-md:w-1/2 `}
+          onClick={() => handleOnChangeStatusJobs("OpenAndClose")}
+        >
           Open and pause (X)
         </button>
-        <button className="h-12 p-3  text-blue-600 font-bold rounded-r-lg max-md:w-1/2">
+        <button
+          className={`h-12 p-3 ${
+            statusJobs === "Close" ? "bg-blue-600 text-white" : "text-blue-600"
+          }  font-bold rounded-r-lg max-md:w-1/2 `}
+          onClick={() => handleOnChangeStatusJobs("Close")}
+        >
           Closed (X)
         </button>
       </div>
@@ -105,26 +164,48 @@ function Jobs() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center pt-10">
-        <div className="w-96">
-          <img src={img} alt="" />
-        </div>
-        <div className="flex flex-col items-center justify-center px-5 gap-2">
-          <strong className="text-2xl">
-            Get 4x more resumes. Post your first job right on Indeed.
-          </strong>
-          <span className="text-center">
-            Applying Indeed helps bring you 4x more resumes than redirecting
-            applications to your careers website. The process is simpler.
-            Recruit faster.
-          </span>
-          <button className="h-10 p-3 bg-blue-800 text-white font-bold rounded-lg flex items-center justify-center mt-3">
-            Post a job
-          </button>
-        </div>
+
+      <div>
+        <TableCollapsible rows={myJobs} />
       </div>
     </>
   );
 }
 
 export default Jobs;
+
+function createData(
+  id,
+  dateEnd,
+  dateSubmit,
+  enrollmentStatus,
+  fieldName,
+  hiringName,
+  applicationLimit,
+  maxSalary,
+  minSalary,
+  status,
+  hiringContentID,
+  content,
+  title
+) {
+  return {
+    id,
+    dateEnd,
+    title,
+    dateSubmit,
+    enrollmentStatus,
+    status,
+    details: [
+      {
+        id: hiringContentID,
+        hiringName: hiringName,
+        FieldName: fieldName,
+        maxSalary: maxSalary,
+        minSalary: minSalary,
+        applicationLimit: applicationLimit,
+        content: content,
+      },
+    ],
+  };
+}

@@ -1,10 +1,6 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { informationUser } from "../../../Utils/TokenToProfile";
+import { useState } from "react";
 
 function AccountSetting() {
-  const dispatch = useDispatch();
   const [updateProfile, setUpdateProfile] = useState({
     address: "",
     businessEmail: "",
@@ -22,8 +18,8 @@ function AccountSetting() {
       [name]: value,
     });
   };
-  const profile = JSON.parse(localStorage.getItem("Profile")).profile;
-  console.log(profile);
+  const user = JSON.parse(localStorage.getItem("Profile"))?.user;
+  console.log(user);
   return (
     <div className="flex items-center justify-center ">
       <div className="w-[80%] ">
@@ -37,7 +33,7 @@ function AccountSetting() {
             <input
               type="text"
               className="outline-none border-b border-slate-500 w-full focus:border-b-2 focus:border-black rounded-lg px-3 transition-[border]"
-              placeholder={`${profile.companyName}`}
+              placeholder={`${user.companyName}`}
               name="companyName"
               value={updateProfile.companyName}
               onChange={handleInputChange}
@@ -50,7 +46,7 @@ function AccountSetting() {
             <input
               type="email"
               className="outline-none border-b border-slate-500 w-full focus:border-b-2 focus:border-black rounded-lg px-3 transition-[border]"
-              placeholder={`${profile.email}`}
+              placeholder={`${user.email}`}
               name="email"
               value={updateProfile.email}
               onChange={handleInputChange}
@@ -114,7 +110,7 @@ function AccountSetting() {
               rows={5}
               className="outline-none border-b border-slate-500 w-full focus:border-b-2 focus:border-black rounded-lg px-3  transition-[border]"
               placeholder={`${
-                profile.introduction || "You can update your introduction"
+                user.introduction || "You can update your introduction"
               }`}
               onChange={handleInputChange}
             />

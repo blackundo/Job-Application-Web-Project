@@ -21,6 +21,7 @@ import { useState } from "react";
 import { GrStatusGoodSmall } from "react-icons/gr";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import styles from "./TableCandidateCustom.module.css";
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
@@ -133,19 +134,22 @@ export default function TableCandidateCustom({ rows, setDetailSummary }) {
       transition={{ duration: 1, type: "spring", bounce: 0.2 }}
     >
       <TableContainer>
-        <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+        <Table
+          sx={{ minWidth: 500 }}
+          aria-label="custom pagination table"
+          className={styles.table}
+        >
           <TableHead>
             <TableRow>
-              <StyledTableCell>CompanyID</StyledTableCell>
-              <StyledTableCell align="right">Candidate ID</StyledTableCell>
-              <StyledTableCell align="right">FullName</StyledTableCell>
-              <StyledTableCell align="right">
+              <StyledTableCell>ID</StyledTableCell>
+              <StyledTableCell align="center">FullName</StyledTableCell>
+              <StyledTableCell align="center">
                 UniversityOrCollege
               </StyledTableCell>
-              <StyledTableCell align="right">Status</StyledTableCell>
-              <StyledTableCell align="right">Job Apply</StyledTableCell>
-              <StyledTableCell align="right">Spending</StyledTableCell>
-              <StyledTableCell align="right">Country</StyledTableCell>
+              <StyledTableCell align="center">Status</StyledTableCell>
+              <StyledTableCell align="center">Job Apply</StyledTableCell>
+              <StyledTableCell align="center">Country</StyledTableCell>
+              <StyledTableCell align="center">Action</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -160,49 +164,41 @@ export default function TableCandidateCustom({ rows, setDetailSummary }) {
                   setDetailSummary(row || null);
                 }}
               >
-                <TableCell component="th" scope="row">
-                  {row.candidateId}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {row.fullName}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
+                <TableCell>{row.candidateId}</TableCell>
+                <TableCell align="center">{row.fullName}</TableCell>
+                <TableCell style={{ width: 160 }} align="center">
                   {row.universityOrCollege}
                 </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
+                <TableCell align="center" style={{ width: 160 }}>
                   {/* {row.Status} */}
                   {row.Status === "true" ? (
-                    <div className="flex items-center justify-center gap-3 border p-1 border-green-400 rounded-md">
+                    <div className="flex items-center justify-center gap-3 border p-1 border-green-400 rounded-md w-full">
                       <GrStatusGoodSmall className="fill-green-400" />
                       <button>Active</button>
                     </div>
                   ) : (
-                    <div className="flex items-center justify-center gap-3  border p-1 rounded-md">
+                    <div className="flex items-center justify-center gap-3  border p-1 rounded-md w-full">
                       <GrStatusGoodSmall />
                       <button>Off</button>
                     </div>
                   )}
                 </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
+                <TableCell style={{ width: 160 }} align="center">
                   {row.jobApply}
                 </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {row.spending}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {row.country}
-                </TableCell>
+
+                <TableCell align="center">{row.country}</TableCell>
                 <TableCell
+                  align="center"
                   style={{ width: 160 }}
-                  align="right"
                   className="relative "
                 >
                   <HiBars3
-                    className="cursor-pointer text-2xl "
+                    className="cursor-pointer text-2xl absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                     onClick={() => handleViewAction(index)}
                   />
                   <ul
-                    className={`absolute top-[80%] right-0 bg-[#fff] border shadow-2xl w-[150px] ${
+                    className={`absolute top-[80%] right-0 bg-[#fff] border shadow-2xl w-[150px] max-md:right-[80%]  ${
                       selectedRow === index ? "flex" : "hidden"
                     } flex-col items-start justify-around z-50 rounded-xl  p-3`}
                   >

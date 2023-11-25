@@ -3,9 +3,8 @@ import { FaLocationDot } from "react-icons/fa6";
 import { BiSolidSearchAlt2 } from "react-icons/bi";
 import BoxFilter from "../BoxFilter/BoxFilter";
 import { useState } from "react";
-import axios from "axios";
-import { useEffect } from "react";
-function BoxFindJob({ cities, setQuery }) {
+
+function BoxFindJob({ setQuery }) {
   const [isFindJobs, setIsFindJobs] = useState(false);
 
   const handleFindJob = () => {
@@ -48,13 +47,13 @@ function BoxFindJob({ cities, setQuery }) {
               <option value="" className="bg-sky-200">
                 All
               </option>
-              {cities?.map((c) => {
+              {/* {cities?.map((c) => {
                 return (
                   <option key={c} value={c}>
                     {c}
                   </option>
                 );
-              })}
+              })} */}
             </select>
           </div>
           <div className="col-span-2 flex items-center justify-end px-3 max-md:col-span-1 max-md:pt-5 max-md:border-t border-slate-400">

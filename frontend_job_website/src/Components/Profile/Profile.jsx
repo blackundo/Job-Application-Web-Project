@@ -21,7 +21,7 @@ function Profile() {
     universityOrCollege,
     city,
     uploadCv: fileCV,
-  } = info.profile;
+  } = info.user;
 
   if (info === null && info === undefined) return;
 

@@ -1,23 +1,28 @@
 import img from "../../../Assets/descriptinjobs.png";
-import QuillCustoms from "../../Suneditor/QuillCustoms";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
+import SuneditorCustom from "../../Suneditor/SuneditorCustom";
+
 function WriteJobs() {
   const [content, setContent] = useState("");
+  const [next, setNext] = useState(true);
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const details = location.state?.detailsStep || "";
   useEffect(() => {
-    // Kiểm tra xem có dữ liệu đã lưu trong localStorage không
     const storedContent = localStorage.getItem("jobContent");
     if (storedContent) {
       setContent(storedContent);
     }
   }, []);
-  useEffect(() => {
-    // Lưu trạng thái vào localStorage khi nội dung thay đổi
+  const handleNextStep = () => {
     localStorage.setItem("jobContent", content);
-  }, [content]);
+  };
+
+  useEffect(() => {
+    console.log(details);
+  }, [details]);
   return (
     <div className="flex items-center justify-center">
       <div className=" w-[46.98rem] ">
@@ -29,7 +34,11 @@ function WriteJobs() {
             Job description *
           </span>
 
-          <QuillCustoms content={content} setContent={setContent} />
+          <SuneditorCustom
+            content={content}
+            setContent={setContent}
+            setNext={setNext}
+          />
 
           <div className="pt-2 flex items-center justify-between">
             <button
@@ -39,14 +48,30 @@ function WriteJobs() {
               <FiArrowLeft className="text-xl " />
               Back
             </button>
-            <Link
-              to={"/company/post_jobs/preview"}
-              state={{ previewContent: content }}
-              className="bg-blue-400 p-1 h-12 rounded-lg w-fit text-center font-semibold text-white hover:scale-110 flex items-center justify-center"
-            >
-              Next Page Preview
-              <FiArrowRight className="text-xl " />
-            </Link>
+            {next && (
+              <Link
+                to={"/company/post_jobs/preview"}
+                state={{
+                  previewContent: content,
+                  detailsStep: {
+                    hiringName: details.hiringName,
+                    applicationLimit: details.applicationLimit,
+                    dateEnd: details.dateEnd,
+                    titlePost: details.titlePost,
+                    contentPost: content,
+                    fieldName: details.fieldName,
+                    maxSalary: details.maxSalary,
+                    minSalary: details.minSalary,
+                    errollmentStatus: details.errollmentStatus,
+                  },
+                }}
+                onClick={handleNextStep}
+                className="bg-blue-400 p-1 h-12 rounded-lg w-fit text-center font-semibold text-white hover:scale-110 flex items-center justify-center"
+              >
+                Next Page Preview
+                <FiArrowRight className="text-xl " />
+              </Link>
+            )}
           </div>
         </div>
       </div>

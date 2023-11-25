@@ -39,8 +39,8 @@ import JobApplied from "../Components/Profile/JobApplied/JobApplied";
 // const roles = ["Candidate", "Company", "admin", null];
 function Router() {
   const profile = JSON.parse(localStorage.getItem("Profile"));
-  const role = profile && profile != undefined ? profile.role : null;
-  console.log(role);
+  const role = profile?.user?.role?.roleName ?? null;
+
   return (
     <Suspense fallback={<SpinnerFullPage />}>
       <Routes>
@@ -55,8 +55,17 @@ function Router() {
             }
           />
           <Route path="login" element={<Login />} />
+          <Route
+            path="login/Admin"
+            element={
+              <RouterRole role={role} roles={[null]}>
+                <LoginAdminPage />
+              </RouterRole>
+            }
+          />
           <Route path="Register" element={<Register />} />
           <Route path="forgotPass" element={<ForgotPassword />} />
+
           <Route
             path="findJobs"
             element={
@@ -96,18 +105,11 @@ function Router() {
               </RouterRole>
             }
           />
-          <Route
-            path="login/Admin"
-            element={
-              <RouterRole role={role} roles={[null]}>
-                <LoginAdminPage />
-              </RouterRole>
-            }
-          />
+
           <Route
             path="/admin"
             element={
-              <RouterRole role={role} roles={["Admin"]}>
+              <RouterRole role={role} roles={["Admin", null]}>
                 <PanelAdminPage />
               </RouterRole>
             }

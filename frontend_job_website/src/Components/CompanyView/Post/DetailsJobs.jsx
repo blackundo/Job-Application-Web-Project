@@ -1,23 +1,42 @@
 import { FiAlertCircle, FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import img from "../../../Assets/jobdetails.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 
 function DetailsJobs() {
   const navigate = useNavigate();
-  const jobs = useSelector((state) => state.job);
-  const dispatch = useDispatch();
   const location = useLocation();
-
+  const [errollmentStatus, setErrollmentStatus] = useState("Full-time");
   const details = location.state?.fDetails || "";
-  console.log(details);
+
   const [moreDetails, setMoreDetails] = useState({
     ...details,
-    hours: 0,
-    salaryMax: 0,
-    salaryMin: 0,
+    hiringName: "",
+    maxSalary: "",
+    minSalary: "",
+    fieldName: "",
+    errollmentStatus: "",
   });
+  const [errors, setErrors] = useState({
+    hiringName: "",
+    fieldName: "",
+    minSalary: "",
+    maxSalary: "",
+  });
+  const check = {
+    hiringName: moreDetails.hiringName,
+    maxSalary: moreDetails.maxSalary,
+    minSalary: moreDetails.minSalary,
+    fieldName: moreDetails.fieldName,
+  };
+
+  useEffect(() => {
+    const savedDetails = localStorage.getItem("moreDetails");
+
+    if (savedDetails) {
+      setMoreDetails(JSON.parse(savedDetails));
+    }
+  }, []);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setMoreDetails({
@@ -25,11 +44,60 @@ function DetailsJobs() {
       [name]: value,
     });
   };
-  const handleNextPage = () => {
-    dispatch({
-      type: "SET_DETAILS",
-      payload: moreDetails,
+
+  const handleEnrollmentStatusChange = (status) => {
+    setErrollmentStatus(status);
+    setMoreDetails({
+      ...moreDetails,
+      errollmentStatus: status,
     });
+  };
+  const handleNextStep = () => {
+    let hasInputErrors = false;
+
+    // Kiểm tra giá trị của các trường input và cập nhật errors
+    Object.entries(check).forEach(([name, value]) => {
+      const trimmedValue = typeof value === "string" ? value.trim() : value;
+      if (trimmedValue === "") {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: `${name} is required`,
+        }));
+
+        hasInputErrors = true;
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "",
+        }));
+      }
+    });
+
+    if (errollmentStatus === "") {
+      setErrors((prev) => ({
+        ...prev,
+        errollmentStatus: "Type of employment is required",
+      }));
+
+      hasInputErrors = true;
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        errollmentStatus: "",
+      }));
+    }
+
+    if (hasInputErrors) {
+      console.log("Please fix the error");
+    } else {
+      localStorage.setItem("moreDetails", JSON.stringify(moreDetails));
+      navigate("/company/post_jobs/description", {
+        state: { detailsStep: moreDetails },
+      });
+    }
+  };
+  const hasErrors = () => {
+    return Object.values(errors).some((error) => error !== "");
   };
   return (
     <>
@@ -42,36 +110,68 @@ function DetailsJobs() {
         </strong>
         <div>
           <div className="flex items-start justify-center gap-2 pt-2">
-            <button className="bg-slate-600 border border-slate-600 text-white p-2 rounded-2xl w-28 text-sm">
+            <button
+              className={`${
+                errollmentStatus === "Full-time"
+                  ? "bg-slate-600 text-white"
+                  : "border border-slate-600 text-slate-800"
+              } p-2 rounded-2xl w-28 text-sm`}
+              onClick={() => handleEnrollmentStatusChange("Full-time")}
+            >
               Full-Time
             </button>
-            <button className="border border-slate-600 text-slate-800 p-2 rounded-2xl w-28 text-sm">
-              Part-time
+            <button
+              className={`${
+                errollmentStatus === "Part-time"
+                  ? "bg-slate-600 text-white"
+                  : "border border-slate-600 text-slate-800"
+              } border border-slate-600 text-slate-800 p-2 rounded-2xl w-28 text-sm`}
+              onClick={() => handleEnrollmentStatusChange("Part-time")}
+            >
+              Part-Time
             </button>
-            <button className="border border-slate-600 text-slate-800 p-2 rounded-2xl w-28 text-sm">
-              internships
+            <button
+              className={`${
+                errollmentStatus === "Internship"
+                  ? "bg-slate-600 text-white"
+                  : "border border-slate-600 text-slate-800"
+              } border border-slate-600 text-slate-800 p-2 rounded-2xl w-28 text-sm`}
+              onClick={() => handleEnrollmentStatusChange("Internship")}
+            >
+              Internship
             </button>
           </div>
-          <span className="flex items-center justify-start gap-2 pt-2 text-red-600 font-normal text-sm">
-            <FiAlertCircle className="fill-red-600 text-white text-lg" />
-            Please select
-          </span>
         </div>
       </div>
       <div>
         <div className="py-5 flex flex-col items-start justify-center gap-2 border-t">
           <div className="flex flex-col items-start justify-center">
             <label htmlFor="" className="text-sm font-semibold">
-              How many hours per week <span>*</span>
+              Hiring Name <span>*</span>
             </label>
           </div>
           <input
-            type="number"
-            name="hours"
+            type="text"
+            name="hiringName"
             className="w-full border h-10 rounded-lg px-3"
-            placeholder="Hours"
+            placeholder="hiringName"
+            value={moreDetails.hiringName}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="py-5 flex flex-col items-start justify-center gap-2 border-t">
+          <div className="flex flex-col items-start justify-center">
+            <label htmlFor="" className="text-sm font-semibold">
+              Field Name <span>*</span>
+            </label>
+          </div>
+          <input
+            type="text"
+            name="fieldName"
+            className="w-full border h-10 rounded-lg px-3"
+            placeholder="fieldName"
             min={0}
-            value={moreDetails.hours}
+            value={moreDetails.fieldName}
             onChange={handleInputChange}
           />
         </div>
@@ -84,10 +184,10 @@ function DetailsJobs() {
                 <input
                   type="number"
                   placeholder="1000"
-                  name="salaryMin"
+                  name="minSalary"
                   min={0}
                   className="h-10 border px-3 rounded-l-lg"
-                  value={moreDetails.salaryMin}
+                  value={moreDetails.minSalary}
                   onChange={handleInputChange}
                 />
                 <button className="h-10 border w-10 absolute top-0 left-full bg-slate-400 rounded-r-lg text-white font-bold">
@@ -101,10 +201,10 @@ function DetailsJobs() {
                 <input
                   type="number"
                   placeholder="1000"
-                  name="salaryMax"
+                  name="maxSalary"
                   min={0}
                   className="h-10 border px-3 rounded-l-lg"
-                  value={moreDetails.salaryMax}
+                  value={moreDetails.maxSalary}
                   onChange={handleInputChange}
                 />
                 <button className="h-10 border w-10 absolute top-0 left-full bg-slate-400 rounded-r-lg text-white font-bold">
@@ -115,6 +215,28 @@ function DetailsJobs() {
           </div>
         </div>
       </div>
+      {hasErrors() && (
+        <div className="border border-red-400 p-2 m-0 mt-4 rounded-lg">
+          <div className="flex items-center justify-start gap-3">
+            <FiAlertCircle className="fill-red-600 text-white text-2xl" />
+            <span className="text-[0.875rem] font-semibold">
+              You need to pay attention to the items above to continue
+            </span>
+          </div>
+          <ul className="list-disc pl-16 text-sm font-light ">
+            {Object.entries(errors).map(([field, error]) => {
+              if (error) {
+                return (
+                  <li key={field}>
+                    <span className="text-red-600">{error}</span>
+                  </li>
+                );
+              }
+              return null;
+            })}
+          </ul>
+        </div>
+      )}
       <div className="pt-16 flex items-center justify-between">
         <button
           className="h-12 p-3  text-[#1CB8FF] border font-bold rounded-lg flex items-center justify-between gap-2 hover:scale-110 transition-all"
@@ -123,14 +245,14 @@ function DetailsJobs() {
           <FiArrowLeft className="text-xl " />
           Back
         </button>
-        <button onClick={handleNextPage}>test</button>
-        <Link
-          to={"/company/post_jobs/description"}
+        {/* <button onClick={handleNextPage}>test</button> */}
+        <button
           className="h-12 p-3 bg-[#1CB8FF] text-white font-bold rounded-lg flex items-center justify-between gap-2 hover:scale-110 transition-all"
+          onClick={handleNextStep}
         >
           Continue
           <FiArrowRight className="text-xl " />
-        </Link>
+        </button>
       </div>
     </>
   );

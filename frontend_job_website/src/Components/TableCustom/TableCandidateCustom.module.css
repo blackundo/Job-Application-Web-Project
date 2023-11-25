@@ -1,0 +1,86 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+@media not all and (min-width: 1024px) {
+  .table thead tr th {
+    font-size: 0.8rem;
+    width: 100%;
+    white-space: nowrap;
+  }
+  .table thead tr th:nth-child(4) {
+    display: none;
+    /* color: red; */
+  }
+  .table tbody tr * {
+    font-size: 0.8rem;
+    white-space: nowrap;
+    width: 100%;
+  }
+  .table tbody tr td:nth-child(4) {
+    display: none;
+    /* color: red; */
+  }
+}
+@media not all and (min-width: 780px) {
+  .table thead tr th {
+    font-size: 0.6rem;
+    width: 100%;
+    white-space: nowrap;
+  }
+
+  .table tbody tr * {
+    font-size: 0.6rem;
+    white-space: nowrap;
+    width: 100%;
+  }
+}
+@media not all and (min-width: 674px) {
+  .table thead tr th {
+    font-size: 0.6rem;
+    width: 20px;
+    white-space: nowrap;
+  }
+
+  .table tbody tr *:not(ul) {
+    font-size: 0.6rem;
+    white-space: nowrap;
+    width: 20px;
+  }
+  .table tbody tr td ul {
+    width: 100px !important;
+  }
+  .table thead tr th:nth-child(3),
+  .table thead tr th:nth-child(5) {
+    display: none;
+  }
+
+  .table tbody tr td:nth-child(3),
+  .table tbody tr td:nth-child(5) {
+    display: none;
+  }
+}
+@media not all and (min-width: 400px) {
+  .table thead tr th {
+    font-size: 0.6rem;
+    width: 20px;
+    white-space: nowrap;
+  }
+
+  .table tbody tr *:not(ul) {
+    font-size: 0.6rem;
+    white-space: nowrap;
+    width: 20px;
+  }
+  .table tbody tr td ul {
+    width: 100px !important;
+  }
+  .table thead tr th:nth-child(6) {
+    display: none;
+  }
+
+  .table tbody tr td:nth-child(6) {
+    display: none;
+  }
+}

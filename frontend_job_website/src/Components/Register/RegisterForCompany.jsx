@@ -22,7 +22,7 @@ const FormRegisterCompany = ({ setIsRegistered }) => {
       autoClose: false,
     });
     axios
-      .post(`http://localhost:80/api/register?role=${role}`, formData)
+      .post(`http://localhost:80/api/auth/register?role=${role}`, formData)
       .then((res) => {
         toast.dismiss(loadingToastId);
         ToastCustom.success("🦄 Register Success!", { autoClose: 1500 });
