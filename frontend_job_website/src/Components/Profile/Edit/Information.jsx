@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { GoArrowLeft } from "react-icons/go";
 import styles from "./Information.module.css";
 import { useState } from "react";
@@ -8,20 +7,10 @@ import { ToastContainer } from "react-toastify";
 function Information() {
   const [resettle, setResettle] = useState(false);
 
-=======
-/* eslint-disable react/prop-types */
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-import "./information.css";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-function Information({ back }) {
-  const [resettle, setResettle] = useState(false);
->>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
   const navigate = useNavigate();
   const handleDisplayResettle = () => {
     setResettle((r) => !r);
   };
-<<<<<<< HEAD
   const handleUpdateProfile = () => {
     ToastCustom.success("Update Success!", { autoClose: 2500 });
     //ToastCustom.error("Update Error, Please check filed!", { autoClose: 2500 });
@@ -89,34 +78,6 @@ function Information({ back }) {
                 xxx
               </div>
             </div>
-=======
-  return (
-    <div className="flex items-center justify-center  ">
-      <div className="w-[34.81rem]  flex items-center justify-center">
-        <div className="w-full pt-3">
-          <AiOutlineArrowLeft
-            className="text-xl font-bold cursor-pointer"
-            onClick={() => navigate(-1)}
-          />
-          <span className="font-bold text-[1.75rem]">Contact information</span>
-          <div className="flex flex-col form w-full gap-3">
-            <label htmlFor="lastName" className="">
-              Last Name
-              <input type="text" placeholder="Dat" />
-            </label>
-            <label htmlFor="firstName">
-              First Name
-              <input type="text" placeholder="Do" />
-            </label>
-            <label htmlFor="headings">
-              Headings
-              <input type="text" placeholder="Phuoc" />
-            </label>
-            <label htmlFor="numPhone">
-              Phone Number
-              <input type="text" placeholder="+325235258" />
-            </label>
->>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
             <div className="flex flex-col items-start justify-center gap-1 ">
               <div className="flex items-center gap-3">
                 <input type="checkbox" className="w-[1.56rem] h-[1.56rem] " />
@@ -135,7 +96,6 @@ function Information({ back }) {
             </div>
           </div>
           <div className="flex flex-col  gap-4">
-<<<<<<< HEAD
             <div className="flex flex-col items-start justify-center pt-5  gap-2  pb-2">
               <label htmlFor="email" className="text-lg font-bold">
                 Email
@@ -145,18 +105,6 @@ function Information({ back }) {
                 placeholder="dat@gmail.com"
                 className={`w-full h-[2.75rem] px-3 outline-none border border-black rounded-md `}
               />
-=======
-            <div className="flex flex-col items-start justify-center pt-5  gap-2 border-b border-black pb-2">
-              <label htmlFor="Email" className="text-lg font-bold">
-                Email
-              </label>
-              <div className="flex items-center justify-between w-full">
-                <input type="email" disabled placeholder="Dat@gmail.com" />
-                <span className="flex items-center justify-center text-blue-400 gap-3 cursor-pointer font-bold">
-                  Correct <AiOutlineArrowRight />
-                </span>
-              </div>
->>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
             </div>
             <div className="flex flex-col items-start justify-center">
               <span className="font-bold text-lg">Work location</span>
@@ -242,7 +190,6 @@ function Information({ back }) {
               )}
             </div>
           </div>
-<<<<<<< HEAD
           <div className="flex items-center justify-center pt-8">
             <button
               className="border p-1 w-28 bg-slate-400 text-xl font-bold text-white rounded-lg hover:bg-sky-400"
@@ -251,8 +198,6 @@ function Information({ back }) {
               save
             </button>
           </div>
-=======
->>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
         </div>
       </div>
     </div>

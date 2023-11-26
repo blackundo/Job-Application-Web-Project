@@ -71,8 +71,8 @@ function Jobs() {
         localStorage.getItem("Token")
       ).access_token;
 
-      const response = await axiosPrivate.get(
-        `http://localhost/api/hiring/delete/${id}`,
+      const response = await axiosPrivate.delete(
+        `http://localhost/api/hiring/${id}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

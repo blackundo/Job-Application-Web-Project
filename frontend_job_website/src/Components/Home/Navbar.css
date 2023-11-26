@@ -43,7 +43,6 @@
     height: 2.3rem;
     padding-left: 5px;
   }
-<<<<<<< HEAD
   .menu ._navbarMenu.active .optionMenu div:nth-child(1) a {
     width: 100%;
     border-radius: 10px;
@@ -58,11 +57,6 @@
       rgb(12, 12, 168) 64%,
       rgb(0, 212, 255) 100%
     );
-=======
-  .menu ._navbarMenu.active .optionMenu div:nth-child(1) span:hover {
-    background: rgb(20, 20, 126);
-    background: linear-gradient(90deg, rgb(20, 20, 126) 0%, rgb(12, 12, 168) 64%, rgb(0, 212, 255) 100%);
->>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
     color: white;
   }
   header {
@@ -74,8 +68,4 @@
 }
 .avatarMenu:hover ul {
   display: grid;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505

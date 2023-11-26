@@ -10,33 +10,19 @@ import logoFile from "../../Assets/logoFile.svg";
 import styles from "./InputCV.module.css";
 function InputCV({ initFile }) {
   const [option, setOption] = useState(false);
-<<<<<<< HEAD
 
   const [nameFile, setNameFile] = useState(initFile || "default");
-=======
-  const [currentFile, setCurrentFile] = useState(initFile[0]?.file_CV);
-  const [nameFile, setNameFile] = useState(initFile[0]?.file_CV);
->>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
   const [file, setFile] = useState(null);
 
   const handleDisplayOption = () => {
     setOption((o) => !o);
   };
-<<<<<<< HEAD
   const currentFile = initFile || "default";
 
   const handleOnchangeFile = (e) => {
     console.log(e.target.value);
 
     if (e.target.value.length != 0) {
-=======
-
-  const handleOnchangeFile = (e) => {
-    if (e.target.value.length === 0) {
-      // setFile(currentFile)
-      setNameFile(currentFile);
-    } else {
->>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
       const selectFile = e.target.files[0];
       setFile(selectFile);
       setNameFile(selectFile.name);
@@ -98,13 +84,7 @@ function InputCV({ initFile }) {
               </object>
             ) : (
               <>
-<<<<<<< HEAD
                 <span className="text-lg font-bold">Your CV.Pdf</span>
-=======
-                <span className="text-lg font-bold">
-                  CV-DoPhuocDat-Junior.Pdf
-                </span>
->>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
                 <small>Important today</small>
               </>
             )}
