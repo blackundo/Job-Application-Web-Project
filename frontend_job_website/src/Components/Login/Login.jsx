@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState } from "react";
 import Social from "../Social/Social";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,11 +9,26 @@ import { ToastCustom } from "../ToastCustom/ToastCustom";
 import axiosPrivate from "../../api/axios";
 
 const FormContent = () => {
+=======
+import { useEffect, useReducer, useState } from "react";
+
+import Social from "../Social/Social";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import "./Login.css";
+import { useDispatch } from "react-redux";
+
+const FormContent = ({ Title, setIsRegistered }) => {
+>>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+<<<<<<< HEAD
+=======
+  const [error, setError] = useState(false);
+>>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -24,6 +40,7 @@ const FormContent = () => {
   };
 
   const handleLogin = async () => {
+<<<<<<< HEAD
     const loadingToastId = toast.loading("Please wait...", {
       autoClose: false,
     });
@@ -56,10 +73,33 @@ const FormContent = () => {
         ToastCustom.error("🫨Login failed. Please try again.");
         console.log(err);
       });
+=======
+    try {
+      const res = await axios.get("http://localhost:9003/Accounts");
+      setError(false);
+      let accounts = res.data;
+      let findUser = accounts.find((f) => f.Email === formData.email);
+      console.log(findUser.Password, formData.password);
+      if (findUser && findUser.Password === formData.password) {
+        dispatch({
+          type: "LOGIN",
+          payload: findUser,
+        });
+        navigate("/");
+      } else {
+        console.log("sai");
+        setError(true);
+      }
+    } catch (error) {
+      setError(true);
+      console.log(error);
+    }
+>>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
   };
 
   return (
     <>
+<<<<<<< HEAD
       <ToastContainer
         position="bottom-right"
         autoClose={1600}
@@ -72,6 +112,8 @@ const FormContent = () => {
         pauseOnHover
         theme="colored"
       />
+=======
+>>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
       <span className="absolute top-6 right-14">
         Don’t have an account?
         <Link to={"/chooseRole"} className="text-[#000084] cursor-pointer">
@@ -79,9 +121,19 @@ const FormContent = () => {
         </Link>
       </span>
 
+<<<<<<< HEAD
       <div className="box-login w-[23rem] pt-20 max-md:w-[19rem]">
         <h1 className="text-2xl font-semibold font-serif pb-7">Login</h1>
 
+=======
+      <div className="box-login w-[23rem] ">
+        <h1 className="text-2xl font-semibold font-serif pb-7">{Title}</h1>
+        {error && (
+          <p className="text-red-600">
+            Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.
+          </p>
+        )}
+>>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
         <div className="form-login w-full ">
           <div className="flex flex-col py-2">
             <label htmlFor="" className="font-normal text-x">

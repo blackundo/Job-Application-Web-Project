@@ -6,6 +6,7 @@ import { ToastCustom } from "../../ToastCustom/ToastCustom";
 import LoadingComponent from "../../LoadingComponent/LoadingComponent";
 import { transformJob } from "../transformJob";
 import { useMemo } from "react";
+import { useCallback } from "react";
 function Jobs() {
   const [sortByVisible, setSortByVisible] = useState(false);
   const [orderVisible, setOrderVisible] = useState(false);
@@ -99,28 +100,32 @@ function Jobs() {
       debounceTimer = setTimeout(() => func.apply(context, args), delay);
     };
   };
-  const handleSearch = (query) => {
-    axiosPrivate
-      .get("/api/hiring/find-hirings", {
-        params: {
-          text: query,
-        },
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const handleSearch = useCallback(
+    (query) => {
+      axiosPrivate
+        .get("/api/hiring/find-hirings", {
+          params: {
+            text: query,
+          },
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    [access_token]
+  );
+
   useEffect(() => {
     const debouncedSearch = debounce((query) => handleSearch(query), 500);
 
     debouncedSearch(query);
-  }, [query]);
+  }, [query, handleSearch]);
 
   return (
     <>

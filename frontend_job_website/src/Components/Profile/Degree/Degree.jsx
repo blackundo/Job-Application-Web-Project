@@ -5,6 +5,7 @@ import { LiaCertificateSolid } from "react-icons/lia";
 import { FaGlobeAmericas } from "react-icons/fa";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import DialogForm from "./DialogForm";
 import AccordionCustom from "../../Accordion/AccordionCustom";
@@ -61,6 +62,13 @@ function Degree() {
   return (
     <div className="flex items-center justify-center max-md:mt-[5.625rem]">
       <div className="max-w-[34.81rem]  max-md:w-[25rem] max-sm:w-[20rem]">
+=======
+function Degree() {
+  const navigate = useNavigate();
+  return (
+    <div className="  flex items-center justify-center max-md:mt-[5.625rem]">
+      <div className="max-w-[34.81rem] ">
+>>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
         <div>
           <span className="cursor-pointer">
             <AiOutlineArrowLeft onClick={() => navigate(-1)} />
@@ -73,6 +81,7 @@ function Degree() {
               skills and experience
             </small>
           </div>
+<<<<<<< HEAD
           <div className="flex flex-col gap-3 items-center justify-center ">
             <AccordionCustom
               title={"Add recent work experience"}
@@ -144,6 +153,101 @@ function Degree() {
           label={label}
           addItemToList={addItemToList}
         />
+=======
+          <div className="flex flex-col gap-3 items-center justify-center">
+            <div className="flex items-center justify-between h-[4.75rem] border-t border-slate-300 w-full">
+              <div className="flex items-center justify-center gap-2">
+                <RiProfileLine className="text-xl text-slate-400" />
+                <span className="text-xl text-blue-500 font-normal">
+                  Add recent work experience
+                </span>
+              </div>
+              <span
+                className={
+                  "text-2xl font-semibold text-slate-400 cursor-pointer"
+                }
+              >
+                +
+              </span>
+            </div>
+            <div className="flex items-center justify-between h-[4.75rem] border-t border-slate-300 w-full ">
+              <div className="flex items-center justify-center gap-2">
+                <PiCertificateFill className="text-xl text-slate-400" />
+                <span className="text-xl text-blue-500 font-normal">
+                  More Education
+                </span>
+              </div>
+              <span
+                className={
+                  "text-2xl font-semibold text-slate-400 cursor-pointer"
+                }
+              >
+                +
+              </span>
+            </div>
+            <div className="flex items-center justify-between h-[4.75rem] border-t border-slate-300 w-full ">
+              <div className="flex items-center justify-center gap-2">
+                <LiaCertificateSolid className="text-xl text-slate-400" />
+                <span className="text-xl text-blue-500 font-normal">
+                  More Skills
+                </span>
+              </div>
+              <span
+                className={
+                  "text-2xl font-semibold text-slate-400 cursor-pointer"
+                }
+              >
+                +
+              </span>
+            </div>
+            <div className="flex items-center justify-between h-[4.75rem] border-t border-slate-300 w-full ">
+              <div className="flex items-center justify-center gap-2">
+                <LiaCertificateSolid className="text-xl text-slate-400" />
+                <span className="text-xl text-blue-500 font-normal">
+                  Add licenses
+                </span>
+              </div>
+              <span
+                className={
+                  "text-2xl font-semibold text-slate-400 cursor-pointer"
+                }
+              >
+                +
+              </span>
+            </div>
+            <div className="flex items-center justify-between h-[4.75rem] border-t border-slate-300 w-full ">
+              <div className="flex items-center justify-center gap-2">
+                <LiaCertificateSolid className="text-xl text-slate-400" />
+                <span className="text-xl text-blue-500 font-normal">
+                  Add a certificate
+                </span>
+              </div>
+              <span
+                className={
+                  "text-2xl font-semibold text-slate-400 cursor-pointer"
+                }
+              >
+                +
+              </span>
+            </div>
+            <div className="flex items-center justify-between h-[4.75rem] border-t border-slate-300 w-full ">
+              <div className="flex items-center justify-center gap-2">
+                <FaGlobeAmericas className="text-xl text-slate-400" />
+                <span className="text-xl text-blue-500 font-normal">
+                  Add a language
+                </span>
+              </div>
+              <span
+                className={
+                  "text-2xl font-semibold text-slate-400 cursor-pointer"
+                }
+              >
+                +
+              </span>
+            </div>
+          </div>
+        </div>
+>>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
       </div>
     </div>
   );

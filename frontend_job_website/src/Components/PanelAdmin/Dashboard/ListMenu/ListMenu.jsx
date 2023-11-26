@@ -36,6 +36,7 @@ function ListMenu({ open }) {
   } = selected;
   return (
     <ul className={`${styles.menu}`}>
+<<<<<<< HEAD
       {open && (
         <Link
           to={"Notification"}
@@ -146,6 +147,75 @@ function ListMenu({ open }) {
           <span>Payment Manager</span>
         </Link>
       )}
+=======
+      <li
+        className={`${Notification ? styles.selected : ""}`}
+        onClick={(e) => handleOnclickMenu(e, "Notification")}
+      >
+        <div>
+          <AiOutlineNotification />
+        </div>
+        {open && <Link to={"Notification"}>Notification</Link>}
+      </li>
+      <li
+        className={`${Dashboard ? styles.selected : ""}`}
+        onClick={(e) => handleOnclickMenu(e, "Dashboard")}
+      >
+        <div>
+          <HiOutlinePresentationChartLine />
+        </div>
+        {open && <Link to={"dashboard"}>Dashboard</Link>}
+      </li>
+
+      <li
+        className={`${CompanyManager ? styles.selected : ""}`}
+        onClick={(e) => handleOnclickMenu(e, "CompanyManager")}
+      >
+        <div>
+          <FaRegAddressCard />
+        </div>
+        {open && <Link to={"companyManager"}>Company Manager</Link>}
+      </li>
+      <li
+        className={`${CandidateManager ? styles.selected : ""}`}
+        onClick={(e) => handleOnclickMenu(e, "CandidateManager")}
+      >
+        <div>
+          <GrGroup />
+        </div>
+        {open && <Link to={"candidateManager"}> Candidate Manager</Link>}
+      </li>
+
+      <li
+        className={`${JobManager ? styles.selected : ""}`}
+        onClick={(e) => handleOnclickMenu(e, "JobManager")}
+      >
+        <div>
+          <BsCardChecklist />
+        </div>
+        {open && <Link to={"jobManager"}>Job Manager</Link>}
+      </li>
+
+      <li
+        className={`${AccountManager ? styles.selected : ""}`}
+        onClick={(e) => handleOnclickMenu(e, "AccountManager")}
+      >
+        <div>
+          <BiUserPin />
+        </div>
+        {open && <Link to={"accountManager"}>Account Manager</Link>}
+      </li>
+
+      <li
+        className={`${PaymentManager ? styles.selected : ""}`}
+        onClick={(e) => handleOnclickMenu(e, "PaymentManager")}
+      >
+        <div>
+          <IoWalletOutline />
+        </div>
+        {open && <Link to={"paymentManager"}>Payment Manager</Link>}
+      </li>
+>>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
     </ul>
   );
 }

@@ -18,6 +18,7 @@ function ChartContent() {
         <div className=" py-5">
           <span className="text-xl font-bold">Rank Company</span>
         </div>
+<<<<<<< HEAD
         <div className={`w-full ${styles.tableContainer}`}>
           <table className="w-full text-center ">
             <thead className="bg-[#EBEBEB] h-14">
@@ -86,6 +87,56 @@ function ChartContent() {
             </tbody>
           </table>
         </div>
+=======
+        <table className="w-full text-center ">
+          <thead className="bg-[#EBEBEB] h-14">
+            <tr>
+              <th className="text-start pl-4">Name</th>
+              <th>Cost</th>
+              <th>Job</th>
+              <th>Candidate</th>
+            </tr>
+          </thead>
+          <tbody className={styles.tbody}>
+            <tr>
+              <td>Ecomdy</td>
+              <td>$10.687</td>
+              <td>13.354</td>
+              <td>$10.687</td>
+            </tr>
+            <tr>
+              <td>Ecomdy</td>
+              <td>$10.687</td>
+              <td>13.354</td>
+              <td>$10.687</td>
+            </tr>
+            <tr>
+              <td>Ecomdy</td>
+              <td>$10.687</td>
+              <td>13.354</td>
+              <td>$10.687</td>
+            </tr>
+            <tr>
+              <td>Ecomdy</td>
+              <td>$10.687</td>
+              <td>13.354</td>
+              <td>$10.687</td>
+            </tr>
+            <tr>
+              <td>Ecomdy</td>
+              <td>$10.687</td>
+              <td>13.354</td>
+              <td>$10.687</td>
+            </tr>
+            <tr>
+              <td>Ecomdy</td>
+              <td>$10.687</td>
+              <td>13.354</td>
+              <td>$10.687</td>
+            </tr>
+          </tbody>
+        </table>
+>>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
       </div>
       <div className="col-span-4 w-full h-[27rem] ">
         <div className=" py-5">

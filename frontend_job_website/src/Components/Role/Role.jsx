@@ -11,10 +11,18 @@ function RolePage() {
     setSelected(e);
   };
 
+<<<<<<< HEAD
   // useEffect(() => {
 
   //   console.log(selected);
   // }, [selected]);
+=======
+  useEffect(() => {
+    //navigate(`?role=${selected}`);
+
+    console.log(selected);
+  }, [selected]);
+>>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
 
   return (
     <>
@@ -29,16 +37,26 @@ function RolePage() {
           <div className="flex gap-5 items-center justify-center h-[65%] px-10">
             <div
               className={`border basis-1/2 h-52 flex flex-col rounded-md border-[#CECED0] px-4 ${
+<<<<<<< HEAD
                 selected === "Company" ? "border border-blue-500" : ""
+=======
+                selected === "Employer" ? "border border-blue-500" : ""
+>>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
               }`}
             >
               <div className="flex items-start justify-between">
                 <img src={logoBs} alt="Logo" className="w-28 h-28" />
                 <span
                   className={`border rounded-full w-7 h-7 m-2 border-[#CECED0] cursor-pointer ${
+<<<<<<< HEAD
                     selected === "Company" ? "bg-blue-500" : ""
                   }`}
                   onClick={() => handleChooseRole("Company")}
+=======
+                    selected === "Employer" ? "bg-blue-500" : ""
+                  }`}
+                  onClick={() => handleChooseRole("Employer")}
+>>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
                 ></span>
               </div>
               <span>I’m a client, hiring for a project</span>
