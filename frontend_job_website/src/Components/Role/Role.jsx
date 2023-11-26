@@ -11,11 +11,10 @@ function RolePage() {
     setSelected(e);
   };
 
-  useEffect(() => {
-    //navigate(`?role=${selected}`);
+  // useEffect(() => {
 
-    console.log(selected);
-  }, [selected]);
+  //   console.log(selected);
+  // }, [selected]);
 
   return (
     <>
@@ -30,16 +29,16 @@ function RolePage() {
           <div className="flex gap-5 items-center justify-center h-[65%] px-10">
             <div
               className={`border basis-1/2 h-52 flex flex-col rounded-md border-[#CECED0] px-4 ${
-                selected === "Employer" ? "border border-blue-500" : ""
+                selected === "Company" ? "border border-blue-500" : ""
               }`}
             >
               <div className="flex items-start justify-between">
                 <img src={logoBs} alt="Logo" className="w-28 h-28" />
                 <span
                   className={`border rounded-full w-7 h-7 m-2 border-[#CECED0] cursor-pointer ${
-                    selected === "Employer" ? "bg-blue-500" : ""
+                    selected === "Company" ? "bg-blue-500" : ""
                   }`}
-                  onClick={() => handleChooseRole("Employer")}
+                  onClick={() => handleChooseRole("Company")}
                 ></span>
               </div>
               <span>I’m a client, hiring for a project</span>

@@ -2,51 +2,65 @@ import { AiFillQuestionCircle, AiOutlineMore } from "react-icons/ai";
 // import { jobs } from "./job";
 import DetailsJob from "./DetailsJob";
 import { useState } from "react";
-import axios from "axios";
-import ReactPaginate from "react-paginate";
+
 import "./DisplayJobs.css";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import axiosPrivate from "../../../api/axios";
+import ReactPaginate from "react-paginate";
 
-// const calculator = (start_date) => {
-//   const currentDate = new Date();
-//   console.log(currentDate);
-//   const startDate = start_date?.split("-").reverse().join("-");
-//   console.log(new Date(startDate || startDate));
-//   console.log(differenceInDays(currentDate, new Date(startDate)));
-// };
-
-function DisplayJobs({ Jobs, load, error }) {
-  const [jobDetail, setJobDetail] = useState(null);
-  const [loadDetail, setLoadDetail] = useState(true);
-  const [itemOffset, setItemOffset] = useState(0);
-  const jobsPerPage = 10;
+function DisplayJobs() {
+  const [loadDetail, setLoadDetail] = useState(false);
+  const [jobs, setJobs] = useState([]);
   const mobile = window.innerWidth <= 768;
-
+  const [jobDetail, setJobDetail] = useState(null);
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState("All");
+  const [totalItems, setTotalItems] = useState(0);
   const handleChooseJob = async (id) => {
-    setLoadDetail(true);
-    await axios
-      .get(`http://localhost:9001/Jobs?ID=${id}`)
+    setLoadDetail(false);
+    await axiosPrivate
+      .get(`http://localhost:80/api/hiring/${id}`)
       .then((res) => {
-        setLoadDetail(false);
+        console.log(res.data);
+        setLoadDetail(true);
         // console.log(res.data[0].image_company);
-        setJobDetail(res.data[0]);
+        setJobDetail(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const endOffset = itemOffset + jobsPerPage;
-  const currentJobs = Jobs?.slice(itemOffset, endOffset);
-  const pageNumbers = isNaN(Math.ceil(Jobs?.length / jobsPerPage))
-    ? 0
-    : Math.ceil(Jobs?.length / jobsPerPage);
+  useEffect(() => {
+    async function fetchDataJobs() {
+      await axiosPrivate
+        .get(
+          `http://localhost:80/api/hiring/get?page=${page}&size=${
+            pageSize === "All" ? "" : pageSize
+          }`
+        )
+        .then((res) => {
+          console.log(res.data);
+          const data = res.data.content;
+          setJobs(data);
+          setTotalItems(res.data.totalElements);
+        })
+        .catch((err) => console.log(err));
+    }
+    fetchDataJobs();
+  }, [page, pageSize]);
 
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * jobsPerPage) % Jobs?.length;
-
-    setItemOffset(newOffset);
+  const handlePageChange = (selectedPage) => {
+    setPage(selectedPage);
   };
+
+  const handlePageSizeChange = (e) => {
+    setPageSize(e.target.value);
+    setPage(0);
+  };
+
+  const pageCount = Math.ceil(totalItems / pageSize);
 
   return (
     <>
@@ -60,17 +74,25 @@ function DisplayJobs({ Jobs, load, error }) {
               and find your next job on JobHunter!
             </span>
           </div>
-          <div>
-            <span className="text-[0.68rem]">Job in Da Nang</span>
+          <div className="pb-3">
+            {/* <span className="text-[0.68rem]">Job in Da Nang</span> */}
             <div className="flex items-center justify-between">
-              <span className="text-[0.81rem]">Short by: (X) - (X)</span>
+              {/* <span className="text-[0.81rem]">Short by: (X) - (X)</span> */}
+              <select onChange={handlePageSizeChange} value={pageSize}>
+                <option value="All">all</option>
+                <option value="1">1 per page</option>
+                <option value="5">5 per page</option>
+                <option value="10">10 per page</option>
+                <option value="20">20 per page</option>
+                <option value="25">25 per page</option>
+              </select>
               <span className="flex items-center justify-center text-[0.68rem] gap-1">
-                {Jobs?.length} Jobs
+                {jobs?.length} Jobs
                 <AiFillQuestionCircle className="text-slate-400" />
               </span>
             </div>
           </div>
-          {load ? (
+          {Object.keys(jobs).length === 0 ? (
             Array.from({ length: 5 }, (_, k) => {
               return (
                 <div
@@ -95,38 +117,68 @@ function DisplayJobs({ Jobs, load, error }) {
             })
           ) : (
             <div className="listJobs flex flex-col items-center icon gap-3">
-              {currentJobs?.map((j, i) => {
+              {jobs?.map((i, index) => {
                 return (
                   <Link
                     to={`${mobile ? "detailsMb" : ""}`}
                     className="box border-[3px] border-slate-700 px-4 rounded-2xl py-2 cursor-pointer hover:bg-blue-500/30 transition-colors max-h-[17rem] w-full"
-                    key={i}
-                    onClick={() => handleChooseJob(j.ID)}
+                    key={index}
+                    onClick={() => handleChooseJob(i.id)}
                   >
-                    <div className="flex items-start justify-between pb-5">
+                    <div className="flex items-start justify-between pb-2">
                       <div className="flex flex-col">
                         <div className=" flex flex-col">
                           <span className="font-bold text-[1.5rem]">
-                            {j.company_name}
+                            {i.hiringName}
                           </span>
-                          <span className="text-[1.125rem]">{j.NameHR}</span>
+                          <span className="text-[1.125rem]">
+                            {i.hiringContentID.title}
+                          </span>
                         </div>
-                        <div className="flex flex-col items-start justify-center ">
-                          <span>{j.location}</span>
-                          <span className="h-[1.68rem]  bg-[#D9D9D9] text-[#5A5A5A] p-1 text-[0.875rem] rounded-sm ">
-                            {j.Type}
-                          </span>
+                        <div className="flex items-center justify-start gap-2 ">
+                          <span>{i.location}</span>
+                          {i.fieldName?.split(",").map((field, index) => (
+                            <span
+                              key={index}
+                              className="h-[1.68rem]  bg-[#D9D9D9] text-[#5A5A5A] p-1 text-[0.875rem] rounded-lg "
+                            >
+                              {field}
+                            </span>
+                          ))}
                         </div>
                       </div>
                       <AiOutlineMore className="text-3xl font-bold" />
                     </div>
-                    <div>
-                      <span className="text-[##5A5A5A] line-clamp-2">
-                        {j.job_description}
+                    <div className="flex items-center justify-start gap-3">
+                      <span className="h-[1.68rem]  bg-sky-300 text-black p-1 text-[0.875rem] rounded-lg ">
+                        {i.minSalary} $
                       </span>
-                      <div className="flex items-center justify-start gap-3">
-                        <span className="text-[##5A5A5A]">{j.start_date}</span>
-                        <span className="cursor-pointer">More</span>
+                      -
+                      <span className="h-[1.68rem]  bg-[#D9D9D9] text-[#5A5A5A] p-1 text-[0.875rem] rounded-lg ">
+                        {i.maxSalary} $
+                      </span>
+                    </div>
+                    <div>
+                      {/* <span
+                        className="text-[##5A5A5A] line-clamp-3 overflow-hidden pb-3 contentSummary"
+                        dangerouslySetInnerHTML={{
+                          __html: i.hiringContentID.content,
+                        }}
+                      ></span> */}
+                      <div className="flex flex-col items-start justify-center gap-1 pt-2">
+                        <div className="flex items-center justify-center gap-2">
+                          {/* <span className="font-normal">Date End:</span> */}
+                          <span className="text-black bg-slate-200 p-1 rounded-lg">
+                            {i.dateSubmit}
+                          </span>
+                          <span>-</span>
+                          <span className="text-black bg-slate-200 p-1 rounded-lg">
+                            {i.dateEnd}
+                          </span>
+                        </div>
+                        <span className="cursor-pointer hover:font-bold">
+                          More
+                        </span>
                       </div>
                     </div>
                   </Link>
@@ -145,17 +197,19 @@ function DisplayJobs({ Jobs, load, error }) {
       </div>
       <div className=" flex items-center justify-center gap-2 py-[1.875rem] ">
         <div className={`flex flex-nowrap overflow-x-auto gap-1`}>
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel=">"
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={2}
-            marginPagesDisplayed={2}
-            pageCount={pageNumbers}
-            previousLabel="<"
-            className={`flex items-center justify-center gap-3 pagination`}
-            renderOnZeroPageCount={null}
-          />
+          <div>
+            <ReactPaginate
+              pageCount={pageCount}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={2}
+              onPageChange={({ selected }) => handlePageChange(selected)}
+              containerClassName={"pagination"}
+              activeClassName={
+                "active bg-slate-300 p-1 rounded-lg w-10 text-center"
+              }
+              className="flex items-center justify-center gap-3"
+            />
+          </div>
         </div>
       </div>
     </>

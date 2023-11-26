@@ -1,7 +1,8 @@
 import { combineReducers } from "redux";
-import Login from "./storeLogin";
-import Jobs from "./StoreJobs";
+import LoginReducer from "./storeLogin";
+import jobReducer from "./PostJob";
+
 export default combineReducers({
-  Login,
-  // Jobs,
+  login: LoginReducer,
+  job: jobReducer,
 });

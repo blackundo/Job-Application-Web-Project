@@ -5,18 +5,20 @@ import "./Navbar.css";
 import { useState } from "react";
 import logo2 from "../../Assets/JustLogo.svg";
 import { AiOutlineClose } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { IoIosNotifications } from "react-icons/io";
-import { BiSearchAlt, BiSolidMessageDetail, BiSolidUser } from "react-icons/bi";
+import { BiSolidMessageDetail, BiSolidUser } from "react-icons/bi";
 import { RxAvatar } from "react-icons/rx";
+import Gravatar from "react-gravatar";
+import axiosPrivate from "../../api/axios";
 
 function Navbar() {
   const [toggleActive, setToggleActive] = useState(false);
-  const pf = useSelector((state) => state.profile);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("user"));
-
+  const acc = JSON.parse(localStorage.getItem("Profile"));
+  const role = acc?.user?.role?.roleName ?? null;
+  console.log(acc?.user?.email);
   const toggleButtonClick = () => {
     setToggleActive(!toggleActive);
   };
@@ -28,35 +30,38 @@ function Navbar() {
     navigate("/");
   };
 
+  const informationUser = () => {
+    const accessToken = JSON.parse(localStorage.getItem("Token"))?.access_token;
+    axiosPrivate
+      .get(
+        "/api/candidate/test",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <header className=" max-md:backdrop-blur-lg max-md:drop-shadow-2xl ">
-      <div className=" grid grid-cols-12 items-center  menu py-4 max-md:grid-cols-8">
-        <div className="logo col-span-3 max-xl:col-span-2 flex justify-center items-center">
+      <div className=" grid grid-cols-12 items-center  menu py-4 max-md:grid-cols-8 ">
+        <div className="logo max-lg:col-start-2 col-span-3  flex justify-center items-center max-md:col-span-4">
           <Link to={"/"}>
             <img src={logo} alt="" className="max-md:hidden" />
             <img src={logo2} alt="" className="md:hidden" />
           </Link>
         </div>
 
-        <div className="flex border border-slate-700 rounded-lg col-span-4 max-xl:col-span-4 max-lg:col-span-3 max-md:col-span-4">
-          <div
-            className="mx-4 rounded-lg   border-black relative w-full h-10 text-center 
-            
-          "
-          >
-            {/* <input
-              type="text"
-              placeholder="Search by Vacancies"
-              className="rounded-lg outline-none absolute w-full h-9 text-sm px-3"
-            />
-            <BiSearchAlt className="absolute top-1/2 right-0 -translate-y-1/2 " /> */}
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-500 via-rose-500 to-sky-500 bg-clip-text text-transparent tracking-[0.2em]">
-              Group Hunter
-            </h1>
-          </div>
-        </div>
         <div
-          className={`col-span-5 max-xl:col-span-6 max-lg:col-span-7 max-md:hidden _navbarMenu ${
+          className={`col-span-9  max-lg:col-span-7 max-md:hidden _navbarMenu ${
             toggleActive ? "active" : ""
           }  `}
         >
@@ -73,16 +78,25 @@ function Navbar() {
               <div
                 className={`flex items-center justify-evenly w-full font-sans  text-[16px] flex-nowrap `}
               >
-                <Link to={"/findJobs"}>Find Job </Link>
-                <span>Find Talent</span>
-                <span>Why JobHunter</span>
+                <Link
+                  to={"/findJobs"}
+                  className="hover:border-b-2 hover:border-t-2 border-sky-400 transition-all cursor-pointer"
+                >
+                  Find Job
+                </Link>
+                <span className="hover:border-b-2 hover:border-t-2 border-sky-400 transition-all cursor-pointer">
+                  Find Talent
+                </span>
+                <span className="hover:border-b-2 hover:border-t-2 border-sky-400 transition-all cursor-pointer">
+                  Why JobHunter
+                </span>
               </div>
             </div>
 
             <div
               className={`flex gap-4  w-2/5 max-md:w-full max-md:flex-col items-start justify-center`}
             >
-              {user === null ? (
+              {role === null && (
                 <>
                   <Link
                     to={"/login"}
@@ -97,7 +111,8 @@ function Navbar() {
                     Sign up
                   </Link>
                 </>
-              ) : (
+              )}
+              {role === "Candidate" && (
                 <ul className="flex items-center justify-center gap-3">
                   <NavLink to={"/Message/3423"}>
                     <BiSolidMessageDetail className="text-2xl" />
@@ -109,29 +124,90 @@ function Navbar() {
                     <BiSolidUser className="text-2xl" />
                   </li>
                   <li className="relative avatarMenu">
-                    {pf && pf != undefined ? (
-                      <img
-                        src={`${pf[0].avatar}`}
-                        alt=""
-                        className="text-5xl rounded-full border drop-shadow-xl"
+                    <Gravatar
+                      email={`${acc?.user?.email}`}
+                      size={48}
+                      rating="pg"
+                      default="monsterid"
+                      className="border-x-2 rounded-full border-separate border-x-sky-500"
+                    />
+                    {/*   {acc.user && acc ? (
+                      <Gravatar
+                        email={`${acc.user.email}`}
+                        size={48}
+                        rating="pg"
+                        default="monsterid"
+                        className="border-x-2 rounded-full border-separate border-x-sky-500"
                       />
                     ) : (
                       <RxAvatar className="text-5xl" />
-                    )}
-
+                    )} */}
                     <ul className="absolute z-30 border-2 border-collapse p-2 w-52  right-1/4 max-md:left-full max-md:top-3 bg-white/50  rounded-lg backdrop-blur-md  grid-cols-1 place-items-center place-content-start gap-3 pt-2 hidden">
                       <Link
-                        to={"/profileU"}
+                        to={"/user"}
                         className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all"
+                        onClick={informationUser}
                       >
                         Profile
                       </Link>
-                      <li className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all">
+                      <Link
+                        to={"job_applied"}
+                        className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all"
+                      >
                         Job Applied
-                      </li>
+                      </Link>
                       <li className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all">
                         Find Jobs
                       </li>
+                      <Link
+                        to={"/"}
+                        onClick={handleLogOut}
+                        className="font-bold text-white md:text-sm bg-[#1CB8FF] h-12 w-full rounded-2xl flex justify-center items-center
+                        "
+                      >
+                        Logout
+                      </Link>
+                    </ul>
+                  </li>
+                </ul>
+              )}
+              {role === "Company" && (
+                <ul className="flex items-center justify-center gap-3">
+                  <NavLink to={"/Message/3423"}>
+                    <BiSolidMessageDetail className="text-2xl" />
+                  </NavLink>
+                  <li>
+                    <IoIosNotifications className="text-2xl" />
+                  </li>
+                  <li>
+                    <BiSolidUser className="text-2xl" />
+                  </li>
+                  <li className="relative avatarMenu">
+                    <Gravatar
+                      email={`${acc?.user?.email}`}
+                      size={48}
+                      rating="pg"
+                      default="monsterid"
+                      className="border-x-2 rounded-full border-separate border-x-sky-500"
+                    />
+                    {/* {acc.profile && acc ? (
+                      <Gravatar
+                        email={`${acc?.user?.email}`}
+                        size={48}
+                        rating="pg"
+                        default="monsterid"
+                        className="border-x-2 rounded-full border-separate border-x-sky-500"
+                      />
+                    ) : (
+                      <RxAvatar className="text-5xl" />
+                    )} */}
+                    <ul className="absolute z-30 border-2 border-collapse p-2 w-52  right-1/4 max-md:left-full max-md:top-3 bg-white/50  rounded-lg backdrop-blur-md  grid-cols-1 place-items-center place-content-start gap-3 pt-2 hidden">
+                      <Link
+                        to={"/company"}
+                        className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all"
+                      >
+                        Page Comapany
+                      </Link>
                       <Link
                         to={"/"}
                         onClick={handleLogOut}
@@ -148,9 +224,10 @@ function Navbar() {
           </div>
         </div>
         <div
-          className="toggle hidden  max-md:flex  items-center justify-center pr-5 text-3xl font-bold max-md:col-span-2"
+          className="toggle hidden  max-md:flex  items-center justify-center pr-5 text-3xl font-bold max-md:col-span-4 relative "
           onClick={toggleButtonClick}
         >
+          {/* <MenuCustoms /> */}
           <span className="rounded-full border w-12 h-12 flex items-center justify-center bg-blue-300/60 hover:bg-blue-500/70 hover:text-white">
             <GiHamburgerMenu />
           </span>

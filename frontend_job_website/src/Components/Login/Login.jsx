@@ -1,18 +1,18 @@
-import { useEffect, useReducer, useState } from "react";
-
+import { useState } from "react";
 import Social from "../Social/Social";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import "./Login.css";
 import { useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import { informationUser } from "../../Utils/TokenToProfile";
+import { ToastCustom } from "../ToastCustom/ToastCustom";
+import axiosPrivate from "../../api/axios";
 
-const FormContent = ({ Title, setIsRegistered }) => {
+const FormContent = () => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -24,30 +24,54 @@ const FormContent = ({ Title, setIsRegistered }) => {
   };
 
   const handleLogin = async () => {
-    try {
-      const res = await axios.get("http://localhost:9003/Accounts");
-      setError(false);
-      let accounts = res.data;
-      let findUser = accounts.find((f) => f.Email === formData.email);
-      console.log(findUser.Password, formData.password);
-      if (findUser && findUser.Password === formData.password) {
+    const loadingToastId = toast.loading("Please wait...", {
+      autoClose: false,
+    });
+    await axiosPrivate({
+      method: "POST",
+      maxBodyLength: Infinity,
+      url: "api/auth/authenticate",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: formData,
+    })
+      .then((res) => {
+        toast.dismiss(loadingToastId);
+        const token = res.data;
+        console.log(token);
         dispatch({
           type: "LOGIN",
-          payload: findUser,
+          payload: token,
         });
-        navigate("/");
-      } else {
-        console.log("sai");
-        setError(true);
-      }
-    } catch (error) {
-      setError(true);
-      console.log(error);
-    }
+        toast.dismiss(loadingToastId);
+        ToastCustom.success("Welcome to back!", { autoClose: 2500 });
+        dispatch(informationUser(token?.access_token));
+        setTimeout(() => {
+          navigate("/");
+        }, 2500);
+      })
+      .catch((err) => {
+        toast.dismiss(loadingToastId);
+        ToastCustom.error("🫨Login failed. Please try again.");
+        console.log(err);
+      });
   };
 
   return (
     <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={1600}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <span className="absolute top-6 right-14">
         Don’t have an account?
         <Link to={"/chooseRole"} className="text-[#000084] cursor-pointer">
@@ -55,13 +79,9 @@ const FormContent = ({ Title, setIsRegistered }) => {
         </Link>
       </span>
 
-      <div className="box-login w-[23rem] ">
-        <h1 className="text-2xl font-semibold font-serif pb-7">{Title}</h1>
-        {error && (
-          <p className="text-red-600">
-            Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.
-          </p>
-        )}
+      <div className="box-login w-[23rem] pt-20 max-md:w-[19rem]">
+        <h1 className="text-2xl font-semibold font-serif pb-7">Login</h1>
+
         <div className="form-login w-full ">
           <div className="flex flex-col py-2">
             <label htmlFor="" className="font-normal text-x">

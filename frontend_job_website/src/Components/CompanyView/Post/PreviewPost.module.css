@@ -1,0 +1,9 @@
+.wrapper * {
+  width: 100%;
+  word-wrap: break-word;
+  padding: 2px;
+}
+
+.wrapper {
+  height: 35rem !important;
+}

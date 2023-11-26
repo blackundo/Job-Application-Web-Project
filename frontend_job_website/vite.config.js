@@ -26,7 +26,6 @@ export default defineConfig({
     },
     // End workaround
   ],
-
   // Workaround before renaming .js to .jsx
   optimizeDeps: {
     esbuildOptions: {
