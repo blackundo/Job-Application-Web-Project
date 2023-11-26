@@ -25,6 +25,7 @@ public class HiringController {
     private final HiringRepository hiringRepository;
     private final HiringContentRepository hiringContentRepository;
     private final CompanyRepository companyRepository;
+    private final Specification<Hiring> spec;
 
     @GetMapping
     public ResponseEntity<List<Hiring>> getAllHirings() {
@@ -46,13 +47,19 @@ public class HiringController {
     @GetMapping("/find-hirings")
     public ResponseEntity<?> findHirings(
             @RequestParam(required = false) String text,
-            @RequestParam(required = false) Double salary,
-            Specification<Hiring> spec){
+            @RequestParam(required = false) String hiringName,
+            @RequestParam(required = false) Double salary){
+        Specification<Hiring> spec = this.spec;
         if (text != null) {
             spec = spec.and(HiringSpecification.titleContains(text));
         }
 
+        if (hiringName != null) {
+            spec = spec.and(HiringSpecification.nameContains(hiringName));
+        }
+
         if (salary != null) {
+            System.out.println(salary);
             spec = spec.and(HiringSpecification.salaryGreaterThan(salary));
         }
         List<Hiring> hirings = hiringRepository.findAll(spec);
@@ -98,6 +105,29 @@ public class HiringController {
         return hiring;
     }
 
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateHiring(@PathVariable Integer id,
+                                          @RequestBody HiringPostDto request) throws Exception {
+        Hiring hiring = hiringRepository.findById(id).orElseThrow(() -> new Exception("Resource not found"));
+        HiringContent content = hiringContentRepository.findById(hiring.getHiringContentID().getId()).orElseThrow(() -> new Exception("Resource not found"));
+        //
+        content.setTitle(request.getTitlePost());
+        content.setContent(request.getContentPost());
+        //
+        hiring.setHiringName(request.getHiringName());
+        hiring.setApplicationLimit(request.getApplicationLimit());
+        hiring.setStatus(request.getStatus());
+        hiring.setFieldName(request.getFieldName());
+        hiring.setMinSalary(request.getMinSalary());
+        hiring.setMaxSalary(request.getMaxSalary());
+        hiring.setErrollmentStatus(request.getErrollmentStatus());
+
+
+        hiringContentRepository.save(content);
+        hiringRepository.save(hiring);
+        return new ResponseEntity<>(hiring, HttpStatus.OK);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteHiring(@PathVariable int id) {

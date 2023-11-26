@@ -1,9 +1,15 @@
 package com.vn.BackEnd_Job_Website.Config;
 
+import com.vn.BackEnd_Job_Website.Model.Hiring;
 import com.vn.BackEnd_Job_Website.Respository.AccountRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -38,5 +44,10 @@ public class ApplicationConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public Specification<Hiring> defaultHiringSpecification() {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
     }
 }

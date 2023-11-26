@@ -13,4 +13,9 @@ public class HiringSpecification {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.greaterThan(root.get("minSalary"), salary);
     }
+
+    public static Specification<Hiring> nameContains(String text) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.like(root.get("hiringName"), "%" + text + "%");
+    }
 }
