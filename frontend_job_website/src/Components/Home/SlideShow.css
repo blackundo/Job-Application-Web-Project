@@ -1,0 +1,5 @@
+@media not all and (min-width: 768px) {
+  .slideShow {
+    margin-top: 90px;
+  }
+}

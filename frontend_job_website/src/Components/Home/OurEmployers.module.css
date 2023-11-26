@@ -1,0 +1,9 @@
+.slide {
+  transition: transform 0.3s ease;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.slide::-webkit-scrollbar {
+  display: none;
+}

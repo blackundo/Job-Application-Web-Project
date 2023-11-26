@@ -1,0 +1,71 @@
+@media not all and (min-width: 768px) {
+  .menu {
+    position: relative;
+  }
+  .menu ._navbarMenu.active {
+    background: #ffffff !important;
+    width: 300px;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex !important;
+    flex-direction: column-reverse;
+    padding: 20px 10px 0;
+    border-radius: 0 10px 10px 0;
+    z-index: 1000;
+    justify-content: start;
+    gap: 2rem;
+  }
+  .menu ._navbarMenu.active .optionMenu {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+  }
+  .menu ._navbarMenu.active .optionMenu .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .menu ._navbarMenu.active .optionMenu div:nth-child(1) {
+    padding-top: 4rem;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: start;
+    justify-content: center;
+  }
+  .menu ._navbarMenu.active .optionMenu div:nth-child(1) span {
+    width: 100%;
+    border-radius: 10px;
+    height: 2.3rem;
+    padding-left: 5px;
+  }
+  .menu ._navbarMenu.active .optionMenu div:nth-child(1) a {
+    width: 100%;
+    border-radius: 10px;
+    height: 2.3rem;
+    padding-left: 5px;
+  }
+  .menu ._navbarMenu.active .optionMenu div:nth-child(1) span:hover {
+    background: rgb(20, 20, 126);
+    background: linear-gradient(
+      90deg,
+      rgb(20, 20, 126) 0%,
+      rgb(12, 12, 168) 64%,
+      rgb(0, 212, 255) 100%
+    );
+    color: white;
+  }
+  header {
+    position: fixed;
+    width: 100%;
+    height: 90px;
+    z-index: 500;
+  }
+}
+.avatarMenu:hover ul {
+  display: grid;
+}

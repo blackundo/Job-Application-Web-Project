@@ -1,0 +1,59 @@
+{
+  "hash": "8c8e042c",
+  "browserHash": "5cdaac56",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "fac4f069",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "d4691d6c",
+      "needsInterop": true
+    },
+    "react/jsx-runtime": {
+      "src": "../../node_modules/react/jsx-runtime.js",
+      "file": "react_jsx-runtime.js",
+      "fileHash": "d1ec400c",
+      "needsInterop": true
+    },
+    "chart.js": {
+      "src": "../../node_modules/chart.js/dist/chart.js",
+      "file": "chart__js.js",
+      "fileHash": "0f86d296",
+      "needsInterop": false
+    },
+    "react-chartjs-2": {
+      "src": "../../node_modules/react-chartjs-2/dist/index.js",
+      "file": "react-chartjs-2.js",
+      "fileHash": "74fd9ac5",
+      "needsInterop": false
+    },
+    "@faker-js/faker": {
+      "src": "../../node_modules/@faker-js/faker/dist/esm/index.mjs",
+      "file": "@faker-js_faker.js",
+      "fileHash": "429897f2",
+      "needsInterop": false
+    },
+    "react-icons/hi": {
+      "src": "../../node_modules/react-icons/hi/index.esm.js",
+      "file": "react-icons_hi.js",
+      "fileHash": "b5b23056",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-R6XW66DF": {
+      "file": "chunk-R6XW66DF.js"
+    },
+    "chunk-PSZ65TEE": {
+      "file": "chunk-PSZ65TEE.js"
+    },
+    "chunk-TCQZMY3T": {
+      "file": "chunk-TCQZMY3T.js"
+    }
+  }
+}

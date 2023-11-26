@@ -1,0 +1,19 @@
+.tbody tr td:nth-child(1) {
+  text-align: start;
+  padding-left: 1rem;
+}
+
+/* .tbody {
+  height: 200px;
+  overflow-y: scroll;
+} */
+
+.tableContainer {
+  height: 300px;
+  overflow-y: scroll;
+}
+.tableContainer table {
+  position: sticky;
+  top: 0;
+  width: 100%;
+}

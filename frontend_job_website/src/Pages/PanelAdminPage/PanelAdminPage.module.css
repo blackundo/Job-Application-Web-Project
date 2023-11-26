@@ -1,0 +1,10 @@
+.grid {
+  display: grid;
+  grid-template-columns: 60px repeat(14, 1fr);
+  transition: all 1s ease-in-out;
+}
+
+.contentGrid {
+  grid-column: span 12 / span 12;
+  transition: all 1s ease-in-out;
+}

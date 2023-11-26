@@ -1,0 +1,124 @@
+{
+  "Users": [
+    {
+      "id": 1,
+      "name": "John",
+      "email": "john@gmail.com",
+      "password": "1234",
+      "role": {
+        "role_Id": 23,
+        "roleName": "Administrator"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Jane",
+      "email": "jane@gmail.com",
+      "password": "5678",
+      "role": {
+        "role_Id": 42,
+        "roleName": "User"
+      }
+    },
+    {
+      "id": 3,
+      "name": "David",
+      "email": "david@gmail.com",
+      "password": "abcd",
+      "role": {
+        "role_Id": 43,
+        "roleName": "User"
+      }
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "asda",
+      "role": {
+        "role_id": "id_6ovu7f7yn",
+        "roleName": "User"
+      },
+      "id": 4
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "123123",
+      "role": {
+        "role_id": "id_omi4sfrag",
+        "roleName": "User"
+      },
+      "id": 5
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "12",
+      "role": {
+        "role_id": "id_ex23iccdy",
+        "roleName": "User"
+      },
+      "id": 6
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "1231",
+      "role": {
+        "role_id": "id_gzmqjkwb8",
+        "roleName": "User"
+      },
+      "id": 7
+    },
+    {
+      "name": "",
+      "email": "",
+      "password": "",
+      "role": {
+        "role_id": "id_1ck6swzga",
+        "roleName": "User"
+      },
+      "id": 8
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "123456",
+      "role": {
+        "role_id": "id_ch1uxzjme",
+        "roleName": "User"
+      },
+      "id": 9
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "123",
+      "role": {
+        "role_id": "id_10gyngg14",
+        "roleName": "User"
+      },
+      "id": 10
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "e",
+      "role": {
+        "role_id": "id_vy960nylw",
+        "roleName": "User"
+      },
+      "id": 11
+    },
+    {
+      "name": "Do Phuoc Dat",
+      "email": "datdo775@gmail.com",
+      "password": "2313",
+      "role": {
+        "role_id": "id_i6sgrgzfw",
+        "roleName": "User"
+      },
+      "id": 12
+    }
+  ]
+}

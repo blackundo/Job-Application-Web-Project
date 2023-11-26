@@ -1,0 +1,15 @@
+.table {
+  width: 100%;
+}
+
+.table thead {
+  background-color: #a6a6a65a;
+}
+.table thead th {
+  text-align: center;
+  font-weight: 500;
+}
+
+.table tbody tr td {
+  text-align: center;
+}
