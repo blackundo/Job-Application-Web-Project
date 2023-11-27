@@ -17,10 +17,12 @@ const Register = lazy(() => import("../Pages/Register/RegisterPage"));
 const ForgotPassword = lazy(() =>
   import("../Pages/ForgotPassword/ForgotPassword")
 );
-const FindJobPage = lazy(() => import("../Pages/FindJobPage/FindJobPage"));
-const ProfilePage = lazy(() => import("../Pages/ProfilePage/ProfilePage"));
+
 const MessagePage = lazy(() => import("../Pages/MessagePage/MessagePage"));
 const NotFoundPage = lazy(() => import("../Pages/ErrorPages/NotFoundPage"));
+import FindJobPage from "../Pages/FindJobPage/FindJobPage";
+import ProfilePage from "../Pages/ProfilePage/ProfilePage";
+
 import { Route, Routes } from "react-router-dom";
 import SpinnerFullPage from "../Components/SpinnerFullPage/SpinnerFullPage";
 import RouterRole from "./RouterRole";
@@ -36,11 +38,14 @@ import PreviewPost from "../Components/CompanyView/Post/PreviewPost";
 import AccountSetting from "../Components/CompanyView/Content/AccountSetting";
 import JobApplied from "../Components/Profile/JobApplied/JobApplied";
 
+import EditJobs from "../Components/CompanyView/Content/EditJobs";
+
+
 // const roles = ["Candidate", "Company", "admin", null];
 function Router() {
   const profile = JSON.parse(localStorage.getItem("Profile"));
-  const role = profile && profile != undefined ? profile.role : null;
-  console.log(role);
+  const role = profile?.user?.role?.roleName ?? null;
+
   return (
     <Suspense fallback={<SpinnerFullPage />}>
       <Routes>
@@ -55,8 +60,17 @@ function Router() {
             }
           />
           <Route path="login" element={<Login />} />
+          <Route
+            path="login/Admin"
+            element={
+              <RouterRole role={role} roles={[null]}>
+                <LoginAdminPage />
+              </RouterRole>
+            }
+          />
           <Route path="Register" element={<Register />} />
           <Route path="forgotPass" element={<ForgotPassword />} />
+
           <Route
             path="findJobs"
             element={
@@ -96,18 +110,11 @@ function Router() {
               </RouterRole>
             }
           />
-          <Route
-            path="login/Admin"
-            element={
-              <RouterRole role={role} roles={[null]}>
-                <LoginAdminPage />
-              </RouterRole>
-            }
-          />
+
           <Route
             path="/admin"
             element={
-              <RouterRole role={role} roles={["Admin"]}>
+              <RouterRole role={role} roles={["Admin", null]}>
                 <PanelAdminPage />
               </RouterRole>
             }
@@ -127,6 +134,9 @@ function Router() {
           <Route path="/company" element={<CompanyPages />}>
             <Route index element={<Jobs />} />
             <Route path="jobs" element={<Jobs />} />
+
+            <Route path="edit_jobs/:id" element={<EditJobs />} />
+
             <Route path="account_setting" element={<AccountSetting />} />
             <Route path="candidate" element={<Candidate />} />
             <Route path="interview" element={<Interview />} />

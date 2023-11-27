@@ -2,35 +2,40 @@ import axiosPrivate from "../api/axios";
 
 export const PROFILE = "PROFILE_USER";
 
-export const showProfile = (info, role) => ({
+export const showProfile = (info) => ({
   type: PROFILE,
   payload: {
-    profile: info,
-    role: role,
+    user: info,
   },
 });
 
 export const informationUser = (accessToken) => async (dispatch) => {
   console.log(accessToken);
   const controller = new AbortController();
-  let config = {
-    method: "post",
-    maxBodyLength: Infinity,
-    url: "http://localhost:80/api/profile/",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    signal: controller.signal,
-  };
+  // let config = {
+  //   method: "post",
+  //   maxBodyLength: Infinity,
+  //   url: "http://localhost:80/api/profile/",
+  //   headers: {
+  //     Authorization: `Bearer ${accessToken}`,
+  //   },
+  //   signal: controller.signal,
+  // };
 
   await axiosPrivate
-    .request(config)
+    .post(
+      "api/profile/",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        signal: controller.signal,
+      }
+    )
     .then((res) => {
       const data = res.data;
-      // console.log(res);
-      const role = res.data.role.roleName;
-
-      dispatch(showProfile(data, role));
+      dispatch(showProfile(data));
     })
     .catch((error) => {
       console.log("Error Profile: ", error);

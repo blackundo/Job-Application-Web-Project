@@ -1,7 +1,18 @@
 // src/reducers/jobReducer.js
 const initialState = {
-  content: "",
-  details: {},
+  inforCompany: {},
+  details: {
+    hiringName: "",
+    applicationLimit: 0,
+    dateSubmit: "",
+    dateEnd: "",
+    titlePost: "",
+    contentPost: "",
+    minSalary: 0,
+    maxSalary: 0,
+    status: true,
+    fieldName: "",
+  },
 };
 
 const jobReducer = (state = initialState, action) => {

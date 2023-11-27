@@ -1,13 +1,13 @@
 package com.vn.BackEnd_Job_Website.Controller.auth;
 
 import com.vn.BackEnd_Job_Website.Model.Account;
-import com.vn.BackEnd_Job_Website.Model.Company;
 import com.vn.BackEnd_Job_Website.Service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -45,5 +45,29 @@ public class AuthenticationController {
             HttpServletResponse response
     ) throws IOException {
         service.refreshToken(request, response);
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<?> verifyEmail(
+            @RequestParam String token
+    ) throws Exception{
+        String result = service.verifyEmail(token);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/verified")
+    public ResponseEntity<?> emailExistVerified(){
+        Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok().body(account.isStatus());
+    }
+
+
+    @GetMapping("/resend-verify")
+    public ResponseEntity<?> resendVerify(HttpServletRequest request){
+        String result = service.resendMail(request);
+        if (result.contains("error")){
+            return ResponseEntity.badRequest().body(result);
+        }
+        return ResponseEntity.ok().body(result);
     }
 }

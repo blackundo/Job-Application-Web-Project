@@ -1,20 +1,35 @@
 import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import { LicenseInfo } from "@mui/x-license-pro";
-import LineChartFilter from "./Components/Chart/LineChartfilter";
+
 import Router from "./router/Router";
+
+import { ToastContainer } from "react-toastify";
+
 
 LicenseInfo.setLicenseKey(
   "e0d9bb8070ce0054c9d9ecb6e82cb58fTz0wLEU9MzI0NzIxNDQwMDAwMDAsUz1wcmVtaXVtLExNPXBlcnBldHVhbCxLVj0y"
 );
+
 function App() {
   return (
     <div className="h-screen overflow-x-hidden">
+
+      <ToastContainer
+        position="bottom-right"
+        autoClose={1600}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+
       <BrowserRouter>
         <Router />
-        {/* <div className="">
-          <LineChartFilter />
-        </div> */}
       </BrowserRouter>
     </div>
   );

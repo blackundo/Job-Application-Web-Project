@@ -1,1 +1,0 @@
-import{j as s,N as e,O as t,F as x}from"./index-086af904.js";const r=()=>s.jsx("div",{className:"flex items-center justify-center",children:s.jsxs("div",{className:"xl:w-[1200px] lg:w-[1000px] md:w-[900px] sm:w-[700px] ",children:[s.jsx(e,{}),s.jsx(t,{}),s.jsx(x,{})]})});export{r as default};

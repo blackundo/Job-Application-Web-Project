@@ -40,6 +40,9 @@ public class Account implements UserDetails {
     @Column(name = "Password")
     private String password;
 
+    @Column(name = "Status")
+    private boolean status;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 //        return List.of(new SimpleGrantedAuthority(role.getRoleName()));

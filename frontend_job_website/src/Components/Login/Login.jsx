@@ -30,7 +30,7 @@ const FormContent = () => {
     await axiosPrivate({
       method: "POST",
       maxBodyLength: Infinity,
-      url: "http://localhost:80/api/authenticate",
+      url: "api/auth/authenticate",
       headers: {
         "Content-Type": "application/json",
       },
@@ -39,15 +39,13 @@ const FormContent = () => {
       .then((res) => {
         toast.dismiss(loadingToastId);
         const token = res.data;
-        // console.log(token.access_token);
+        console.log(token);
         dispatch({
           type: "LOGIN",
           payload: token,
         });
         toast.dismiss(loadingToastId);
         ToastCustom.success("Welcome to back!", { autoClose: 2500 });
-        // console.log(res.data);
-        // console.log(token?.access_token);
         dispatch(informationUser(token?.access_token));
         setTimeout(() => {
           navigate("/");
@@ -55,7 +53,7 @@ const FormContent = () => {
       })
       .catch((err) => {
         toast.dismiss(loadingToastId);
-        ToastCustom.error("🙅‍♂️Registration failed. Please try again.");
+        ToastCustom.error("🫨Login failed. Please try again.");
         console.log(err);
       });
   };

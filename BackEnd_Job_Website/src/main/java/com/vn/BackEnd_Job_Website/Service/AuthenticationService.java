@@ -21,4 +21,8 @@ public interface AuthenticationService {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException;
+
+    String verifyEmail(String token) throws Exception;
+
+    String resendMail(HttpServletRequest request);
 }

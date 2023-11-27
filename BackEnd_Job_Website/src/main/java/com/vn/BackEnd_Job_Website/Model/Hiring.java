@@ -1,5 +1,6 @@
 package com.vn.BackEnd_Job_Website.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
@@ -18,6 +19,7 @@ public class Hiring {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "CompanyID")
     private Company companyID;
 
@@ -31,18 +33,12 @@ public class Hiring {
     @Column(name = "DateSubmit", nullable = false)
     private LocalDate dateSubmit;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "HiringContentID")
-    private HiringContent hiringContentID;
-
     @Column(name = "DateEnd", nullable = false)
     private LocalDate dateEnd;
 
-    @Column(name = "MinSlaray")
-    private Double minSalary;
-
-    @Column(name = "MaxSlaray")
-    private Double maxSalary;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "HiringContentID")
+    private HiringContent hiringContentID;
 
     @Column(name = "Status", nullable = false, length = 20)
     private String status;
@@ -50,16 +46,26 @@ public class Hiring {
     @Column(name = "FieldName")
     private String fieldName;
 
-    public Hiring(Company companyID, String hiringName, Integer applicationLimit, LocalDate dateSubmit, HiringContent hiringContentID, LocalDate dateEnd, Double minSalary, Double maxSalary, String status, String fieldName) {
+    @Column(name = "MinSalary")
+    private Double minSalary;
+
+    @Column(name = "MaxSalary")
+    private Double maxSalary;
+
+    @Column(name = "ErrollmentStatus")
+    private String errollmentStatus;
+
+    public Hiring(Company companyID, String hiringName, Integer applicationLimit, LocalDate dateSubmit, LocalDate dateEnd, HiringContent hiringContentID, String status, String fieldName, Double minSalary, Double maxSalary, String errollmentStatus) {
         this.companyID = companyID;
         this.hiringName = hiringName;
         this.applicationLimit = applicationLimit;
         this.dateSubmit = dateSubmit;
-        this.hiringContentID = hiringContentID;
         this.dateEnd = dateEnd;
-        this.minSalary = minSalary;
-        this.maxSalary = maxSalary;
+        this.hiringContentID = hiringContentID;
         this.status = status;
         this.fieldName = fieldName;
+        this.minSalary = minSalary;
+        this.maxSalary = maxSalary;
+        this.errollmentStatus = errollmentStatus;
     }
 }

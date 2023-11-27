@@ -1,7 +1,5 @@
 package com.vn.BackEnd_Job_Website.Controller;
 
-import com.vn.BackEnd_Job_Website.Controller.auth.AuthenticationRequest;
-import com.vn.BackEnd_Job_Website.Controller.auth.AuthenticationResponse;
 import com.vn.BackEnd_Job_Website.Dto.ResponseFileCV;
 import com.vn.BackEnd_Job_Website.Model.Candidate;
 import com.vn.BackEnd_Job_Website.Service.CandidateService;
@@ -14,7 +12,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -32,13 +29,6 @@ public class ProfileController {
             HttpServletRequest request,
             HttpServletResponse response
     )throws IOException {
-        System.out.println("tttrasdczxcx");
-        System.out.println("tttrasdczxcx");
-        System.out.println("tttrasdczxcx");
-        System.out.println("tttrasdczxcx");
-        System.out.println("tttrasdczxcx");
-        System.out.println("tttrasdczxcx");
-        System.out.println("tttrasdczxcx");
         profileservice.info(request,response);
     }
 

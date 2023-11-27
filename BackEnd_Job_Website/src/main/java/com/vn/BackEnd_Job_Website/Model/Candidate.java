@@ -21,9 +21,8 @@ public class Candidate {
     @Column(name = "Age")
     private Integer age;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FieldID")
-    private Field fieldID;
+    @Column(name = "FieldID")
+    private Integer fieldID;
 
     @Column(name = "Gender")
     private Boolean gender;
@@ -36,16 +35,20 @@ public class Candidate {
     @Column(name = "City")
     private String city;
 
-    @Lob
     @Column(name = "UploadFileCV")
     private byte[] uploadFileCV;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ExperienceID")
-    private Experience experienceID;
+    @Column(name = "ExperienceID")
+    private Integer experienceID;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AccountID")
-    private Account accountID;
+    private Account account;
+
+    @Column(name = "Exp")
+    private char exp;
+
+    @Column(name = "SKILLS")
+    private String skills;
 
 }

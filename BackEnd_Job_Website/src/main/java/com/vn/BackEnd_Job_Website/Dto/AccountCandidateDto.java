@@ -18,4 +18,5 @@ public class AccountCandidateDto {
     private boolean gender;
     private String universityOrCollege;
     private String city;
+    private boolean status;
 }

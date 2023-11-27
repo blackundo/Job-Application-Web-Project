@@ -25,3 +25,7 @@
 .pagination li.disabled a {
   cursor: default;
 }
+
+.contentSummary p:not(:first-of-type) {
+  display: none;
+}

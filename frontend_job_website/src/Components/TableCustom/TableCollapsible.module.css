@@ -1,0 +1,34 @@
+/* Hiển thị bình thường */
+.dateStart,
+.dateEnd,
+.Enrollment,
+.id {
+  display: table-cell !important;
+}
+
+/* Width <= 750px thì ẩn đi */
+@media (max-width: 800px) {
+  .dateStart,
+  .dateEnd,
+  .Enrollment {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .id,
+  .hiringName,
+  .limit {
+    display: none !important;
+  }
+  .headerDetails tr th {
+    font-size: 10px !important;
+  }
+  .bodyDetails tr td {
+    font-size: 10px !important;
+  }
+  .bodyTableMain td,
+  th {
+    font-size: 10px !important;
+  }
+}

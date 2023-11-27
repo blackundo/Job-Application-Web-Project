@@ -5,9 +5,11 @@ import Gravatar from "react-gravatar";
 import { AiFillBell } from "react-icons/ai";
 import { MdEmail, MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { Link } from "react-router-dom";
-const user = JSON.parse(localStorage.getItem("Profile"))?.profile;
+const acc = JSON.parse(localStorage.getItem("Profile"));
 
 function HeaderPageCompany({ toggleMenu }) {
+  const user = acc?.user;
+  console.log(user?.email);
   return (
     <div className=" flex items-center justify-between border-b pb-2 border-slate-200 shadow-lg px-7  h-16  sticky top-0  backdrop-blur-lg">
       <Link to={"/company"} className="w-1/3 max-md:w-2/3 ">
@@ -41,20 +43,20 @@ function HeaderPageCompany({ toggleMenu }) {
           <div className="flex flex-col ">
             <span>Name</span>
             <span className="text-sm font-normal text-slate-600 ">
-              {user.email}
+              {user?.email}
             </span>
           </div>
         </div>
         <div className="flex items-center justify-center w-full pl-5 gap-2 relative h-[3.5rem]  ">
           <Gravatar
-            email={`${user.email}`}
+            email={`${user?.email}`}
             size={40}
             rating="pg"
             default="monsterid"
             className="border-x-2 rounded-full border-separate border-x-sky-500"
           />
           {/* <RxAvatar className="text-5xl" /> */}
-          <span className="max-md:hidden">{user.email}</span>
+          <span className="max-md:hidden">{user?.email}</span>
           <span className={`text-3xl`} onClick={toggleMenu}>
             <MdOutlineKeyboardArrowDown />
           </span>
