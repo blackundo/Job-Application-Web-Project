@@ -1,5 +1,6 @@
 package com.vn.BackEnd_Job_Website.Config;
 
+import com.vn.BackEnd_Job_Website.Advice.DataExceptionHandler;
 import com.vn.BackEnd_Job_Website.Exception.CustomAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

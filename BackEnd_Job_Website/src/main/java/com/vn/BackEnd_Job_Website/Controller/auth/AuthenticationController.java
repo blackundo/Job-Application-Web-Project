@@ -5,12 +5,14 @@ import com.vn.BackEnd_Job_Website.Service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -22,7 +24,7 @@ public class AuthenticationController {
     public ResponseEntity<?> register(
             @RequestBody RegisterRequest request,
             @RequestParam("role") String role
-    ){
+    ) {
         if (role.equals("Company")){
             return ResponseEntity.ok(service.regCompany(request, role));
         }else if (role.equals("Candidate")){

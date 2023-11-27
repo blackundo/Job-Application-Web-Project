@@ -21,8 +21,8 @@ public class Candidate {
     @Column(name = "Age")
     private Integer age;
 
-    @Column(name = "FieldID")
-    private Integer fieldID;
+    @Column(name = "FieldName")
+    private String fieldName;
 
     @Column(name = "Gender")
     private Boolean gender;
@@ -37,9 +37,6 @@ public class Candidate {
 
     @Column(name = "UploadFileCV")
     private byte[] uploadFileCV;
-
-    @Column(name = "ExperienceID")
-    private Integer experienceID;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AccountID")
