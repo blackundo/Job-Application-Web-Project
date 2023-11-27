@@ -31,7 +31,6 @@ public class Account implements UserDetails {
     @JoinColumn(name = "roleID")
     private Role role;
 
-    @Nationalized
     @Column(name = "Email")
     private String email;
 
@@ -41,7 +40,7 @@ public class Account implements UserDetails {
     private String password;
 
     @Column(name = "Status")
-    private boolean status;
+    private boolean status = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

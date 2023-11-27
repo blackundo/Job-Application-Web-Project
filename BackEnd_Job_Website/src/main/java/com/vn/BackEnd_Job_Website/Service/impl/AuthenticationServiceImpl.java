@@ -18,7 +18,9 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -53,7 +56,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .role(repoRole.findById(2).get()) // 1- ADMIN | 2- Company | 3- Candidate
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .status(false)
+//                .status(false)
                 .build();
 
         repoAccount.save(user);
@@ -91,16 +94,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthenticationResponse regCandidate(RegisterRequest request, String role) {
-        var user = Account.builder()
-                .role(repoRole.findById(3).get()) // 1- ADMIN | 2- Company | 3- Candidate
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .status(false)
-                .build();
+        Account user = null;
+        try {
+             user = Account.builder()
+                    .role(repoRole.findById(3).get()) // 1- ADMIN | 2- Company | 3- Candidate
+                    .email(request.getEmail())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .build();
+            repoAccount.save(user);
+        }catch (DataIntegrityViolationException ex){
+            ex.printStackTrace();
+        }
 
-
-        repoAccount.save(user);
-        String tokenVeri = generateVerificationToken(user); ///nfhdsfghsdjfg
+        String tokenVeri = generateVerificationToken(user);
 
 
 
@@ -120,6 +126,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         var accessToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
+
         return AuthenticationResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)

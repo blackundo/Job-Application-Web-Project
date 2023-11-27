@@ -6,8 +6,10 @@ import com.vn.BackEnd_Job_Website.Controller.auth.AuthenticationResponse;
 import com.vn.BackEnd_Job_Website.Controller.auth.RegisterRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public interface AuthenticationService {
 
