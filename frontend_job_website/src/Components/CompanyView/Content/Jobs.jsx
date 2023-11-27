@@ -37,12 +37,12 @@ function Jobs() {
     setOrderVisible(false);
   };
   const memoizedJobs = useMemo(() => {
-    const transformedData = myJobs.map(transformJob);
+    const transformedData = myJobs?.map((d) => transformJob(d));
+    console.log("transformed jobs", transformedData);
     const filteredData =
       statusJobs === "Close"
-        ? transformedData.filter((job) => job.status === "Close")
+        ? transformedData?.filter((job) => job.status === "Close")
         : transformedData;
-
     return filteredData;
   }, [myJobs, statusJobs]);
 
@@ -52,7 +52,9 @@ function Jobs() {
         .get("api/hiring/get")
         .then((res) => {
           const data = res.data.content;
+          console.log(data);
           setMyJobs(data);
+          console.log(memoizedJobs);
         })
         .catch((err) => {
           setRefresh(false);
@@ -222,7 +224,7 @@ function Jobs() {
       </div>
 
       <div className="pt-3  ">
-        {memoizedJobs.length === 0 ? (
+        {memoizedJobs?.length === 0 ? (
           Array.from({ length: 5 }, (_, i) => {
             return <LoadingComponent key={i} />;
           })

@@ -24,7 +24,7 @@ function CompanyView() {
     <>
       <div className="flex">
         <div
-          className={` bg-slate-700 flex flex-col items-center justify-start dashboard sticky top-0 h-screen`}
+          className={` bg-slate-700 flex flex-col items-center justify-start dashboard sticky top-0 h-screen max-[400px]:max-w-[50px]`}
         >
           <div
             className={`flex items-center ${

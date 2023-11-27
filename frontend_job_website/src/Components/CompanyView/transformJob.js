@@ -1,9 +1,10 @@
 export function transformJob(job) {
+  console.log(job.errollmentStatus);
   const {
     id,
     dateEnd,
     dateSubmit,
-    enrollmentStatus,
+    errollmentStatus,
     fieldName,
     hiringName,
     applicationLimit,
@@ -16,7 +17,7 @@ export function transformJob(job) {
     id,
     dateEnd,
     dateSubmit,
-    enrollmentStatus,
+    errollmentStatus,
     fieldName,
     hiringName,
     applicationLimit,
@@ -33,7 +34,7 @@ function createData({
   id,
   dateEnd,
   dateSubmit,
-  enrollmentStatus,
+  errollmentStatus,
   fieldName,
   hiringName,
   applicationLimit,
@@ -49,7 +50,7 @@ function createData({
     dateEnd,
     title,
     dateSubmit,
-    enrollmentStatus,
+    errollmentStatus,
     status,
     details: [
       {

@@ -34,6 +34,7 @@
     "redux-thunk": "^2.4.2",
     "styled-components": "^6.1.1",
     "suneditor-react": "^3.6.1",
+    "sweetalert": "^2.1.2",
     "vite-plugin-env-compatible": "^1.1.1",
     "vite-plugin-eslint": "^1.8.1",
     "web-vitals": "^2.1.4"

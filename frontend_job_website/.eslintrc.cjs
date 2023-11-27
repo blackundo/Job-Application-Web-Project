@@ -16,15 +16,8 @@ module.exports = {
       "warn",
       { allowConstantExport: true },
     ],
-<<<<<<< HEAD
     "react/prop-types": "off",
   },
 
-=======
-  },
-  rules: {
-    "react/prop-types": "off",
-  },
->>>>>>> 676d1e3ba76ba2ce92afb318650fea72a2fba505
   // presets: ["@babel/preset-env", "@babel/preset-react"],
 };
