@@ -48,9 +48,11 @@ public class Company {
     @Column(name = "PhoneNumber")
     private String phoneNumber;
 
+    @Lob
     @Column(name = "Avatar")
     private byte[] avatar;
 
+    @Lob
     @Column(name = "Cover")
     private byte[] cover;
 
