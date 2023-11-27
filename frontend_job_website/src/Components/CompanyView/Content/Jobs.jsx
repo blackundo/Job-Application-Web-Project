@@ -1,15 +1,25 @@
 import { useState, useEffect } from "react";
-import img from "../../../Assets/postJob.svg";
+
 import Header from "./Header";
 import axiosPrivate from "../../../api/axios";
 import TableCollapsible from "../../TableCustom/TableCollapsible";
+import { ToastCustom } from "../../ToastCustom/ToastCustom";
+import LoadingComponent from "../../LoadingComponent/LoadingComponent";
+import { transformJob } from "../transformJob";
+import { useMemo } from "react";
+import { useCallback } from "react";
+
 function Jobs() {
   const [sortByVisible, setSortByVisible] = useState(false);
   const [orderVisible, setOrderVisible] = useState(false);
   const [selectedSortBy, setSelectedSortBy] = useState("Date Posted");
   const [selectedOrder, setSelectedOrder] = useState("Descending");
   const [myJobs, setMyJobs] = useState([]);
-  const [statusJobs, setStatusJobs] = useState("Open");
+
+  const [statusJobs, setStatusJobs] = useState("OpenAndClose");
+  const [refresh, setRefresh] = useState(false);
+  const [query, setQuery] = useState("");
+  const access_token = JSON.parse(localStorage.getItem("Token"))?.access_token;
 
   const toggleSortBy = () => {
     setSortByVisible(!sortByVisible);
@@ -31,47 +41,104 @@ function Jobs() {
     setOrderVisible(false);
   };
 
+  const memoizedJobs = useMemo(() => {
+    const transformedData = myJobs?.map((d) => transformJob(d));
+    console.log("transformed jobs", transformedData);
+    const filteredData =
+      statusJobs === "Close"
+        ? transformedData?.filter((job) => job.status === "Close")
+        : transformedData;
+    return filteredData;
+  }, [myJobs, statusJobs]);
+
+
   useEffect(() => {
     async function getHiring() {
       await axiosPrivate
         .get("api/hiring/get")
         .then((res) => {
-          const data = res.data;
-          const transformedData = data?.map((job) => {
-            return createData(
-              job.id,
-              job.dateEnd,
-              job.dateSubmit,
-              job.errollmentStatus,
-              job.fieldName,
-              job.hiringName,
-              job.applicationLimit,
-              job.maxSalary,
-              job.minSalary,
-              job.status,
-              job.hiringContentID.id,
-              job.hiringContentID.content,
-              job.hiringContentID.title
-            );
-          });
-          const filteredData =
-            statusJobs === "Close"
-              ? transformedData.filter((job) => job.status === "Close")
-              : transformedData;
 
-          setMyJobs(filteredData);
+
+          const data = res.data.content;
+          console.log(data);
+          setMyJobs(data);
+          console.log(memoizedJobs);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          setRefresh(false);
+          console.log(err);
+        });
     }
     getHiring();
-  }, [statusJobs]);
+  }, [statusJobs, refresh]);
+
 
   const handleOnChangeStatusJobs = (e) => {
     setStatusJobs(e);
   };
+
+  const handleDeleteJob = async (id) => {
+    try {
+      const accessToken = JSON.parse(
+        localStorage.getItem("Token")
+      ).access_token;
+
+      const response = await axiosPrivate.delete(
+        `http://localhost/api/hiring/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      ToastCustom.success("Delete Success!", {
+        autoClose: 2500,
+      });
+      setRefresh(true);
+      console.log(response.data);
+    } catch (error) {
+      ToastCustom.error("Delete Error!, You can delete again", {
+        autoClose: 2500,
+      });
+      console.log(error);
+    }
+  };
+  const debounce = (func, delay) => {
+    let debounceTimer;
+    return function () {
+      const context = this;
+      const args = arguments;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    };
+  };
+  const handleSearch = useCallback(
+    (query) => {
+      axiosPrivate
+        .get("/api/hiring/find-hirings", {
+          params: {
+            text: query,
+          },
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    [access_token]
+  );
+
   useEffect(() => {
-    console.log(statusJobs);
-  }, [statusJobs]);
+    const debouncedSearch = debounce((query) => handleSearch(query), 500);
+
+    debouncedSearch(query);
+  }, [query, handleSearch]);
+
 
   return (
     <>
@@ -101,6 +168,10 @@ function Jobs() {
           <input
             type="text"
             placeholder="job search"
+
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+
             className="border w-full h-10 px-3 rounded-lg"
           />
         </div>
@@ -165,8 +236,19 @@ function Jobs() {
         </div>
       </div>
 
-      <div>
-        <TableCollapsible rows={myJobs} />
+
+      <div className="pt-3  ">
+        {memoizedJobs?.length === 0 ? (
+          Array.from({ length: 5 }, (_, i) => {
+            return <LoadingComponent key={i} />;
+          })
+        ) : (
+          <TableCollapsible
+            rows={memoizedJobs}
+            handleDeleteJob={handleDeleteJob}
+          />
+        )}
+
       </div>
     </>
   );
@@ -174,38 +256,3 @@ function Jobs() {
 
 export default Jobs;
 
-function createData(
-  id,
-  dateEnd,
-  dateSubmit,
-  enrollmentStatus,
-  fieldName,
-  hiringName,
-  applicationLimit,
-  maxSalary,
-  minSalary,
-  status,
-  hiringContentID,
-  content,
-  title
-) {
-  return {
-    id,
-    dateEnd,
-    title,
-    dateSubmit,
-    enrollmentStatus,
-    status,
-    details: [
-      {
-        id: hiringContentID,
-        hiringName: hiringName,
-        FieldName: fieldName,
-        maxSalary: maxSalary,
-        minSalary: minSalary,
-        applicationLimit: applicationLimit,
-        content: content,
-      },
-    ],
-  };
-}

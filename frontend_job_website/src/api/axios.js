@@ -10,6 +10,7 @@ const axiosPrivate = axios.create({
 axiosPrivate.interceptors.request.use(
   (config) => {
     const token = JSON.parse(localStorage.getItem("Token"))?.access_token;
+
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }

@@ -6,6 +6,9 @@ import axiosPrivate from "../../../api/axios";
 import { ToastContainer, toast } from "react-toastify";
 import { ToastCustom } from "../../ToastCustom/ToastCustom";
 
+import swal from "sweetalert";
+
+
 function PreviewPost() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -31,24 +34,41 @@ function PreviewPost() {
       },
     };
 
-    try {
-      const res = await axiosPrivate(config);
-      console.log(res.data);
+    await swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
+        });
+        try {
+          const res = axiosPrivate(config);
+          console.log(res.data);
 
-      toast.dismiss(loadingToastId);
-      ToastCustom.success("Post success!", { autoClose: 2500 });
-      localStorage.setItem("postedDetails", JSON.stringify(detailsStep));
-      localStorage.removeItem("jobDetails");
-      localStorage.removeItem("moreDetails");
-      localStorage.removeItem("jobContent");
-      // navigate("/company/post_jobs/posted");
-    } catch (err) {
-      console.log(err);
-      toast.dismiss(loadingToastId);
-      ToastCustom.error("Post Error!, You can post again", {
-        autoClose: 2500,
-      });
-    }
+          toast.dismiss(loadingToastId);
+          //ToastCustom.success("Post success!", { autoClose: 2500 });
+          localStorage.setItem("postedDetails", JSON.stringify(detailsStep));
+          localStorage.removeItem("jobDetails");
+          localStorage.removeItem("moreDetails");
+          localStorage.removeItem("jobContent");
+          navigate("/company");
+        } catch (err) {
+          console.log(err);
+          toast.dismiss(loadingToastId);
+          ToastCustom.error("Post Error!, You can post again", {
+            autoClose: 2500,
+          });
+        }
+      } else {
+        swal("Your imaginary file is safe!");
+        toast.dismiss(loadingToastId);
+      }
+    });
+
   };
 
   return (
@@ -71,7 +91,9 @@ function PreviewPost() {
         </div>
         <div
           dangerouslySetInnerHTML={{ __html: previewContent }}
-          className={`w-full border ${styles.wrapper} ql-editor  overflow-y-auto`}
+
+          className={`w-full border ${styles.wrapper} ql-editor  overflow-y-auto prose prose-lg px-10`}
+
         />
         <div className="pt-2 flex items-center justify-between">
           <button
