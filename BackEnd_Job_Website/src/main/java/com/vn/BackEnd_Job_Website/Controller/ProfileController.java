@@ -1,5 +1,7 @@
 package com.vn.BackEnd_Job_Website.Controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vn.BackEnd_Job_Website.Dto.AccountCandidateDto;
 import com.vn.BackEnd_Job_Website.Dto.CompanyRecord;
 import com.vn.BackEnd_Job_Website.Dto.ResponseFileCV;
 import com.vn.BackEnd_Job_Website.Model.Account;
@@ -20,6 +22,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -74,21 +77,39 @@ public class ProfileController {
 //    }
 
 
+
+
+
     @PostMapping("/company/update")
-    public ResponseEntity<?> updateCompany(@RequestParam("avatar") MultipartFile avatar,
-                                           @RequestParam("cover") MultipartFile cover,
-                                           @RequestBody CompanyRecord request){
-        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getDetails();
-        Company company = companyRepository.findByAccountID(account.getId()).orElseThrow();
-        System.out.println(account.getId());
-        System.out.println(account.getId());
-        System.out.println(account.getId());
-        System.out.println(account.getId());
-        System.out.println(account.getId());
-        System.out.println(account.getId());
+    public ResponseEntity<?> updateCompany(@RequestParam(required = false) MultipartFile avatar,
+                                           @RequestParam(required = false) MultipartFile cover,
+                                           @RequestBody CompanyRecord request) throws Exception {
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Company company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
+        System.out.println(company.getCompanyName());
+        System.out.println(company.getCompanyName());
+        System.out.println(company.getCompanyName());
+        System.out.println(company.getCompanyName());
         if (request.fieldName() != null){
-            MainField mainField = new MainField(null, request.fieldName(), request.infoField(),request.achievement(), request.activeTime());
-            var updateMainField = mainFieldRepository.save(mainField);
+            System.out.println("fieldnameee");
+            System.out.println("fieldnameee");
+            System.out.println("fieldnameee");
+            System.out.println("fieldnameee");
+            System.out.println("fieldnameee");
+            System.out.println("fieldnameee");
+            System.out.println("fieldnameee");
+            if (company.getMainFieldID() == null){
+                MainField mainField = new MainField(null, request.fieldName(), request.infoField(),request.achievement(), request.activeTime());
+                mainFieldRepository.save(mainField);
+            }else {
+                MainField mainField = mainFieldRepository.findById(company.getMainFieldID().getId()).orElseThrow();
+                mainField.setFieldName(request.fieldName());
+                mainField.setInfoField(request.infoField());
+                mainField.setAchievement(request.achievement());
+                mainField.setActiveTime(request.activeTime());
+                mainFieldRepository.save(mainField);
+            }
+
         }
         //update avatar
         if(avatar != null){

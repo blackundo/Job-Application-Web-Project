@@ -44,6 +44,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/api/candidate/**").hasRole("Candidate")
                                 .requestMatchers("/api/profile/uploadcv").hasRole("Candidate")
                                 .requestMatchers("/api/profile/**").hasAnyRole("Candidate", "Company")
+                                .requestMatchers("/api/profile/company/**").hasRole("Company")
                                 .requestMatchers("/api/apply/").hasRole("Candidate")
                                 .anyRequest().authenticated()
                 )
