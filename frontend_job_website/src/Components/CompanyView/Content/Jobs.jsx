@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+
 import Header from "./Header";
 import axiosPrivate from "../../../api/axios";
 import TableCollapsible from "../../TableCustom/TableCollapsible";
@@ -7,16 +8,19 @@ import LoadingComponent from "../../LoadingComponent/LoadingComponent";
 import { transformJob } from "../transformJob";
 import { useMemo } from "react";
 import { useCallback } from "react";
+
 function Jobs() {
   const [sortByVisible, setSortByVisible] = useState(false);
   const [orderVisible, setOrderVisible] = useState(false);
   const [selectedSortBy, setSelectedSortBy] = useState("Date Posted");
   const [selectedOrder, setSelectedOrder] = useState("Descending");
   const [myJobs, setMyJobs] = useState([]);
+
   const [statusJobs, setStatusJobs] = useState("OpenAndClose");
   const [refresh, setRefresh] = useState(false);
   const [query, setQuery] = useState("");
   const access_token = JSON.parse(localStorage.getItem("Token"))?.access_token;
+
   const toggleSortBy = () => {
     setSortByVisible(!sortByVisible);
     setOrderVisible(false);
@@ -36,6 +40,7 @@ function Jobs() {
     setSelectedOrder(value);
     setOrderVisible(false);
   };
+
   const memoizedJobs = useMemo(() => {
     const transformedData = myJobs?.map((d) => transformJob(d));
     console.log("transformed jobs", transformedData);
@@ -46,11 +51,14 @@ function Jobs() {
     return filteredData;
   }, [myJobs, statusJobs]);
 
+
   useEffect(() => {
     async function getHiring() {
       await axiosPrivate
         .get("api/hiring/get")
         .then((res) => {
+
+
           const data = res.data.content;
           console.log(data);
           setMyJobs(data);
@@ -64,9 +72,11 @@ function Jobs() {
     getHiring();
   }, [statusJobs, refresh]);
 
+
   const handleOnChangeStatusJobs = (e) => {
     setStatusJobs(e);
   };
+
   const handleDeleteJob = async (id) => {
     try {
       const accessToken = JSON.parse(
@@ -129,6 +139,7 @@ function Jobs() {
     debouncedSearch(query);
   }, [query, handleSearch]);
 
+
   return (
     <>
       <Header Title={"Jobs"} />
@@ -157,8 +168,10 @@ function Jobs() {
           <input
             type="text"
             placeholder="job search"
+
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+
             className="border w-full h-10 px-3 rounded-lg"
           />
         </div>
@@ -223,6 +236,7 @@ function Jobs() {
         </div>
       </div>
 
+
       <div className="pt-3  ">
         {memoizedJobs?.length === 0 ? (
           Array.from({ length: 5 }, (_, i) => {
@@ -234,9 +248,11 @@ function Jobs() {
             handleDeleteJob={handleDeleteJob}
           />
         )}
+
       </div>
     </>
   );
 }
 
 export default Jobs;
+

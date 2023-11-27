@@ -39,7 +39,10 @@ export default function SuneditorCustom({ setContent, content, setNext }) {
   const isExceeded = charCount === maxLength;
 
   return (
+lassName="flex flex-col items-end justify-center w-full">
+
     <div className="flex flex-col items-end justify-center w-full ">
+
       <div className="flex items-center justify-center pb-[25px] w-full">
         <div className="h-72 pb-[42.84px]  w-full ">
           <SunEditor
@@ -47,7 +50,9 @@ export default function SuneditorCustom({ setContent, content, setNext }) {
             width="100%"
             height="12.5rem"
             setContents={content}
+
             // defaultValue={content}
+
             onChange={handleChange}
             setOptions={options}
           />

@@ -1,27 +1,35 @@
 package com.vn.BackEnd_Job_Website.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class ApplyHire {
     @Id
     @Column(name = "ApplyID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CandidateID")
+    @JsonIgnore
     private Candidate candidateID;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "HiringID")
+    @JsonIgnore
     private Hiring hiringID;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ApplystatusID")
-    private ApplyStatus applystatusID;
+    @JoinColumn(name = "Status")
+    private String status;
 
+    public ApplyHire(Candidate candidateID, Hiring hiringID, String status) {
+        this.candidateID = candidateID;
+        this.hiringID = hiringID;
+        this.status = status;
+    }
 }

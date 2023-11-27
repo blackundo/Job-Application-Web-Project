@@ -33,15 +33,15 @@ public class HiringController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<List<Hiring>> getHiringsPage(
+    public ResponseEntity<?> getHiringsPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
         Pageable paging = PageRequest.of(page, size);
 
         Page<Hiring> pageHiring = hiringRepository.findAll(paging);
-        List<Hiring> hirings = pageHiring.getContent();
-        return new ResponseEntity<>(hirings, HttpStatus.OK);
+//        List<Hiring> hirings = pageHiring.getContent();
+        return new ResponseEntity<>(pageHiring, HttpStatus.OK);
     }
 
     @GetMapping("/find-hirings")

@@ -1,4 +1,6 @@
+
 import { AiOutlineCalendar } from "react-icons/ai";
+
 import { BiBarChart } from "react-icons/bi";
 import { BsFillPeopleFill, BsTools } from "react-icons/bs";
 import { FaSuitcase } from "react-icons/fa";
@@ -42,6 +44,7 @@ const items = [
 function MenuItem({ open }) {
   return (
     <div
+
       className={`flex flex-col ${styles.menu} gap-4 p-1 items-start justify-center w-full max-[400px]:w-[30px]`}
     >
       <AnimatePresence>
@@ -49,7 +52,9 @@ function MenuItem({ open }) {
           return (
             <motion.div
               key={index}
+
               className="h-10 text-white cursor-pointer hover:bg-slate-400 rounded-sm  max-[400px]:w-[10px_!important] max-[400px]:p-[unset_!important] "
+
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.4 }}
             >

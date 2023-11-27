@@ -1,6 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 #.gitignore
-../BackEnd_Job_Website/*
+../BackEnd_Job_Website/
 
 # dependencies
 /node_modules

@@ -5,7 +5,9 @@ import { FiArrowLeft } from "react-icons/fi";
 import axiosPrivate from "../../../api/axios";
 import { ToastContainer, toast } from "react-toastify";
 import { ToastCustom } from "../../ToastCustom/ToastCustom";
+
 import swal from "sweetalert";
+
 
 function PreviewPost() {
   const location = useLocation();
@@ -31,6 +33,7 @@ function PreviewPost() {
         status: "open",
       },
     };
+
     await swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this imaginary file!",
@@ -65,6 +68,7 @@ function PreviewPost() {
         toast.dismiss(loadingToastId);
       }
     });
+
   };
 
   return (
@@ -87,7 +91,9 @@ function PreviewPost() {
         </div>
         <div
           dangerouslySetInnerHTML={{ __html: previewContent }}
+
           className={`w-full border ${styles.wrapper} ql-editor  overflow-y-auto prose prose-lg px-10`}
+
         />
         <div className="pt-2 flex items-center justify-between">
           <button

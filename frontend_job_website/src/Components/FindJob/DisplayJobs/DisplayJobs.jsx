@@ -1,7 +1,9 @@
 import { AiFillQuestionCircle, AiOutlineMore } from "react-icons/ai";
 // import { jobs } from "./job";
 import DetailsJob from "./DetailsJob";
+
 import { memo, useState } from "react";
+
 
 import "./DisplayJobs.css";
 import { Link } from "react-router-dom";
@@ -10,6 +12,7 @@ import axiosPrivate from "../../../api/axios";
 import ReactPaginate from "react-paginate";
 
 const DisplayJobs = () => {
+
   const [loadDetail, setLoadDetail] = useState(false);
   const [jobs, setJobs] = useState([]);
   const mobile = window.innerWidth <= 768;
@@ -92,7 +95,9 @@ const DisplayJobs = () => {
               </span>
             </div>
           </div>
+
           {jobs.length === 0 ? (
+
             Array.from({ length: 5 }, (_, k) => {
               return (
                 <div

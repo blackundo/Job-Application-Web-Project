@@ -29,13 +29,6 @@ public class ProfileController {
             HttpServletRequest request,
             HttpServletResponse response
     )throws IOException {
-        System.out.println("tttrasdczxcx");
-        System.out.println("tttrasdczxcx");
-        System.out.println("tttrasdczxcx");
-        System.out.println("tttrasdczxcx");
-        System.out.println("tttrasdczxcx");
-        System.out.println("tttrasdczxcx");
-        System.out.println("tttrasdczxcx");
         profileservice.info(request,response);
     }
 
