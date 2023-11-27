@@ -2,6 +2,7 @@ package com.vn.BackEnd_Job_Website.Advice;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.access.AccessDeniedException;
@@ -36,6 +37,7 @@ public class CustomExceptionHandler {
             errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
             errDetail.setProperty("access_denied_reason", "JWT token already expired !");
         }
+
 //        handle in JwtFilter
         return errDetail;
     }
