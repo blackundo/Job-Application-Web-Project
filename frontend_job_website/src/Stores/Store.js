@@ -1,4 +1,5 @@
-// src/store.js
+
+
 import { createStore, applyMiddleware } from "redux";
 import CombineReducers from "./CombineReducers";
 import thunk from "redux-thunk";

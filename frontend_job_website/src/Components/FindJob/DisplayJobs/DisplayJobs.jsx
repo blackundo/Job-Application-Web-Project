@@ -1,7 +1,9 @@
 import { AiFillQuestionCircle, AiOutlineMore } from "react-icons/ai";
 // import { jobs } from "./job";
 import DetailsJob from "./DetailsJob";
-import { useState } from "react";
+
+import { memo, useState } from "react";
+
 
 import "./DisplayJobs.css";
 import { Link } from "react-router-dom";
@@ -9,7 +11,8 @@ import { useEffect } from "react";
 import axiosPrivate from "../../../api/axios";
 import ReactPaginate from "react-paginate";
 
-function DisplayJobs() {
+const DisplayJobs = () => {
+
   const [loadDetail, setLoadDetail] = useState(false);
   const [jobs, setJobs] = useState([]);
   const mobile = window.innerWidth <= 768;
@@ -92,7 +95,9 @@ function DisplayJobs() {
               </span>
             </div>
           </div>
-          {Object.keys(jobs).length === 0 ? (
+
+          {jobs.length === 0 ? (
+
             Array.from({ length: 5 }, (_, k) => {
               return (
                 <div
@@ -214,6 +219,6 @@ function DisplayJobs() {
       </div>
     </>
   );
-}
+};
 
-export default DisplayJobs;
+export default memo(DisplayJobs);

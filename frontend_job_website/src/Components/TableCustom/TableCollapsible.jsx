@@ -14,36 +14,23 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
-function createData(name, calories, fat, carbs, protein, price) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      {
-        date: "2020-01-05",
-        customerId: "11091700",
-        amount: 3,
-      },
-      {
-        date: "2020-01-02",
-        customerId: "Anonymous",
-        amount: 1,
-      },
-    ],
-  };
-}
+import { useNavigate } from "react-router-dom";
+import styles from "./TableCollapsible.module.css";
 
 function Row(props) {
-  const { row } = props;
+  const { row, handleDeleteJob } = props;
   const [open, setOpen] = React.useState(false);
-
+  const navigate = useNavigate();
+  const handleEdit = (id) => {
+    navigate(`/company/edit_jobs/${id}`);
+  };
   return (
     <React.Fragment>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+      <TableRow
+        sx={{ "& > *": { borderBottom: "unset" } }}
+        className={styles.bodyTableMain}
+      >
+
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -53,20 +40,34 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
+
+        <TableCell component="th" scope="row" className={`${styles.id}`}>
           {row.id}
         </TableCell>
-        <TableCell align="right">{row.dateSubmit}</TableCell>
-        <TableCell align="right">{row.dateEnd}</TableCell>
-        <TableCell align="right">{row.enrollmentStatus}</TableCell>
         <TableCell align="right">{row.title}</TableCell>
+        <TableCell align="right" className={`${styles.Enrollment}`}>
+          {row.errollmentStatus}
+        </TableCell>
+        <TableCell align="right" className={`${styles.dateStart}`}>
+          {row.dateSubmit}
+        </TableCell>
+        <TableCell align="right" className={`${styles.dateEnd}`}>
+          {row.dateEnd}
+        </TableCell>
         <TableCell align="right">{row.status}</TableCell>
         <TableCell align="right">
           <div className="flex items-center justify-center gap-1">
-            <button className="bg-slate-400 p-2 rounded-md text-white  font-bold">
+            <button
+              className="bg-slate-400 p-2 rounded-md text-white  font-bold"
+              onClick={() => handleEdit(row.id)}
+            >
               Edit
             </button>
-            <button className="bg-red-400 p-2 rounded-md text-white  font-bold">
+            <button
+              className="bg-red-400 p-2 rounded-md text-white  font-bold"
+              onClick={() => handleDeleteJob(row.id)}
+            >
+
               Delete
             </button>
           </div>
@@ -80,23 +81,37 @@ function Row(props) {
                 Details
               </Typography>
               <Table size="small" aria-label="purchases">
-                <TableHead>
+
+                <TableHead className={styles.headerDetails}>
                   <TableRow>
-                    <TableCell>ID</TableCell>
-                    <TableCell>Hiring Name</TableCell>
+                    {/* <TableCell>ID</TableCell> */}
+                    <TableCell className={styles.hiringName}>
+                      Hiring Name
+                    </TableCell>
                     <TableCell align="right">FieldName</TableCell>
                     <TableCell align="right">Max Salary</TableCell>
                     <TableCell align="right">Min Salary</TableCell>
-                    <TableCell align="right">Application Limit</TableCell>
+                    <TableCell align="right" className={styles.limit}>
+                      Application Limit
+                    </TableCell>
+                    {/*   <TableCell align="right" >
+                      Date Start
+                    </TableCell>
+                    <TableCell align="right" >
+                      Date End
+                    </TableCell> */}
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody className={styles.bodyDetails}>
                   {row.details.map((detailsRows) => (
                     <TableRow key={detailsRows.id}>
-                      <TableCell component="th" scope="row">
+                      {/* <TableCell component="th" scope="row">
                         {detailsRows.id}
+                      </TableCell> */}
+                      <TableCell className={styles.hiringName}>
+                        {detailsRows.hiringName}
                       </TableCell>
-                      <TableCell>{detailsRows.hiringName}</TableCell>
+
                       <TableCell align="right">
                         {detailsRows.FieldName}
                       </TableCell>
@@ -106,7 +121,9 @@ function Row(props) {
                       <TableCell align="right">
                         {detailsRows.minSalary}
                       </TableCell>
-                      <TableCell align="right">
+
+                      <TableCell align="right" className={styles.limit}>
+
                         {detailsRows.applicationLimit}
                       </TableCell>
                     </TableRow>
@@ -127,10 +144,12 @@ function Row(props) {
 
 Row.propTypes = {
   row: PropTypes.shape({
-    minSalary: PropTypes.number.isRequired,
+
     id: PropTypes.number.isRequired,
     dateSubmit: PropTypes.string.isRequired,
     dateEnd: PropTypes.string.isRequired,
+    errollmentStatus: PropTypes.string.isRequired,
+
     details: PropTypes.arrayOf(
       PropTypes.shape({
         content: PropTypes.string.isRequired,
@@ -138,32 +157,47 @@ Row.propTypes = {
         hiringName: PropTypes.string.isRequired,
         applicationLimit: PropTypes.number.isRequired,
         maxSalary: PropTypes.number.isRequired,
-        date: PropTypes.string.isRequired,
+
+        minSalary: PropTypes.number.isRequired,
+        // date: PropTypes.string.isRequired,
+
       })
     ).isRequired,
   }).isRequired,
 };
 
-export default function TableCollapsible({ rows }) {
+
+export default function TableCollapsible({ rows, handleDeleteJob }) {
+  console.log(rows);
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} className="border border-slate-200">
+
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>ID</TableCell>
+
+            <TableCell className={`${styles.id}`}>ID</TableCell>
             <TableCell align="right">Title</TableCell>
-            <TableCell align="right">Enrollment Status</TableCell>
-            <TableCell align="right">Date Start</TableCell>
-            <TableCell align="right">Date End</TableCell>
+            <TableCell align="right" className={`${styles.Enrollment}`}>
+              Enrollment Status
+            </TableCell>
+            <TableCell align="right" className={`${styles.dateStart}`}>
+              Date Start
+            </TableCell>
+            <TableCell align="right" className={`${styles.dateEnd}`}>
+              Date End
+            </TableCell>
+
             <TableCell align="right">Status</TableCell>
             <TableCell align="center">Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {console.log(rows)}
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
+
+          {rows?.map((row) => (
+            <Row key={row.id} row={row} handleDeleteJob={handleDeleteJob} />
+
           ))}
         </TableBody>
       </Table>

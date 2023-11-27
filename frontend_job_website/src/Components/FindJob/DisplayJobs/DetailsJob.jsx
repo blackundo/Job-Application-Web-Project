@@ -1,6 +1,6 @@
 import { FaBan, FaSuitcase } from "react-icons/fa";
 import { AiFillFlag, AiFillHeart } from "react-icons/ai";
-
+import styles from "./DetailsJob.module.css";
 function DetailsJob({ job, load }) {
   // const urlDecodeData = decodeURIComponent(job?.image_company);
   const acc = JSON.parse(localStorage.getItem("Profile"));
@@ -130,7 +130,9 @@ function DetailsJob({ job, load }) {
                 </div>
               </div>
             </div>
-            <div className="description border-t-2 border-slate-700/40 overflow-y-auto h-full pb-[12rem] px-4">
+
+            <div className=" border-t-2 border-slate-700/40 overflow-y-auto h-full pb-[12rem] px-4">
+
               <span className="text-2xl font-bold">
                 {job.hiringContentID.title}
               </span>
@@ -140,6 +142,9 @@ function DetailsJob({ job, load }) {
               <br />
               <p>{job.job_description}</p>
               <div
+
+                className={`ql-editor prose prose-lg`}
+
                 dangerouslySetInnerHTML={{
                   __html: job.hiringContentID.content,
                 }}
