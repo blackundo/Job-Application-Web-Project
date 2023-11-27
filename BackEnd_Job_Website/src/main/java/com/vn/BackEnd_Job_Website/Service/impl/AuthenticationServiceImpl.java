@@ -116,6 +116,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         candidate.setAge(Integer.valueOf(request.getAge()));
         candidate.setGender(request.isGender());
         candidate.setCity(request.getCity());
+        candidate.setUniversityOrCollege(request.getUniversityOrCollege());
         repoCandidate.save(candidate);
 
         //send mail

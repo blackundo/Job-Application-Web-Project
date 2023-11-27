@@ -40,7 +40,7 @@ public class HiringController {
         Pageable paging = PageRequest.of(page, size);
 
         Page<Hiring> pageHiring = hiringRepository.findAll(paging);
-//        List<Hiring> hirings = pageHiring.getContent();
+        List<Hiring> hirings = pageHiring.getContent();
         return new ResponseEntity<>(pageHiring, HttpStatus.OK);
     }
 
@@ -68,7 +68,7 @@ public class HiringController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Hiring> getHiringById(@PathVariable int id) {
+    public ResponseEntity<?> getHiringById(@PathVariable int id) {
         Optional<Hiring> hiring = hiringRepository.findById(id);
         if (hiring.isPresent()) {
             return ResponseEntity.ok(hiring.get());
@@ -86,7 +86,7 @@ public class HiringController {
         ));
         Account acc = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Company company = companyRepository.findByAccountID(acc.getId()).orElseThrow();
-        request.getDateEnd();
+//        request.getDateEnd();
 
         Hiring hiring = hiringRepository.save(new Hiring(
                 company,

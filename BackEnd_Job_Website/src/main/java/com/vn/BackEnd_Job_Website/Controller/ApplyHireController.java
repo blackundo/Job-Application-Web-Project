@@ -26,9 +26,9 @@ public class ApplyHireController {
     private final HiringRepository hiringRepository;
 
     @PostMapping("/")
-    public ResponseEntity<?> apply(@RequestBody RequestApplyRecord request){
+    public ResponseEntity<?> apply(@RequestBody RequestApplyRecord request) throws Exception {
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow();
+        Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Not found candidate"));
         var hiring = hiringRepository.findById(request.hiringID()).orElseThrow();
         ApplyHire applyHire = new ApplyHire( candidate, hiring, request.status());
         ApplyHire save = applyHireRepository.save(applyHire);

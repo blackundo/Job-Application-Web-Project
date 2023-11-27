@@ -1,5 +1,6 @@
 package com.vn.BackEnd_Job_Website.Model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,9 +32,11 @@ public class Hiring {
     private Integer applicationLimit;
 
     @Column(name = "DateSubmit", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateSubmit;
 
     @Column(name = "DateEnd", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateEnd;
 
     @ManyToOne(fetch = FetchType.EAGER)
