@@ -8,6 +8,7 @@ import com.vn.BackEnd_Job_Website.Model.Account;
 import com.vn.BackEnd_Job_Website.Model.Candidate;
 import com.vn.BackEnd_Job_Website.Model.Company;
 import com.vn.BackEnd_Job_Website.Model.MainField;
+import com.vn.BackEnd_Job_Website.Respository.CandidateRepository;
 import com.vn.BackEnd_Job_Website.Respository.CompanyRepository;
 import com.vn.BackEnd_Job_Website.Respository.MainFieldRepository;
 import com.vn.BackEnd_Job_Website.Service.CandidateService;
@@ -40,6 +41,7 @@ public class ProfileController {
 
     private final CompanyRepository companyRepository;
     private final MainFieldRepository mainFieldRepository;
+    private final CandidateRepository candidateRepository;
 
     @PostMapping("/")
     public void profile(
@@ -139,5 +141,15 @@ public class ProfileController {
         //save
         var companyUpdated = companyRepository.save(company);
         return new ResponseEntity<>(companyUpdated, HttpStatus.OK);
+    }
+
+
+    @PostMapping("/candidate/update")
+    public ResponseEntity<?> updateCandidate(@RequestParam(required = false) MultipartFile cv,
+                                           @RequestBody CompanyRecord request) throws Exception {
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
+
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }
