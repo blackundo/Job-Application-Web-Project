@@ -34,4 +34,10 @@ public class ApplyHireController {
         ApplyHire save = applyHireRepository.save(applyHire);
         return new ResponseEntity<>(save, HttpStatus.OK);
     }
+
+    @DeleteMapping("/")
+    public ResponseEntity<?> delete(@RequestPart Integer id) throws Exception {
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Not found candidate"));
+    }
 }
