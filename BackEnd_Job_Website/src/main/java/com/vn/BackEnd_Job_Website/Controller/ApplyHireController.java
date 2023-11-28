@@ -39,5 +39,6 @@ public class ApplyHireController {
     public ResponseEntity<?> delete(@RequestPart Integer id) throws Exception {
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Not found candidate"));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

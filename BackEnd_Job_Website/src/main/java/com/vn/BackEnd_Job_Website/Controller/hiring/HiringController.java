@@ -77,6 +77,12 @@ public class HiringController {
         }
     }
 
+    @GetMapping("/company")
+    public ResponseEntity<?> getHiringByComapny(@RequestParam int id){
+        List<Hiring> list = hiringRepository.findByCompanyID(id);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
     @PostMapping("/create")
     public Hiring createHiring(@RequestBody HiringPostDto request) {
 
