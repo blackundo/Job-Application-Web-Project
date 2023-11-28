@@ -1,10 +1,9 @@
 import { useState } from "react";
-
 import { Link, useLocation } from "react-router-dom";
-import axios from "axios";
 import Social from "../Social/Social";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { ToastCustom } from "../ToastCustom/ToastCustom";
+import axiosPrivate from "../../api/axios";
 
 const FormRegisterCompany = ({ setIsRegistered }) => {
   const location = useLocation();
@@ -17,12 +16,12 @@ const FormRegisterCompany = ({ setIsRegistered }) => {
     password: "",
   });
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const loadingToastId = toast.loading("Please wait...", {
       autoClose: false,
     });
-    axios
-      .post(`http://localhost:80/api/auth/register?role=${role}`, formData)
+    await axiosPrivate
+      .post(`/api/auth/register?role=${role}`, formData)
       .then((res) => {
         toast.dismiss(loadingToastId);
         ToastCustom.success("🦄 Register Success!", { autoClose: 1500 });
@@ -51,18 +50,6 @@ const FormRegisterCompany = ({ setIsRegistered }) => {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={1600}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
       <span className="absolute top-6 right-14">
         Have already account?
         <Link to={"/login"} className="text-[#000084] cursor-pointer">

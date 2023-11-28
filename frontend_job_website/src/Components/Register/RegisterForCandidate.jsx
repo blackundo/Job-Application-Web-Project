@@ -1,9 +1,9 @@
 import { useState } from "react";
-
 import { Link, useLocation } from "react-router-dom";
-import axios from "axios";
 import Social from "../Social/Social";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import axiosPrivate from "../../api/axios";
+import { ToastCustom } from "../ToastCustom/ToastCustom";
 
 const FormRegisterCandidate = ({ setIsRegistered }) => {
   const location = useLocation();
@@ -19,35 +19,20 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
     const loadingToastId = toast.loading("Please wait...", {
       autoClose: false,
     });
-    await axios
-      .post(`http://localhost:80/api/auth/register?role=${role}`, formData)
+    await axiosPrivate
+      .post(`/api/auth/register?role=${role}`, formData)
       .then((res) => {
         toast.dismiss(loadingToastId);
-        toast("🦄 Register Success!", {
-          position: "top-center",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-
-        console.log("success", res.data);
-        setIsRegistered(true);
+        ToastCustom.success("🦄 Register Success!", { autoClose: 1500 });
+        setTimeout(() => {
+          setIsRegistered(true);
+        }, 2000);
+        console.log(res.data);
       })
       .catch((err) => {
         toast.dismiss(loadingToastId);
-        toast.error("🦄 Registration failed. Please try again.", {
-          position: "top-center",
+        ToastCustom.error("🦄 Registration failed. Please try again.", {
           autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
         });
         console.log(err);
       });
@@ -63,18 +48,6 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={1600}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
       <span className="absolute top-6 right-14">
         Have already account?
         <Link to={"/login"} className="text-[#000084] cursor-pointer">

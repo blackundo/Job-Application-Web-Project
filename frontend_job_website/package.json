@@ -12,11 +12,10 @@
     "@mui/styled-engine-sc": "^6.0.0-alpha.5",
     "@mui/x-date-pickers-pro": "^6.18.1",
     "@react-pdf/renderer": "^3.1.14",
-
     "@tailwindcss/typography": "^0.5.10",
-
     "axios": "^1.5.1",
     "chart.js": "^4.4.0",
+    "cors": "^2.8.5",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.10",
     "framer-motion": "^10.16.4",
@@ -36,9 +35,7 @@
     "redux-thunk": "^2.4.2",
     "styled-components": "^6.1.1",
     "suneditor-react": "^3.6.1",
-
     "sweetalert": "^2.1.2",
-
     "vite-plugin-env-compatible": "^1.1.1",
     "vite-plugin-eslint": "^1.8.1",
     "web-vitals": "^2.1.4"

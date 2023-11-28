@@ -1,5 +1,4 @@
 export function transformJob(job) {
-  console.log(job.errollmentStatus);
   const {
     id,
     dateEnd,
