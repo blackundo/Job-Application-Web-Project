@@ -1,10 +1,44 @@
 import { FaBan, FaSuitcase } from "react-icons/fa";
 import { AiFillFlag, AiFillHeart } from "react-icons/ai";
-import styles from "./DetailsJob.module.css";
+import axiosPrivate from "../../../api/axios";
+import swal from "sweetalert";
 function DetailsJob({ job, load }) {
   // const urlDecodeData = decodeURIComponent(job?.image_company);
   const acc = JSON.parse(localStorage.getItem("Profile"));
   const role = acc?.user?.role?.roleName ?? null;
+  const handleApplyJob = async () => {
+    console.log(job.id);
+    const tokenAccess = JSON.parse(localStorage.getItem("Token")).access_token;
+    await swal({
+      title: "Are you sure?",
+      text: "You Want apply this job?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((yes) => {
+      if (yes) {
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
+        });
+        axiosPrivate
+          .post(
+            "/api/apply/",
+            { hiringID: job.id, status: "Apply" },
+            {
+              headers: {
+                Authorization: "Bearer " + tokenAccess,
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => console.log(err));
+      } else {
+        swal("Cancel!");
+      }
+    });
+  };
   return (
     <div className="col-span-7 border-2 border-slate-600 w-full h-[46rem] pt-2 rounded-2xl  sticky top-4 max-md:hidden overflow-y-hidden ">
       {!load && job === null ? (
@@ -61,7 +95,10 @@ function DetailsJob({ job, load }) {
               <span>Summary</span>
               {role === "Candidate" && (
                 <div className="flex items-center justify-start gap-3">
-                  <button className="w-[19rem] h-[3.125rem] bg-[#1CB8FF] rounded-lg text-[1.31rem] text-white font-bold">
+                  <button
+                    className="w-[19rem] h-[3.125rem] bg-[#1CB8FF] rounded-lg text-[1.31rem] text-white font-bold"
+                    onClick={handleApplyJob}
+                  >
                     Apply on company site
                   </button>
                   <span
@@ -132,7 +169,6 @@ function DetailsJob({ job, load }) {
             </div>
 
             <div className=" border-t-2 border-slate-700/40 overflow-y-auto h-full pb-[12rem] px-4">
-
               <span className="text-2xl font-bold">
                 {job.hiringContentID.title}
               </span>
@@ -142,9 +178,7 @@ function DetailsJob({ job, load }) {
               <br />
               <p>{job.job_description}</p>
               <div
-
                 className={`ql-editor prose prose-lg`}
-
                 dangerouslySetInnerHTML={{
                   __html: job.hiringContentID.content,
                 }}

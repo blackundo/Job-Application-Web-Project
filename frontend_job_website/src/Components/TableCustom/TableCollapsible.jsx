@@ -16,6 +16,14 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 import { useNavigate } from "react-router-dom";
 import styles from "./TableCollapsible.module.css";
+function convertToDateString(date) {
+  if (!date) return "";
+
+  // Check if date is not already a Date object
+  const dateObject = date instanceof Date ? date : new Date(date);
+
+  return dateObject.toISOString().split("T")[0];
+}
 
 function Row(props) {
   const { row, handleDeleteJob } = props;
@@ -24,13 +32,13 @@ function Row(props) {
   const handleEdit = (id) => {
     navigate(`/company/edit_jobs/${id}`);
   };
+
   return (
     <React.Fragment>
       <TableRow
         sx={{ "& > *": { borderBottom: "unset" } }}
         className={styles.bodyTableMain}
       >
-
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -49,10 +57,10 @@ function Row(props) {
           {row.errollmentStatus}
         </TableCell>
         <TableCell align="right" className={`${styles.dateStart}`}>
-          {row.dateSubmit}
+          {convertToDateString(row.dateSubmit)}
         </TableCell>
         <TableCell align="right" className={`${styles.dateEnd}`}>
-          {row.dateEnd}
+          {convertToDateString(row.dateEnd)}
         </TableCell>
         <TableCell align="right">{row.status}</TableCell>
         <TableCell align="right">
@@ -67,7 +75,6 @@ function Row(props) {
               className="bg-red-400 p-2 rounded-md text-white  font-bold"
               onClick={() => handleDeleteJob(row.id)}
             >
-
               Delete
             </button>
           </div>
@@ -81,7 +88,6 @@ function Row(props) {
                 Details
               </Typography>
               <Table size="small" aria-label="purchases">
-
                 <TableHead className={styles.headerDetails}>
                   <TableRow>
                     {/* <TableCell>ID</TableCell> */}
@@ -123,7 +129,6 @@ function Row(props) {
                       </TableCell>
 
                       <TableCell align="right" className={styles.limit}>
-
                         {detailsRows.applicationLimit}
                       </TableCell>
                     </TableRow>
@@ -144,12 +149,10 @@ function Row(props) {
 
 Row.propTypes = {
   row: PropTypes.shape({
-
     id: PropTypes.number.isRequired,
-    dateSubmit: PropTypes.string.isRequired,
-    dateEnd: PropTypes.string.isRequired,
+    // dateSubmit: PropTypes.string.isRequired,
+    // dateEnd: PropTypes.string.isRequired,
     errollmentStatus: PropTypes.string.isRequired,
-
     details: PropTypes.arrayOf(
       PropTypes.shape({
         content: PropTypes.string.isRequired,
@@ -160,18 +163,14 @@ Row.propTypes = {
 
         minSalary: PropTypes.number.isRequired,
         // date: PropTypes.string.isRequired,
-
       })
     ).isRequired,
   }).isRequired,
 };
 
-
 export default function TableCollapsible({ rows, handleDeleteJob }) {
-  console.log(rows);
   return (
     <TableContainer component={Paper} className="border border-slate-200">
-
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
@@ -194,10 +193,8 @@ export default function TableCollapsible({ rows, handleDeleteJob }) {
           </TableRow>
         </TableHead>
         <TableBody>
-
           {rows?.map((row) => (
             <Row key={row.id} row={row} handleDeleteJob={handleDeleteJob} />
-
           ))}
         </TableBody>
       </Table>

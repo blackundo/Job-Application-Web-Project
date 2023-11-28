@@ -1,9 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoBusinessSharp } from "react-icons/io5";
 import img from "../../../Assets/appliedCD.svg";
+import axiosPrivate from "../../../api/axios";
 
 const AppliedTab = () => {
   const [countItems, setCountItems] = useState(0);
+
+  useEffect(() => {
+    async function displayJobApplied() {
+      await axiosPrivate
+        .get("")
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
+    }
+  }, []);
+
   if (countItems === 0) {
     return (
       <div className="flex items-center justify-center w-full">
@@ -11,6 +22,7 @@ const AppliedTab = () => {
       </div>
     );
   }
+
   return (
     <>
       {[...Array(countItems)].map((_, index) => (

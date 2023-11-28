@@ -7,23 +7,22 @@ import PanelAdminPage from "../Pages/PanelAdminPage/PanelAdminPage";
 import ChartContent from "../Components/PanelAdmin/Content/ChartContent";
 import CompanyManager from "../Components/PanelAdmin/CompanyManager/CompanyManager";
 import DetailsCompany from "../Components/PanelAdmin/CompanyManager/Details/DetailsCompany";
-import { Suspense, lazy } from "react";
+import { Suspense } from "react";
+
+import { Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import CandidateManager from "../Components/PanelAdmin/CandidateManager/CandidateManager";
-const Home = lazy(() => import("../Pages/Home/Home"));
-const RolePage = lazy(() => import("../Pages/ChooseRole/RolePage"));
-const Login = lazy(() => import("../Pages/Login/LoginPage"));
-const Register = lazy(() => import("../Pages/Register/RegisterPage"));
-const ForgotPassword = lazy(() =>
-  import("../Pages/ForgotPassword/ForgotPassword")
-);
+import Home from "../Pages/Home/Home";
+import RolePage from "../Pages/ChooseRole/RolePage";
+import Login from "../Pages/Login/LoginPage";
+import Register from "../Pages/Register/RegisterPage";
+import ForgotPassword from "../Pages/ForgotPassword/ForgotPassword";
 
-const MessagePage = lazy(() => import("../Pages/MessagePage/MessagePage"));
-const NotFoundPage = lazy(() => import("../Pages/ErrorPages/NotFoundPage"));
+import MessagePage from "../Pages/MessagePage/MessagePage";
+import NotFoundPage from "../Pages/ErrorPages/NotFoundPage";
 import FindJobPage from "../Pages/FindJobPage/FindJobPage";
 import ProfilePage from "../Pages/ProfilePage/ProfilePage";
 
-import { Route, Routes } from "react-router-dom";
 import SpinnerFullPage from "../Components/SpinnerFullPage/SpinnerFullPage";
 import RouterRole from "./RouterRole";
 import CompanyPages from "../Pages/CompanyPages/CompanyPages";
@@ -39,7 +38,6 @@ import AccountSetting from "../Components/CompanyView/Content/AccountSetting";
 import JobApplied from "../Components/Profile/JobApplied/JobApplied";
 
 import EditJobs from "../Components/CompanyView/Content/EditJobs";
-
 
 // const roles = ["Candidate", "Company", "admin", null];
 function Router() {
