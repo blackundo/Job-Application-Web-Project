@@ -33,6 +33,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd /home/ubuntu/Job-Application-Web-Project/BackEnd_Job_Website/
-            mvn package
+            cd /home/ubuntu/Job-Application-Web-Project/BackEnd_Job_Website/ && /opt/apache-maven-3.6.3/bin/mvn package
             sudo systemctl restart Job_Hunter_SpringBoot
