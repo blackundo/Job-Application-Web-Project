@@ -1,6 +1,6 @@
 import { FiAlertCircle, FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import img from "../../../Assets/jobdetails.png";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 function DetailsJobs() {
@@ -112,21 +112,21 @@ function DetailsJobs() {
           <div className="flex items-start justify-center gap-2 pt-2">
             <button
               className={`${
-                errollmentStatus === "Full-time"
+                errollmentStatus === "FULL_TIME"
                   ? "bg-slate-600 text-white"
                   : "border border-slate-600 text-slate-800"
               } p-2 rounded-2xl w-28 text-sm`}
-              onClick={() => handleEnrollmentStatusChange("Full-time")}
+              onClick={() => handleEnrollmentStatusChange("FULL_TIME")}
             >
               Full-Time
             </button>
             <button
               className={`${
-                errollmentStatus === "Part-time"
+                errollmentStatus === "PART_TIME"
                   ? "bg-slate-600 text-white"
                   : "border border-slate-600 text-slate-800"
               } border border-slate-600 text-slate-800 p-2 rounded-2xl w-28 text-sm`}
-              onClick={() => handleEnrollmentStatusChange("Part-time")}
+              onClick={() => handleEnrollmentStatusChange("PART_TIME")}
             >
               Part-Time
             </button>

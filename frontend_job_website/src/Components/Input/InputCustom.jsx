@@ -1,4 +1,14 @@
-function InputCustom({ title, placeholder, type = "text", onChange, value }) {
+function InputCustom({
+  title,
+  placeholder,
+  type = "text",
+  handleOnChange,
+  value,
+}) {
+  // console.log(value);
+  const handleChange = (e) => {
+    handleOnChange(e.target.value);
+  };
   return (
     <div className=" pt-6 flex flex-col items-start justify-center gap-2">
       <label htmlFor="" className="text-sm font-semibold">
@@ -9,7 +19,7 @@ function InputCustom({ title, placeholder, type = "text", onChange, value }) {
         className="w-full border h-10 rounded-lg px-2"
         placeholder={placeholder}
         value={value}
-        onChange={onChange}
+        onChange={handleChange}
       />
     </div>
   );

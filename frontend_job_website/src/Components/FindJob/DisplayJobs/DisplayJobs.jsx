@@ -4,7 +4,6 @@ import DetailsJob from "./DetailsJob";
 
 import { memo, useState } from "react";
 
-
 import "./DisplayJobs.css";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
@@ -12,20 +11,19 @@ import axiosPrivate from "../../../api/axios";
 import ReactPaginate from "react-paginate";
 
 const DisplayJobs = () => {
-
   const [loadDetail, setLoadDetail] = useState(false);
   const [jobs, setJobs] = useState([]);
   const mobile = window.innerWidth <= 768;
   const [jobDetail, setJobDetail] = useState(null);
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState("All");
+  const [pageSize, setPageSize] = useState("5");
   const [totalItems, setTotalItems] = useState(0);
   const handleChooseJob = async (id) => {
     setLoadDetail(false);
     await axiosPrivate
       .get(`http://localhost:80/api/hiring/${id}`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setLoadDetail(true);
         // console.log(res.data[0].image_company);
         setJobDetail(res.data);
@@ -44,7 +42,7 @@ const DisplayJobs = () => {
           }`
         )
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           const data = res.data.content;
           setJobs(data);
           setTotalItems(res.data.totalElements);
@@ -78,9 +76,7 @@ const DisplayJobs = () => {
             </span>
           </div>
           <div className="pb-3">
-            {/* <span className="text-[0.68rem]">Job in Da Nang</span> */}
             <div className="flex items-center justify-between">
-              {/* <span className="text-[0.81rem]">Short by: (X) - (X)</span> */}
               <select onChange={handlePageSizeChange} value={pageSize}>
                 <option value="All">all</option>
                 <option value="1">1 per page</option>
@@ -97,7 +93,6 @@ const DisplayJobs = () => {
           </div>
 
           {jobs.length === 0 ? (
-
             Array.from({ length: 5 }, (_, k) => {
               return (
                 <div

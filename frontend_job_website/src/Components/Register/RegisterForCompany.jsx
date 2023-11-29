@@ -1,15 +1,15 @@
 import { useState } from "react";
-
 import { Link, useLocation } from "react-router-dom";
-import axios from "axios";
 import Social from "../Social/Social";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { ToastCustom } from "../ToastCustom/ToastCustom";
+import axiosPrivate from "../../api/axios";
 
 const FormRegisterCompany = ({ setIsRegistered }) => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const role = searchParams.get("role");
+  const [rePassword, setRePassword] = useState("");
   // console.log(role);
   const [formData, setFormData] = useState({
     companyName: "",
@@ -17,12 +17,15 @@ const FormRegisterCompany = ({ setIsRegistered }) => {
     password: "",
   });
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
+    if (!validate(formData)) {
+      return;
+    }
     const loadingToastId = toast.loading("Please wait...", {
       autoClose: false,
     });
-    axios
-      .post(`http://localhost:80/api/auth/register?role=${role}`, formData)
+    await axiosPrivate
+      .post(`/api/auth/register?role=${role}`, formData)
       .then((res) => {
         toast.dismiss(loadingToastId);
         ToastCustom.success("🦄 Register Success!", { autoClose: 1500 });
@@ -48,29 +51,40 @@ const FormRegisterCompany = ({ setIsRegistered }) => {
       [name]: value,
     });
   };
+  const validate = (formData) => {
+    // Check required fields
+    if (!formData.companyName || !formData.email || !formData.password) {
+      toast.error("Please fill in all required fields");
+      return false;
+    }
+    function isValidEmail(email) {
+      const re = /\S+@\S+\.\S+/;
+      return re.test(email);
+    }
+    // Check email format
+    if (!isValidEmail(formData.email)) {
+      toast.error("Invalid email");
+      return false;
+    }
 
+    // Check if passwords match
+    if (formData.password !== rePassword) {
+      toast.error("Passwords do not match");
+      return false;
+    }
+
+    return true;
+  };
   return (
     <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={1600}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-      <span className="absolute top-6 right-14">
+      <span className="absolute top-6 right-14 max-md:top-10 max-md:right-5 max-md:text-sm">
         Have already account?
         <Link to={"/login"} className="text-[#000084] cursor-pointer">
           Login
         </Link>
       </span>
 
-      <div className="box-login w-[23rem] ">
+      <div className="box-login w-[23rem]  max-sm:w-[19rem]">
         <h1 className="text-2xl font-semibold font-serif pb-7">Company</h1>
         <div className="form-login w-full ">
           <div className="flex flex-col py-2">
@@ -118,7 +132,7 @@ const FormRegisterCompany = ({ setIsRegistered }) => {
               />
             </div>
           </div>
-          {/* <div className="flex flex-col py-2">
+          <div className="flex flex-col py-2">
             <label htmlFor="" className="font-normal text-x">
               Re-enter Password
             </label>
@@ -128,9 +142,11 @@ const FormRegisterCompany = ({ setIsRegistered }) => {
                 name="rePassword"
                 placeholder="Re-enter password"
                 className="pl-3 w-full h-[40px] rounded-md"
+                value={rePassword}
+                onChange={(e) => setRePassword(e.target.value)}
               />
             </div>
-          </div> */}
+          </div>
           <button
             className="bg-[#133FA0] w-full h-12 rounded-md text-white my-3 text-[1.2rem] font-normal"
             onClick={handleRegister}

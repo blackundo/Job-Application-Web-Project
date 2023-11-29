@@ -1,22 +1,30 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import InputCustom from "../../Input/InputCustom";
 import OptionCustom from "../../Input/OptionCustom";
 import BasicDatePicker from "../../PickDateCustoms/BasicDatePicker";
 import SuneditorCustom from "../../Suneditor/SuneditorCustom";
-import { useEffect } from "react";
 import axiosPrivate from "../../../api/axios";
+import LoadingComponent from "../../LoadingComponent/LoadingComponent";
+import swal from "sweetalert";
 
 function EditJobs() {
   const { id } = useParams();
   const [isDateSelected, setIsDateSelected] = useState(false);
   const [jobData, setJobData] = useState(null);
   const [content, setContent] = useState("");
+  const [titlePost, setTitlePost] = useState("");
   const [next, setNext] = useState(true);
   const [errors, setErrors] = useState({});
-
+  const navigate = useNavigate();
   const handleDateChange = (date) => {
     const formattedDate = date ? date.format("YYYY-MM-DD") : null;
+    setJobData((prev) => ({
+      ...prev,
+      dateEnd: formattedDate,
+    }));
+
+    //kiem tra xem date da duoc chọn hay chua
     setIsDateSelected(!!formattedDate);
   };
   useEffect(() => {
@@ -25,6 +33,7 @@ function EditJobs() {
       try {
         const res = await axiosPrivate.get(`/api/hiring/${id}`);
         setJobData(res.data);
+        setTitlePost(res.data?.hiringContentID.title);
         console.log(res.data);
       } catch (err) {
         console.log(err);
@@ -40,20 +49,48 @@ function EditJobs() {
     if (!validate()) return;
 
     const updatedJob = {
-      title: jobData.hiringName,
       hiringName: jobData.hiringName,
-      // ... other fields
+      applicationLimit: jobData.applicationLimit,
+      dateEnd: jobData.dateEnd,
+      contentPost: content,
+      status: "Open",
+      titlePost: titlePost,
+      fieldName: jobData.fieldName,
+      minSalary: jobData.minSalary,
+      maxSalary: jobData.maxSalary,
+      errollmentStatus: jobData.errollmentStatus,
     };
 
-    try {
-      await axiosPrivate.put(`/api/jobs/${id}`, updatedJob);
-      // redirect to jobs page
-    } catch (err) {
-      console.log(err);
-    }
+    await swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((yes) => {
+      if (yes) {
+        axiosPrivate
+          .put(`/api/hiring/${id}`, updatedJob)
+          .then((res) => {
+            swal("Poof! Your imaginary file has been deleted!", {
+              icon: "success",
+            });
+            navigate("/company");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        swal("Cancelled");
+      }
+    });
+
+    console.log("updatedJob", jobData);
+    // redirect to jobs page
   };
-  const handleInputChange = (field, e) => {
-    setJobData((prevData) => ({ ...prevData, [field]: e.target.value }));
+
+  const handleInputChange = (field, value) => {
+    setJobData((prevData) => ({ ...prevData, [field]: value }));
   };
 
   return (
@@ -68,19 +105,37 @@ function EditJobs() {
               title={"Hiring Name"}
               placeholder={"Hiring Name"}
               value={jobData.hiringName}
-              onChange={(e) => handleInputChange(e)}
+              handleOnChange={(value) => handleInputChange("hiringName", value)}
             />
-            <InputCustom
+            <div className=" pt-6 flex flex-col items-start justify-center gap-2">
+              <label htmlFor="" className="text-sm font-semibold">
+                Title
+              </label>
+              <input
+                type="text"
+                className="w-full border h-10 rounded-lg px-2"
+                placeholder="Title"
+                value={titlePost}
+                onChange={(e) => {
+                  console.log(e);
+                  setTitlePost(e.target.value);
+                }}
+              />
+            </div>
+            {/* <InputCustom
               title={"Title"}
               placeholder={"Title Name"}
-              value={jobData.hiringContentID.title}
-              onChange={(e) => handleInputChange(e)}
-            />
+              value={jobData.hiringContentID.title || ""}
+              onChange={(e) => {
+                console.log("e.target.value:", e);
+                // setTitlePost(e.target.value);
+              }}
+            /> */}
             <InputCustom
               title={"Field Name"}
               placeholder={"Field Name"}
               value={jobData.fieldName}
-              onChange={(e) => handleInputChange(e)}
+              handleOnChange={(value) => handleInputChange("fieldName", value)}
             />
 
             <InputCustom
@@ -88,23 +143,33 @@ function EditJobs() {
               placeholder={"10"}
               type="number"
               value={jobData.applicationLimit}
-              onChange={(e) => handleInputChange(e)}
+              handleOnChange={(value) =>
+                handleInputChange("applicationLimit", value)
+              }
             />
-            <OptionCustom title={"Enrollment Status"} />
+            <OptionCustom
+              title={"Enrollment Status"}
+              value={jobData.errollmentStatus}
+              onChange={(value) => handleInputChange("errollmentStatus", value)}
+            />
             <div className="flex items-center justify-start gap-3 pb-3">
               <InputCustom
                 title={"Min Salary"}
                 placeholder={"1000"}
                 type="number"
                 value={jobData.minSalary}
-                onChange={(e) => handleInputChange(e)}
+                handleOnChange={(value) =>
+                  handleInputChange("minSalary", value)
+                }
               />
               <InputCustom
                 title={"Max Salary"}
                 placeholder={"2000"}
                 type="number"
                 value={jobData.maxSalary}
-                onChange={(e) => handleInputChange(e)}
+                handleOnChange={(value) =>
+                  handleInputChange("maxSalary", value)
+                }
               />
             </div>
             <div className="pb-3">
@@ -125,6 +190,7 @@ function EditJobs() {
           <div className="flex items-center justify-end w-full">
             <button
               className={`h-12 p-3 ${"bg-blue-600 text-white"}  font-bold rounded-lg max-md:w-1/2  `}
+              onClick={() => handleSubmit()}
             >
               Update
             </button>
@@ -132,26 +198,7 @@ function EditJobs() {
         </>
       ) : (
         Array.from({ length: 5 }, (_, i) => {
-          return (
-            <div
-              className="border border-blue-300 shadow rounded-md p-4 max-w-full w-full mx-auto mb-2"
-              key={i}
-            >
-              <div className="animate-pulse flex space-x-4">
-                <div className="rounded-full bg-slate-700 h-10 w-10"></div>
-                <div className="flex-1 space-y-6 py-1">
-                  <div className="h-2 bg-slate-700 rounded"></div>
-                  <div className="space-y-3">
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="h-2 bg-slate-700 rounded col-span-2"></div>
-                      <div className="h-2 bg-slate-700 rounded col-span-1"></div>
-                    </div>
-                    <div className="h-2 bg-slate-700 rounded"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
+          return <LoadingComponent key={i} />;
         })
       )}
     </div>

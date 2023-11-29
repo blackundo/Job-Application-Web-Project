@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IoBusinessSharp } from "react-icons/io5";
+import img from "../../../Assets/interviewsCD.svg";
 
 const InterviewsTab = () => {
   const [countItems, setCountItems] = useState(0);
