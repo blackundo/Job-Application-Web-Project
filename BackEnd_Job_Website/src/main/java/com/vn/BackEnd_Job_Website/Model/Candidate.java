@@ -35,6 +35,7 @@ public class Candidate {
     @Column(name = "City")
     private String city;
 
+    @Lob
     @Column(name = "UploadFileCV")
     private byte[] uploadFileCV;
 

@@ -35,5 +35,7 @@ export default defineConfig({
       },
     },
   },
-  // End workaround
+  commonjsOptions: {
+    esmExternals: true,
+  },
 });

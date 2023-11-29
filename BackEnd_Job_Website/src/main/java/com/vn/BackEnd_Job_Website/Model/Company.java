@@ -1,5 +1,6 @@
 package com.vn.BackEnd_Job_Website.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
@@ -19,6 +20,7 @@ public class Company {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AccountID")
+    @JsonIgnore
     private Account account;
 
     @Nationalized
@@ -48,9 +50,11 @@ public class Company {
     @Column(name = "PhoneNumber")
     private String phoneNumber;
 
+    @Lob
     @Column(name = "Avatar")
     private byte[] avatar;
 
+    @Lob
     @Column(name = "Cover")
     private byte[] cover;
 

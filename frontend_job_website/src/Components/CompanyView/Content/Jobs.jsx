@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 
 import Header from "./Header";
 import axiosPrivate from "../../../api/axios";
@@ -6,8 +6,6 @@ import TableCollapsible from "../../TableCustom/TableCollapsible";
 import { ToastCustom } from "../../ToastCustom/ToastCustom";
 import LoadingComponent from "../../LoadingComponent/LoadingComponent";
 import { transformJob } from "../transformJob";
-import { useMemo } from "react";
-import { useCallback } from "react";
 import swal from "sweetalert";
 import HeaderJobCustom from "./HeaderJobCustom";
 
@@ -33,13 +31,15 @@ function Jobs() {
 
   useEffect(() => {
     async function getHiring() {
+      const userID = JSON.parse(localStorage.getItem("Profile"))?.user?.id;
+      console.log(userID);
       await axiosPrivate
-        .get("api/hiring/get")
+        .get(`api/hiring/company/${userID}`)
         .then((res) => {
           const data = res.data.content;
 
           setMyJobs(data);
-          console.log(res);
+          // console.log(data);
           setRefresh(true);
         })
         .catch((err) => {
@@ -61,12 +61,13 @@ function Jobs() {
     }).then((willDelete) => {
       if (willDelete) {
         axiosPrivate
-          .get(`/api/hiring/delete/${id}`, {
+          .delete(`/api/hiring/${id}`, {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
           })
           .then((res) => {
+            console.log(res);
             swal("Poof! Your imaginary file has been deleted!", {
               icon: "success",
             });

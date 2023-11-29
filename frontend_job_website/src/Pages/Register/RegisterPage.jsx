@@ -1,10 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Layout from "../../Layouts/Layout";
 import RegisterSuccess from "./RegisterSuccess";
-
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import axios from "axios";
 import FormRegisterCandidate from "../../Components/Register/RegisterForCandidate";
 import FormRegisterCompany from "../../Components/Register/RegisterForCompany";
 

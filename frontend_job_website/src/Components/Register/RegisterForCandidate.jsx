@@ -9,6 +9,8 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const role = searchParams.get("role");
+  const [rePassword, setRePassword] = useState("");
+
   // console.log(role);
   const [formData, setFormData] = useState({
     name: "",
@@ -16,6 +18,9 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
     password: "",
   });
   const handleRegister = async () => {
+    if (!validateData(formData)) {
+      return;
+    }
     const loadingToastId = toast.loading("Please wait...", {
       autoClose: false,
     });
@@ -45,24 +50,43 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
       [name]: value,
     });
   };
+  const validateData = (formData) => {
+    // Kiểm tra các trường bắt buộc
+    if (!formData.name || !formData.email || !formData.password) {
+      toast.error("Vui lòng nhập đầy đủ thông tin");
+      return false;
+    }
 
+    // Kiểm tra định dạng email
+    const isValidEmail = (email) => {
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return regex.test(email);
+    };
+
+    if (!isValidEmail(formData.email)) {
+      toast.error("Email không hợp lệ");
+      return false;
+    }
+
+    // Kiểm tra mật khẩu
+    if (formData.password !== rePassword) {
+      toast.error("Mật khẩu không trùng khớp");
+      return false;
+    }
+
+    return true;
+  };
   return (
     <>
-      <span className="absolute top-6 right-14">
+      <span className="absolute top-6 right-14  max-md:top-10 max-md:right-5 max-md:text-sm">
         Have already account?
         <Link to={"/login"} className="text-[#000084] cursor-pointer">
           Login
         </Link>
       </span>
 
-      <div className="box-login w-[23rem] ">
+      <div className="box-login w-[23rem] max-sm:w-[19rem]">
         <h1 className="text-2xl font-semibold font-serif pb-7">Candidate</h1>
-        {/* {error && (
-          <p className="text-red-600">
-            Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.
-          </p>
-        )} */}
-
         <div className="form-login w-full ">
           <div className="flex flex-col py-2">
             <label htmlFor="" className="font-normal text-x">
@@ -109,7 +133,7 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
               />
             </div>
           </div>
-          {/* <div className="flex flex-col py-2">
+          <div className="flex flex-col py-2">
             <label htmlFor="" className="font-normal text-x">
               Re-enter Password
             </label>
@@ -119,9 +143,11 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
                 name="rePassword"
                 placeholder="Re-enter password"
                 className="pl-3 w-full h-[40px] rounded-md"
+                value={rePassword}
+                onChange={(e) => setRePassword(e.target.value)}
               />
             </div>
-          </div> */}
+          </div>
           <button
             className="bg-[#133FA0] w-full h-12 rounded-md text-white my-3 text-[1.2rem] font-normal"
             onClick={handleRegister}

@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Line } from "react-chartjs-2";
 import { subMonths, subYears, startOfDay, eachDayOfInterval } from "date-fns";
 import { CategoryScale } from "chart.js";
-import Chart from "chart.js/auto";
+import Chart from "chart.js";
 const LineChart = () => {
   Chart.register(CategoryScale);
   const [chartData, setChartData] = useState({});
