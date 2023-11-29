@@ -1,5 +1,5 @@
 {
-  "homepage": "https://dophuocdat.github.io/Job-Application-Web-Project/",
+  "proxy":"http://localhost/",
   "name": "frontend_job_website",
   "version": "0.1.0",
   "private": true,
@@ -15,7 +15,6 @@
     "@tailwindcss/typography": "^0.5.10",
     "axios": "^1.5.1",
     "chart.js": "^4.4.0",
-    "cors": "^2.8.5",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.10",
     "framer-motion": "^10.16.4",

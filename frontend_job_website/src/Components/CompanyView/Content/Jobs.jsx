@@ -61,7 +61,7 @@ function Jobs() {
     }).then((willDelete) => {
       if (willDelete) {
         axiosPrivate
-          .get(`/api/hiring/delete/${id}`, {
+          .delete(`/api/hiring/${id}`, {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },

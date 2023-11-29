@@ -2,10 +2,10 @@ import { useState } from "react";
 import Social from "../Social/Social";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
 import { informationUser } from "../../Utils/TokenToProfile";
 import { ToastCustom } from "../ToastCustom/ToastCustom";
 import axiosPrivate from "../../api/axios";
+import { toast } from "react-toastify";
 
 const FormContent = () => {
   const dispatch = useDispatch();
@@ -60,19 +60,7 @@ const FormContent = () => {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={1600}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-      <span className="absolute top-6 right-14">
+      <span className="absolute top-6 right-14 max-md:right-4 max-md:text-sm">
         Don’t have an account?
         <Link to={"/chooseRole"} className="text-[#000084] cursor-pointer">
           Register now

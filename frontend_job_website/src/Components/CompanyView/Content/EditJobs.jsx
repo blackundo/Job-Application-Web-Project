@@ -16,7 +16,7 @@ function EditJobs() {
   const [titlePost, setTitlePost] = useState("");
   const [next, setNext] = useState(true);
   const [errors, setErrors] = useState({});
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   const handleDateChange = (date) => {
     const formattedDate = date ? date.format("YYYY-MM-DD") : null;
     setJobData((prev) => ({
@@ -70,13 +70,12 @@ function EditJobs() {
     }).then((yes) => {
       if (yes) {
         axiosPrivate
-          .post(`/api/hiring/${id}`, updatedJob)
+          .put(`/api/hiring/${id}`, updatedJob)
           .then((res) => {
             swal("Poof! Your imaginary file has been deleted!", {
               icon: "success",
             });
-            navigate("/company")
-            
+            navigate("/company");
           })
           .catch((err) => {
             console.log(err);
@@ -91,8 +90,6 @@ function EditJobs() {
   };
 
   const handleInputChange = (field, value) => {
-    console.log("Field:", field);
-    console.log("Value:", value);
     setJobData((prevData) => ({ ...prevData, [field]: value }));
   };
 

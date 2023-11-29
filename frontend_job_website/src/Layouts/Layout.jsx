@@ -5,7 +5,7 @@ import styles from "./Layout.module.css";
 const Layout = ({ children }) => {
   return (
     <div>
-      <div className="flex max-md:h-screen ">
+      <div className="flex max-md:min-h-screen ">
         <div
           className={`${styles.left} w-1/3 h-screen  object-cover drop-shadow-2xl max-md:hidden`}
         >
@@ -13,7 +13,7 @@ const Layout = ({ children }) => {
             <img src={Logo} alt="" className="z-50" />
           </div>
         </div>
-        <div className="right w-2/3 bg-slate-300 grid place-content-center relative max-md:w-full">
+        <div className="right w-2/3 bg-slate-300 grid place-content-center relative max-md:w-full ">
           {children}
         </div>
       </div>
