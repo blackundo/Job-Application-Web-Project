@@ -16,21 +16,16 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
 
 
-    private void getInfo(MultipartFile file){
-
-    }
-
     @Override
     public Company addAvatar(MultipartFile avatar) throws Exception {
         String fileName = StringUtils.cleanPath(avatar.getOriginalFilename());
         var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        var company = companyRepository.findByAccountID(account.getId()).orElseThrow();
         try {
             if(fileName.contains("..")) {
                 throw new Exception("Filename contains invalid path sequence " + fileName);
             }
-            companyRepository.uploadAvatarByAccountID(avatar.getBytes(), company.getId());
-            return company;
+            companyRepository.uploadAvatarByAccountID(avatar.getBytes(), account.getId());
+            return null;
         } catch (Exception e) {
             throw new Exception("Could not save File: " + fileName);
         }

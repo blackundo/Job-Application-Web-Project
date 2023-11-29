@@ -16,11 +16,11 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
     @Transactional
     @Modifying
-    @Query("update Company c set c.avatar = ?1 where c.id = ?2")
+    @Query("update Company c set c.avatar = ?1 where c.account.id = ?2")
     void uploadAvatarByAccountID(@NonNull byte[] avatar, @NonNull Integer id);
 
     @Transactional
     @Modifying
-    @Query("update Company c set c.cover = ?1 where c.id = ?2")
+    @Query("update Company c set c.cover = ?1 where c.account.id = ?2")
     void uploadCoverByAccountID(@NonNull byte[] cover, @NonNull Integer id);
 }

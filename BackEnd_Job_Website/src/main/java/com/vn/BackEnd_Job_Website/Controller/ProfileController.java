@@ -17,7 +17,9 @@ import com.vn.BackEnd_Job_Website.Service.ProfileService;
 import com.vn.BackEnd_Job_Website.Utils.GetNullPropertyNames;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -82,11 +84,21 @@ public class ProfileController {
 
 
 
+    @PutMapping("/company/update")
+    public ResponseEntity<?> updateCompany(@RequestBody CompanyRecord request) throws Exception {
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Company company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
+
+        BeanUtils.copyProperties(request, company, GetNullPropertyNames.__arrayEmpty__(request));
+        var companyUpdated = companyRepository.save(company);
+
+        return new ResponseEntity<>(companyUpdated, HttpStatus.OK);
+    }
 
 
     @PatchMapping("/company/update")
-    public ResponseEntity<?> updateCompany(@RequestParam(required = false) MultipartFile avatar,
-                                           @RequestParam(required = false) MultipartFile cover) throws Exception{
+    public ResponseEntity<?> updateLobCompany(@RequestParam(required = false) MultipartFile avatar,
+                                              @RequestParam(required = false) MultipartFile cover) throws Exception{
 //        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        Company company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
 
@@ -136,16 +148,18 @@ public class ProfileController {
 
         //save
 //        var companyUpdated = companyRepository.save(company);
-        return new ResponseEntity<>("done", HttpStatus.OK);
+        return new ResponseEntity<>("company", HttpStatus.OK);
     }
 
 
-    @PostMapping("/candidate/update")
-    public ResponseEntity<?> updateCandidate(@RequestParam(required = false) MultipartFile cv,
-                                           @RequestBody CompanyRecord request) throws Exception {
+    @PutMapping("/candidate/update")
+    public ResponseEntity<?> updateCandidate(@RequestBody CandidateRecord request) throws Exception {
         var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
+        Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow();
 
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        BeanUtils.copyProperties(request, candidate, GetNullPropertyNames.__arrayEmpty__(request));
+        var candidateUpdated = candidateRepository.save(candidate);
+
+        return new ResponseEntity<>(candidateUpdated, HttpStatus.OK);
     }
 }
