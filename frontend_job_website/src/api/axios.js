@@ -1,5 +1,6 @@
 import axios from "axios";
-const BASE_URL = "http://localhost";
+const BASE_URL =
+  "https://5955-2405-4802-706c-4890-f4b8-2eb2-d347-75e.ngrok-free.app";
 
 const axiosPrivate = axios.create({
   baseURL: BASE_URL,

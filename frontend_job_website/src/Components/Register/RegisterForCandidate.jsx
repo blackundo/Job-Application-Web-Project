@@ -9,6 +9,8 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const role = searchParams.get("role");
+  const [rePassword, setRePassword] = useState("");
+
   // console.log(role);
   const [formData, setFormData] = useState({
     name: "",
@@ -16,7 +18,6 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
     password: "",
   });
   const handleRegister = async () => {
-    
     if (!validateData(formData)) {
       return;
     }
@@ -68,7 +69,7 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
     }
 
     // Kiểm tra mật khẩu
-    if (formData.password !== formData.rePassword) {
+    if (formData.password !== rePassword) {
       toast.error("Mật khẩu không trùng khớp");
       return false;
     }
@@ -142,6 +143,8 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
                 name="rePassword"
                 placeholder="Re-enter password"
                 className="pl-3 w-full h-[40px] rounded-md"
+                value={rePassword}
+                onChange={(e) => setRePassword(e.target.value)}
               />
             </div>
           </div>
