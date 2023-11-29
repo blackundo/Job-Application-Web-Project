@@ -14,9 +14,11 @@ import com.vn.BackEnd_Job_Website.Respository.MainFieldRepository;
 import com.vn.BackEnd_Job_Website.Service.CandidateService;
 import com.vn.BackEnd_Job_Website.Service.CompanyService;
 import com.vn.BackEnd_Job_Website.Service.ProfileService;
+import com.vn.BackEnd_Job_Website.Utils.GetNullPropertyNames;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -82,37 +84,28 @@ public class ProfileController {
 
 
 
-    @PostMapping("/company/update")
+    @PatchMapping("/company/update")
     public ResponseEntity<?> updateCompany(@RequestParam(required = false) MultipartFile avatar,
-                                           @RequestParam(required = false) MultipartFile cover,
-                                           @RequestBody CompanyRecord request) throws Exception {
-        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Company company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
-        System.out.println(company.getCompanyName());
-        System.out.println(company.getCompanyName());
-        System.out.println(company.getCompanyName());
-        System.out.println(company.getCompanyName());
-        if (request.fieldName() != null){
-            System.out.println("fieldnameee");
-            System.out.println("fieldnameee");
-            System.out.println("fieldnameee");
-            System.out.println("fieldnameee");
-            System.out.println("fieldnameee");
-            System.out.println("fieldnameee");
-            System.out.println("fieldnameee");
-            if (company.getMainFieldID() == null){
-                MainField mainField = new MainField(null, request.fieldName(), request.infoField(),request.achievement(), request.activeTime());
-                mainFieldRepository.save(mainField);
-            }else {
-                MainField mainField = mainFieldRepository.findById(company.getMainFieldID().getId()).orElseThrow();
-                mainField.setFieldName(request.fieldName());
-                mainField.setInfoField(request.infoField());
-                mainField.setAchievement(request.achievement());
-                mainField.setActiveTime(request.activeTime());
-                mainFieldRepository.save(mainField);
-            }
+                                           @RequestParam(required = false) MultipartFile cover) throws Exception{
+//        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Company company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
 
-        }
+
+
+//        if (request.fieldName() != null){
+//            if (company.getMainFieldID() == null){
+//                MainField mainField = new MainField(null, request.fieldName(), request.infoField(),request.achievement(), request.activeTime());
+//                mainFieldRepository.save(mainField);
+//            }else {
+//                MainField mainField = mainFieldRepository.findById(company.getMainFieldID().getId()).orElseThrow();
+//                mainField.setFieldName(request.fieldName());
+//                mainField.setInfoField(request.infoField());
+//                mainField.setAchievement(request.achievement());
+//                mainField.setActiveTime(request.activeTime());
+//                mainFieldRepository.save(mainField);
+//            }
+//        }
+        Company company1 = null;
         //update avatar
         if(avatar != null){
             try {
@@ -130,17 +123,20 @@ public class ProfileController {
             }
         }
         //update other field
-        company.setCompanyName(request.companyName());
-        company.setIntroduction(request.introduction());
-        company.setAddress(request.address());
-        company.setFouding(request.fouding());
-        company.setBusinessEmail(request.businessEmail());
-        company.setOrganizational(request.organizational());
-        company.setPhoneNumber(request.phoneNumber());
+
+//        BeanUtils.copyProperties(request, company, GetNullPropertyNames.__arrayEmpty__(request));
+
+//        company.setCompanyName(request.companyName());
+//        company.setIntroduction(request.introduction());
+//        company.setAddress(request.address());
+//        company.setFouding(request.fouding());
+//        company.setBusinessEmail(request.businessEmail());
+//        company.setOrganizational(request.organizational());
+//        company.setPhoneNumber(request.phoneNumber());
 
         //save
-        var companyUpdated = companyRepository.save(company);
-        return new ResponseEntity<>(companyUpdated, HttpStatus.OK);
+//        var companyUpdated = companyRepository.save(company);
+        return new ResponseEntity<>("done", HttpStatus.OK);
     }
 
 

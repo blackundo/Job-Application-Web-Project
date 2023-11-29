@@ -18,5 +18,5 @@ public interface HiringRepository extends PagingAndSortingRepository<Hiring, Int
                                     JpaRepository<Hiring, Integer>,
                                     JpaSpecificationExecutor<Hiring> {
     @Query(value = "select h from Hiring h where h.companyID.id = :id")
-    List<Hiring> findByCompanyID(Integer id);
+    Page<Hiring> findByCompanyID(Integer id, Pageable pageable);
 }

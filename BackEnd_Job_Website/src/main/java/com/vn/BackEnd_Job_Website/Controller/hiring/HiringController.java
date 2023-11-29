@@ -4,7 +4,9 @@ import com.vn.BackEnd_Job_Website.Dto.HiringPostDto;
 import com.vn.BackEnd_Job_Website.Model.*;
 import com.vn.BackEnd_Job_Website.Respository.*;
 import com.vn.BackEnd_Job_Website.Specification.HiringSpecification;
+import com.vn.BackEnd_Job_Website.Utils.GetNullPropertyNames;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +42,7 @@ public class HiringController {
         Pageable paging = PageRequest.of(page, size);
 
         Page<Hiring> pageHiring = hiringRepository.findAll(paging);
-        List<Hiring> hirings = pageHiring.getContent();
+//        List<Hiring> hirings = pageHiring.getContent();
         return new ResponseEntity<>(pageHiring, HttpStatus.OK);
     }
 
@@ -77,9 +79,13 @@ public class HiringController {
         }
     }
 
-    @GetMapping("/company")
-    public ResponseEntity<?> getHiringByComapny(@RequestParam int id){
-        List<Hiring> list = hiringRepository.findByCompanyID(id);
+    @GetMapping("/company/{id}")
+    public ResponseEntity<?> getHiringByComapny(@PathVariable int id,
+                                                @RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "5") int size){
+        Pageable paging = PageRequest.of(page, size);
+
+        Page<Hiring> list = hiringRepository.findByCompanyID(id, paging);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -118,29 +124,40 @@ public class HiringController {
         Hiring hiring = hiringRepository.findById(id).orElseThrow(() -> new Exception("Resource not found"));
         HiringContent content = hiringContentRepository.findById(hiring.getHiringContentID().getId()).orElseThrow(() -> new Exception("Resource not found"));
         //
-        content.setTitle(request.getTitlePost());
-        content.setContent(request.getContentPost());
-        //
-        hiring.setHiringName(request.getHiringName());
-        hiring.setApplicationLimit(request.getApplicationLimit());
-        hiring.setStatus(request.getStatus());
-        hiring.setFieldName(request.getFieldName());
-        hiring.setMinSalary(request.getMinSalary());
-        hiring.setMaxSalary(request.getMaxSalary());
-        hiring.setErrollmentStatus(request.getErrollmentStatus());
+//        if (request.getContentPost() != null || request.getTitlePost() != null) {
+//            content.setTitle(request.getTitlePost());
+//            content.setContent(request.getContentPost());
+//            hiringContentRepository.save(content);
+//        }
+//        //
+//        hiring.setHiringName(request.getHiringName());
+//        hiring.setApplicationLimit(request.getApplicationLimit());
+//        hiring.setStatus(request.getStatus());
+//        hiring.setFieldName(request.getFieldName());
+//        hiring.setMinSalary(request.getMinSalary());
+//        hiring.setMaxSalary(request.getMaxSalary());
+//        hiring.setErrollmentStatus(request.getErrollmentStatus());
+//        hiringRepository.save(hiring);
 
 
-        hiringContentRepository.save(content);
-        hiringRepository.save(hiring);
-        return new ResponseEntity<>(hiring, HttpStatus.OK);
+        BeanUtils.copyProperties(request, hiring, GetNullPropertyNames.__arrayEmpty__(request));
+        var updatedHiring = hiringRepository.save(hiring);
+
+        return new ResponseEntity<>(updatedHiring, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteHiring(@PathVariable int id) {
+    public ResponseEntity<Void> deleteHiring(@PathVariable int id) throws Exception {
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var company = companyRepository.findByAccountID(account.getId()).orElseThrow();
         Optional<Hiring> hiring = hiringRepository.findById(id);
         if (hiring.isPresent()) {
-            hiringRepository.delete(hiring.get());
-            return ResponseEntity.noContent().build();
+            if (hiring.get().getCompanyID().getId() == company.getId()){
+                hiringRepository.deleteById(id);
+                return ResponseEntity.noContent().build();
+            }else {
+                return ResponseEntity.badRequest().build();
+            }
         } else {
             return ResponseEntity.notFound().build();
         }

@@ -1,9 +1,10 @@
 package com.vn.BackEnd_Job_Website.Service;
 
+import com.vn.BackEnd_Job_Website.Model.Company;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface CompanyService {
-    void addAvatar(MultipartFile avatar) throws Exception;
+    Company addAvatar(MultipartFile avatar) throws Exception;
 
-    void addCover(MultipartFile cover) throws Exception;
+    Company addCover(MultipartFile cover) throws Exception;
 }
