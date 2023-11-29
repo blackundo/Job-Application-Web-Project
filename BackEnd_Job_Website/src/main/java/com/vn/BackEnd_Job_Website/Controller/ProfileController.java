@@ -2,6 +2,7 @@ package com.vn.BackEnd_Job_Website.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vn.BackEnd_Job_Website.Dto.AccountCandidateDto;
+import com.vn.BackEnd_Job_Website.Dto.CandidateRecord;
 import com.vn.BackEnd_Job_Website.Dto.CompanyRecord;
 import com.vn.BackEnd_Job_Website.Dto.ResponseFileCV;
 import com.vn.BackEnd_Job_Website.Model.Account;

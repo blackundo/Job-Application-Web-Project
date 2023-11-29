@@ -25,6 +25,7 @@ import org.springframework.web.cors.CorsConfiguration;
 public class SecurityConfiguration {
     private static final String[] WHITE_LIST_URL = {"/api/auth/**",
             "/",
+            "/messages/**",
             "/api/profile/download/**",
             "/api/profile"};
     private final JwtAuthenticationFilter jwtAuthFilter;
