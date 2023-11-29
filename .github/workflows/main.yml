@@ -27,7 +27,7 @@ jobs:
       - name: SSH to Server and Reset
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SERVER_IP }} # Thay đổi bằng địa chỉ IP của server
+          host: 168.138.104.2 # Thay đổi bằng địa chỉ IP của server
           username: ${{ secrets.SERVER_USERNAME }} # Thay đổi bằng tên người dùng SSH
           #password: ${{ secrets.SERVER_PASSWORD }} # Sử dụng SSH key nếu có thể
           key: ${{ secrets.SSH_PRIVATE_KEY }}
