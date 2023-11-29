@@ -18,11 +18,11 @@ jobs:
       #   with:
       #     java-version: '17'
 
-      - name: cd into backend
-        run: cd BackEnd_Job_Website
+      # - name: cd into backend
+      #   run: cd BackEnd_Job_Website
 
-      - name: Build with Maven
-        run: mvn clean package
+      # - name: Build with Maven
+      #   run: mvn clean package
 
       - name: SSH to Server and Reset
         uses: appleboy/ssh-action@master
@@ -33,4 +33,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SERVER_PASSWORD }}
           script: |
+            cd /home/ubuntu/Job-Application-Web-Project/BackEnd_Job_Website/
+            mvn package
             sudo systemctl restart Job_Hunter_SpringBoot
