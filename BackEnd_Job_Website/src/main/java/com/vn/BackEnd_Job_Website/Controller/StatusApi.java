@@ -10,6 +10,6 @@ public class StatusApi {
 
     @GetMapping("/")
     public String status(){
-        return "API is runningsf123123nsdjfbndjskbf";
+        return "API is running finalllllllllll";
     }
 }
