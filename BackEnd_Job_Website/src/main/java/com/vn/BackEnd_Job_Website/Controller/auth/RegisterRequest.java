@@ -27,4 +27,5 @@ public class RegisterRequest {
     private int age;
     private boolean gender;
     private String city;
+    private String universityOrCollege;
 }
