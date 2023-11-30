@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import DialogVerify from "../../Components/DialogCustoms/Dialog";
 function Home() {
   const acc = JSON.parse(localStorage.getItem("Profile"));
+  const token_access = JSON.parse(localStorage.getItem("Token"))?.token_access;
   const verifyEmail = acc?.user?.status;
   const [title, setTitle] = useState(
     "Please verify your email, easy to use other functions!"
@@ -60,6 +61,13 @@ function Home() {
   useEffect(() => {
     handleCheckStatusEmail();
   }, [handleCheckStatusEmail]);
+  const handleSendTokenEmailAgain = async () => {
+    await axiosPrivate.get("/api/auth/resend-verify", {
+      headers: {
+        Authorization: `Bearer ${token_access}`,
+      },
+    });
+  };
 
   return (
     <div className="flex items-center justify-center relative">
@@ -67,6 +75,7 @@ function Home() {
         <DialogVerify
           open={open}
           handleActiveEmail={handleActiveEmail}
+          handleSendTokenEmailAgain={handleSendTokenEmailAgain}
           title={title}
         />
       )}

@@ -12,7 +12,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function DialogVerify({ open, handleActiveEmail, title }) {
+export default function DialogVerify({
+  open,
+  handleActiveEmail,
+  title,
+  handleSendTokenEmailAgain,
+}) {
   const navigate = useNavigate();
   const handleLogin = () => {
     localStorage.removeItem("Token");
@@ -38,6 +43,7 @@ export default function DialogVerify({ open, handleActiveEmail, title }) {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleLogin}>Login</Button>
+        <Button onClick={handleSendTokenEmailAgain}>Send Again</Button>
         <Button onClick={handleActiveEmail}>Confirm yet</Button>
       </DialogActions>
     </Dialog>
