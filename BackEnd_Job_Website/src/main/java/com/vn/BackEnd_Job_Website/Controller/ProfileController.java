@@ -1,10 +1,7 @@
 package com.vn.BackEnd_Job_Website.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vn.BackEnd_Job_Website.Dto.AccountCandidateDto;
-import com.vn.BackEnd_Job_Website.Dto.CandidateRecord;
-import com.vn.BackEnd_Job_Website.Dto.CompanyRecord;
-import com.vn.BackEnd_Job_Website.Dto.ResponseFileCV;
+import com.vn.BackEnd_Job_Website.Dto.*;
 import com.vn.BackEnd_Job_Website.Model.Account;
 import com.vn.BackEnd_Job_Website.Model.Candidate;
 import com.vn.BackEnd_Job_Website.Model.Company;
@@ -56,7 +53,17 @@ public class ProfileController {
         profileservice.info(request,response);
     }
 
+    //chưa handle lỗi
+    @GetMapping("comapny-img")
+    public ResponseEntity<?> getCompanyImg() throws Exception {
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
 
+        return new ResponseEntity<>(ResponseCompanyImgDto.builder()
+                .avatar(company.getAvatar())
+                .cover(company.getCover())
+                .build(), HttpStatus.OK);
+    }
 
     @PostMapping("/uploadcv")
     public ResponseFileCV uploadCV(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
