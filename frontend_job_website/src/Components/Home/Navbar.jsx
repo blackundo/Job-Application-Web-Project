@@ -151,7 +151,7 @@ function Navbar() {
                         Profile
                       </Link>
                       <Link
-                        to={"job_applied"}
+                        to={"/user/job_applied"}
                         className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all"
                       >
                         Job Applied
