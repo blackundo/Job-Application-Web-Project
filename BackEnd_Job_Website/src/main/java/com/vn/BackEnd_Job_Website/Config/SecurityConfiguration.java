@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -29,7 +30,7 @@ import java.util.List;
 public class SecurityConfiguration {
     private static final String[] WHITE_LIST_URL = {"/api/auth/**",
             "/",
-            "/messages/**",
+            "/ws/**",
             "/api/profile/download/**",
             "/api/profile"};
     private final JwtAuthenticationFilter jwtAuthFilter;
@@ -42,7 +43,8 @@ public class SecurityConfiguration {
                         .configurationSource(request -> {
                             CorsConfiguration config = new CorsConfiguration();
                             config.applyPermitDefaultValues();
-                            config.addAllowedOrigin("http://localhost:5173");
+//                            config.addAllowedOrigin("http://localhost:5173");
+                            config.setAllowedOrigins(Collections.singletonList("*"));
                             config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
                             config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
                             return config;
