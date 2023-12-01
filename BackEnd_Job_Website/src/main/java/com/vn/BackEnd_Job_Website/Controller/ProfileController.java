@@ -54,10 +54,10 @@ public class ProfileController {
     }
 
     //chưa handle lỗi
-    @GetMapping("comapny-img")
-    public ResponseEntity<?> getCompanyImg() throws Exception {
-        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        var company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
+    @GetMapping("comapny-img/{id}")
+    public ResponseEntity<?> getCompanyImg(@PathVariable Integer id) throws Exception {
+
+        var company = companyRepository.findByAccountID(id).orElseThrow(() -> new Exception("Khong tim thay companty"));
 
         return new ResponseEntity<>(ResponseCompanyImgDto.builder()
                 .avatar(company.getAvatar())
