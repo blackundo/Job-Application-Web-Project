@@ -25,6 +25,9 @@ function AccountSetting() {
       <div className="w-[80%] ">
         <h1>Account Setting</h1>
         <hr />
+        <div>
+          <img src="" alt="" />
+        </div>
         <div className="pt-10 flex flex-col items-center justify-center gap-7">
           <div className="w-full flex flex-col items-start justify-center gap-4">
             <label htmlFor="" className="">

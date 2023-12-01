@@ -76,6 +76,7 @@ function Home() {
           open={open}
           handleActiveEmail={handleActiveEmail}
           handleSendTokenEmailAgain={handleSendTokenEmailAgain}
+          expirationTimeInSeconds={180}
           title={title}
         />
       )}
