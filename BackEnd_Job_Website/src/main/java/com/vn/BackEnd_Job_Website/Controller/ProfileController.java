@@ -57,7 +57,7 @@ public class ProfileController {
     @GetMapping("comapny-img/{id}")
     public ResponseEntity<?> getCompanyImg(@PathVariable Integer id) throws Exception {
 
-        var company = companyRepository.findByAccountID(id).orElseThrow(() -> new Exception("Khong tim thay companty"));
+        var company = companyRepository.findById(id).orElseThrow(() -> new Exception("Khong tim thay companty"));
 
         return new ResponseEntity<>(ResponseCompanyImgDto.builder()
                 .avatar(company.getAvatar())
