@@ -34,7 +34,7 @@ function FiexdMenu({ isOpenMenu }) {
           <span className="text-xl">
             <RiPagesFill />
           </span>
-          <span>Company pages</span>
+          <Link to={"company_pages"}>Company pages</Link>
         </li>
         <li className="flex items-center justify-start gap-2">
           <span className="text-xl">

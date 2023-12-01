@@ -2,13 +2,14 @@ import { FaBan, FaSuitcase } from "react-icons/fa";
 import { AiFillFlag, AiFillHeart } from "react-icons/ai";
 import axiosPrivate from "../../../api/axios";
 import swal from "sweetalert";
-function DetailsJob({ job, load }) {
+function DetailsJob({ job }) {
   // const urlDecodeData = decodeURIComponent(job?.image_company);
   const acc = JSON.parse(localStorage.getItem("Profile"));
   const role = acc?.user?.role?.roleName ?? null;
   const handleApplyJob = async () => {
     console.log(job.id);
     const tokenAccess = JSON.parse(localStorage.getItem("Token")).access_token;
+    console.log(tokenAccess);
     await swal({
       title: "Are you sure?",
       text: "You Want apply this job?",
@@ -17,23 +18,24 @@ function DetailsJob({ job, load }) {
       dangerMode: true,
     }).then((yes) => {
       if (yes) {
-        swal("Poof! Your imaginary file has been deleted!", {
+        swal("Apply success!", {
           icon: "success",
         });
-        axiosPrivate
-          .post(
-            "/api/apply/",
-            { hiringID: job.id, status: "Apply" },
-            {
-              headers: {
-                Authorization: "Bearer " + tokenAccess,
-              },
-            }
-          )
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => console.log(err));
+        if (acc.user)
+          axiosPrivate
+            .post(
+              "/api/apply/",
+              { hiringID: job.id, status: "Apply" },
+              {
+                headers: {
+                  Authorization: "Bearer " + tokenAccess,
+                },
+              }
+            )
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => console.log(err));
       } else {
         swal("Cancel!");
       }
@@ -41,35 +43,37 @@ function DetailsJob({ job, load }) {
   };
   return (
     <div className="col-span-7 border-2 border-slate-600 w-full h-[46rem] pt-2 rounded-2xl  sticky top-4 max-md:hidden overflow-y-hidden ">
-      {!load && job === null ? (
+      {job === null ? (
         <div className="flex items-center justify-center h-1/2 text-2xl">
-          <button
-            type="button"
-            className=" flex items-center justify-center "
-            disabled
-          >
-            <svg
-              className="animate-spin -ml-1 mr-3 h-10 w-10 text-black"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
+          <div className="flex items-center justify-center gap-3">
+            <span>Please choose the job you want to see</span>
+            <button
+              type="button"
+              className=" flex items-center justify-center "
+              disabled
             >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
-            Processing...
-          </button>
+              <svg
+                className="animate-spin -ml-1 mr-3 h-5 w-5 text-black"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            </button>
+          </div>
         </div>
       ) : (
         <>
