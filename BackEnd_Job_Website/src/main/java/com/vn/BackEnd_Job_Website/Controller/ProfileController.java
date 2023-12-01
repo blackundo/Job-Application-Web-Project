@@ -88,10 +88,16 @@ public class ProfileController {
     @PutMapping("/company/update")
     public ResponseEntity<?> updateCompany(@RequestBody CompanyRecord request) throws Exception {
         var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Company company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
-
-        BeanUtils.copyProperties(request, company, GetNullPropertyNames.__arrayEmpty__(request));
-        var companyUpdated = companyRepository.save(company);
+        var company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
+        Company companyUpdated = null;
+        if(request.fieldName() != null || request.infoField() != null|| request.activeTime() != null || request.achievement() != null){
+            //update MainField Exist
+            BeanUtils.copyProperties(request, company , GetNullPropertyNames.__arrayEmpty__(request));
+            companyUpdated = companyRepository.save(company);
+        }else {
+            BeanUtils.copyProperties(request, company, GetNullPropertyNames.__arrayEmpty__(request));
+            companyUpdated = companyRepository.save(company);
+        }
 
         return new ResponseEntity<>(companyUpdated, HttpStatus.OK);
     }

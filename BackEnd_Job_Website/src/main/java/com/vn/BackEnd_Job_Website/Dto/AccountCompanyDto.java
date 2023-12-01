@@ -17,6 +17,12 @@ public class AccountCompanyDto {
     private String email;
     private Role role;
     private String companyName;
+    //mainfiled
+    private String fieldName;
+    private String infoField;
+    private String achievement;
+    private String activeTime;
+    //
     private String introduction;
     private String address;
     private Integer founding;

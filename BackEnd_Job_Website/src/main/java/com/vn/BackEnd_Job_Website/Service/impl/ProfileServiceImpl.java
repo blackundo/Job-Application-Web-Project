@@ -39,6 +39,12 @@ public class ProfileServiceImpl implements ProfileService {
                     .email(account.getUsername())
                     .role(account.getRole())
                     .companyName(company.getCompanyName())
+                    //
+                    .fieldName(company.getMainFieldID().getFieldName())
+                    .infoField(company.getMainFieldID().getInfoField())
+                    .achievement(company.getMainFieldID().getAchievement())
+                    .activeTime(company.getMainFieldID().getActiveTime())
+                    //
                     .introduction(company.getIntroduction())
                     .address(company.getAddress())
                     .founding(company.getFouding())
