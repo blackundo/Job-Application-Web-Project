@@ -1,5 +1,6 @@
 package com.vn.BackEnd_Job_Website.Dto;
 
+import com.vn.BackEnd_Job_Website.Model.MainField;
 import com.vn.BackEnd_Job_Website.Model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,12 +18,7 @@ public class AccountCompanyDto {
     private String email;
     private Role role;
     private String companyName;
-    //mainfiled
-    private String fieldName;
-    private String infoField;
-    private String achievement;
-    private String activeTime;
-    //
+    private MainField mainField;
     private String introduction;
     private String address;
     private Integer founding;

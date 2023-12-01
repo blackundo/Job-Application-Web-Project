@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,12 +40,7 @@ public class ProfileServiceImpl implements ProfileService {
                     .email(account.getUsername())
                     .role(account.getRole())
                     .companyName(company.getCompanyName())
-                    //
-                    .fieldName(company.getMainFieldID().getFieldName())
-                    .infoField(company.getMainFieldID().getInfoField())
-                    .achievement(company.getMainFieldID().getAchievement())
-                    .activeTime(company.getMainFieldID().getActiveTime())
-                    //
+                    .mainField(company.getMainFieldID())
                     .introduction(company.getIntroduction())
                     .address(company.getAddress())
                     .founding(company.getFouding())
