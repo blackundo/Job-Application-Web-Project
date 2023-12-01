@@ -15,6 +15,8 @@ import com.vn.BackEnd_Job_Website.Service.JwtService;
 import com.vn.BackEnd_Job_Website.Utils.BuildEmail;
 import com.vn.BackEnd_Job_Website.Utils.TokenFromRequest;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -106,7 +108,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             ex.printStackTrace();
         }
 
-        String tokenVeri = generateVerificationToken(user);
+        String tokenVeri = String.valueOf(generateVerificationToken(user, false).getId());
 
 
 
@@ -183,10 +185,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    private String generateVerificationToken(Account acc){
-        EmailTokenVeri tokenVeri = new EmailTokenVeri(null, LocalDateTime.now(),null,acc);
-        repoEmailVeri.save(tokenVeri);
-        return String.valueOf(tokenVeri.getId());
+    private EmailTokenVeri generateVerificationToken(Account acc, boolean createNewTokenIfExists){
+        EmailTokenVeri tokenVeri;
+        if (!createNewTokenIfExists){
+            //register
+            tokenVeri = new EmailTokenVeri(null, LocalDateTime.now(),null,acc);
+            repoEmailVeri.save(tokenVeri);
+        }else {
+            //resend token
+            EmailTokenVeri tokenVeriOLD = repoEmailVeri.findByAccount(acc).orElseThrow();
+            tokenVeri = new EmailTokenVeri(null, LocalDateTime.now(),tokenVeriOLD.getConfirmedAt(), tokenVeriOLD.getAccount());
+            repoEmailVeri.delete(tokenVeriOLD);
+            repoEmailVeri.save(tokenVeri);
+        }
+
+        return tokenVeri;
     }
 
     @Override
@@ -222,16 +235,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         final String userEmail = jwtService.extractUsername(accessToken);
 
         Account account = repoAccount.findByEmail(userEmail).orElseThrow(() -> new EntityNotFoundException("Account not exist!!"));
-        EmailTokenVeri tokenVeri = repoEmailVeri.findByAccount(account).orElseThrow(() -> new EntityNotFoundException("Token not found !!"));
+//        EmailTokenVeri tokenVeri = repoEmailVeri.findByAccount(account).orElseThrow(() -> new EntityNotFoundException("Token not found !!"));
 
-        if (tokenVeri.getConfirmedAt() != null) return "error !! Email already confirm";
-        //send mail
-        String link = "http://localhost/api/auth/verify?token=" + tokenVeri.getId();
-        emailService.send(
-                userEmail,
-                BuildEmail.build("Bro", link));
 
-        return "Email has send !!!";
+        if (account.isStatus() == true){
+            return "error !! Email already confirm";
+        }else {
+            //send mail
+            EmailTokenVeri tokenVeri = generateVerificationToken(account, true);
+            String link = "http://localhost/api/auth/verify?token=" + tokenVeri.getId();
+            emailService.send(
+                    userEmail,
+                    BuildEmail.build("Bro", link));
+
+            return "Email has send !!!";
+        }
     }
 
 }

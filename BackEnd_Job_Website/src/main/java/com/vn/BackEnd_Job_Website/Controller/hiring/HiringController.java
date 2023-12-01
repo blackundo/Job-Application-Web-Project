@@ -89,6 +89,7 @@ public class HiringController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+
     @PostMapping("/create")
     public Hiring createHiring(@RequestBody HiringPostDto request) {
 

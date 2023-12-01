@@ -32,4 +32,9 @@ public class ApplyHire {
         this.hiringID = hiringID;
         this.status = status;
     }
+
+    public String toString(){
+
+        return null;
+    }
 }
