@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountCompanyDto {
+    private Integer id;
     private String email;
     private Role role;
     private String companyName;

@@ -35,6 +35,7 @@ public class ProfileServiceImpl implements ProfileService {
         if (account.getRole().getId() == 2){
             var company = repoCompany.findByAccountID(account.getId()).orElseThrow();
             authResponse = AccountCompanyDto.builder()
+                    .id(company.getId())
                     .email(account.getUsername())
                     .role(account.getRole())
                     .companyName(company.getCompanyName())
@@ -49,6 +50,7 @@ public class ProfileServiceImpl implements ProfileService {
         }else {
             var candidate = repoCandidate.findByAccountID(account.getId()).orElseThrow();
             authResponse = AccountCandidateDto.builder()
+                    .id(candidate.getId())
                     .email(account.getUsername())
                     .role(account.getRole())
                     .fullName(candidate.getFullname())
