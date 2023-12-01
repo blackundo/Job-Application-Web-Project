@@ -65,6 +65,17 @@ public class ProfileController {
                 .build(), HttpStatus.OK);
     }
 
+    @GetMapping("comapny-img-token")
+    public ResponseEntity<?> getCompanyImgToken() throws Exception {
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
+
+        return new ResponseEntity<>(ResponseCompanyImgDto.builder()
+                .avatar(company.getAvatar())
+                .cover(company.getCover())
+                .build(), HttpStatus.OK);
+    }
+
     @PostMapping("/uploadcv")
     public ResponseFileCV uploadCV(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
         Candidate candidate = null;
