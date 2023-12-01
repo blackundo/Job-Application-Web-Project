@@ -53,7 +53,7 @@ public class ChatController {
 
 
     private String createChatId(Account senderId, Account recipientId) {
-        var chatId = String.format("%s_%s", senderId, recipientId);
+        var chatId = String.format("%s_%s", senderId.getId(), recipientId.getId());
 
         ChatRoom senderRecipient = ChatRoom
                 .builder()
