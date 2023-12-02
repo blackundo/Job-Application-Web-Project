@@ -68,7 +68,7 @@ function FiexdMenu({ isOpenMenu }) {
           <span className="text-xl">
             <AiOutlineSearch />
           </span>
-          <span>Visit Hunterjob for Seekers</span>
+          <Link to={"/findJobs"}>Visit Hunterjob for Seekers</Link>
         </li>
         <li className="flex items-center justify-start gap-2">
           <span className="text-xl">

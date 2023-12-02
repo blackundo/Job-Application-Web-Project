@@ -1,28 +1,35 @@
-import img from "../../Assets/imageCP.svg";
-import logo from "../../Assets/EcomdyLogo.svg";
+// import img from "../../Assets/imageCP.svg";
+// import logo from "../../Assets/EcomdyLogo.svg";
 import { useState } from "react";
 import IntroductionPage from "./IntroductionPage";
 function CompanyPage() {
   const [showMoreMainFields, setShowMoreMainFields] = useState(false);
+  const profile = JSON.parse(localStorage.getItem("Profile"));
+  const user = profile.user;
+  const image = profile.image;
 
   return (
     <>
       <div className="h-full">
         <div className="w-full relative z-0">
-          <img src={img} alt="" className="w-full rounded-b-xl  z-0" />
+          <img
+            src={`data:image/png;base64, ${image.cover}`}
+            alt=""
+            className="w-full rounded-b-xl  z-0 h-32 object-cover overflow-hidden"
+          />
           <div className=" absolute -bottom-12 left-3  max-md:-bottom-3 rounded-full z-0">
             <div className="flex items-end gap-3">
               <img
-                src={logo}
+                src={`data:image/png;base64, ${image.avatar}`}
                 alt=""
-                className="  rounded-full w-24 h-24 shadow-2xl max-md:w-10 max-md:h-10 bg-white"
+                className="rounded-full w-24 h-24 shadow-2xl max-md:w-10 max-md:h-10 bg-white"
               />
               <div className="flex flex-col">
                 <span className="font-bold text-4xl text-emerald-400">
-                  Ecomdy
+                  {user.companyName || "Loading..."}
                 </span>
-                <small>dat@ecom.com</small>
-                <small>Da Nang</small>
+                <small>{user.businessEmail}</small>
+                <small>{user.address}</small>
               </div>
             </div>
           </div>
@@ -32,6 +39,8 @@ function CompanyPage() {
         <IntroductionPage
           showMoreMainFields={showMoreMainFields}
           setShowMoreMainFields={setShowMoreMainFields}
+          introduction={user.introduction}
+          mainField={user.mainField || "Not Update"}
         />
       </div>
       <div className=" border-t-2  border-slate-400 mt-2 flex items-center justify-center">

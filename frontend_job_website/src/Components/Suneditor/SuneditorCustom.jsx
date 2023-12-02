@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 
 const options = {
   height: 200,
+  pasteImage: false,
   buttonList: [
     ["undo", "redo"],
     ["font", "fontSize", "formatBlock"],
@@ -11,7 +12,7 @@ const options = {
     ["removeFormat"],
     ["outdent", "indent"],
     ["align", "horizontalRule", "list", "lineHeight"],
-    ["table", "link", "image", "video"],
+    ["table", "link", "video"],
     ["fullScreen", "showBlocks", "codeView"],
   ],
 };
@@ -21,6 +22,12 @@ export default function SuneditorCustom({ setContent, content, setNext }) {
   const editor = useRef();
   const maxLength = 1500;
   const handleChange = (value) => {
+    if (value.includes("<img")) {
+      // Có thẻ img -> Báo lỗi
+      alert("Không được nhập hình ảnh!");
+      setNext(false);
+      return;
+    }
     let sanitizedValue = value.replace(/<[^>]*>/g, "");
     sanitizedValue = sanitizedValue.slice(0, maxLength);
     setContent(value);
@@ -48,7 +55,6 @@ export default function SuneditorCustom({ setContent, content, setNext }) {
             height="12.5rem"
             setContents={content}
             // defaultValue={content}
-
             onChange={handleChange}
             setOptions={options}
           />
