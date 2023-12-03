@@ -9,7 +9,7 @@ const acc = JSON.parse(localStorage.getItem("Profile"));
 
 function HeaderPageCompany({ toggleMenu }) {
   const user = acc?.user;
-  console.log(user?.email);
+  // console.log(user?.email);
   return (
     <div className=" flex items-center justify-between border-b pb-2 border-slate-200 shadow-lg px-7  h-16  sticky top-0  backdrop-blur-lg z-50">
       <Link to={"/company"} className="w-1/3 max-md:w-2/3 ">

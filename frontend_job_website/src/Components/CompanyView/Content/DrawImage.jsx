@@ -5,16 +5,20 @@ function DrawImage({ avatarImage, setAvatarImage, coverImage, setCoverImage }) {
   const onDrop = useCallback(
     (acceptedFiles, type) => {
       const file = acceptedFiles[0];
-      if (file.type !== "image/png") {
+      console.log(file);
+      if (
+        file.type !== "image/png" &&
+        file.type !== "image/jpeg" &&
+        file.type !== "image/gif"
+      ) {
         alert("Please upload a PNG image.");
         return;
       }
       if (type === "avatar") {
-        setAvatarImage(URL.createObjectURL(file));
+        setAvatarImage(file);
       } else if (type === "coverImage") {
-        setCoverImage(URL.createObjectURL(file));
+        setCoverImage(file);
       }
-      console.log(acceptedFiles);
     },
     [setAvatarImage, setCoverImage]
   );
@@ -24,7 +28,7 @@ function DrawImage({ avatarImage, setAvatarImage, coverImage, setCoverImage }) {
     isDragActive: isAvatarDragActive,
   } = useDropzone({
     onDrop: (files) => onDrop(files, "avatar"),
-    accept: "image/png",
+    // accept: "image/png",
   });
 
   const {
@@ -33,7 +37,7 @@ function DrawImage({ avatarImage, setAvatarImage, coverImage, setCoverImage }) {
     isDragActive: isCoverDragActive,
   } = useDropzone({
     onDrop: (files) => onDrop(files, "coverImage"),
-    accept: "image/png",
+    // accept: "image/png",
   });
   return (
     <>
@@ -48,9 +52,9 @@ function DrawImage({ avatarImage, setAvatarImage, coverImage, setCoverImage }) {
             {avatarImage ? (
               <div className="flex items-center justify-center">
                 <img
-                  src={avatarImage}
+                  src={URL.createObjectURL(avatarImage)}
                   alt="Avatar"
-                  className="w-32 h-32 object-cover rounded-lg"
+                  className="w-32 h-32 object-cover  rounded-full"
                 />
               </div>
             ) : isAvatarDragActive ? (
@@ -69,19 +73,18 @@ function DrawImage({ avatarImage, setAvatarImage, coverImage, setCoverImage }) {
         </label>
         <div {...getCoverRootProps()} className="w-full">
           <input {...getCoverInputProps()} id="coverImage" />
-          <div className="border-dashed border-2 border-slate-500 rounded-lg p-3">
+          <div className="border-dashed border-2 border-slate-500 rounded-lg p-3 ">
             {coverImage ? (
               <img
-                src={coverImage}
+                src={URL.createObjectURL(coverImage)}
                 alt="Cover Image"
-                className="w-full h-72 object-fill rounded-lg"
+                className="w-full h-96 rounded-lg object-cover "
               />
             ) : isCoverDragActive ? (
               <p>Drop the files here ...</p>
             ) : (
               <p>
-                Drag 'n' drop some files here, or click to select files ( hight
-                : 282px)
+                Drag 'n' drop some files here, or click to select files (16:9)
               </p>
             )}
           </div>

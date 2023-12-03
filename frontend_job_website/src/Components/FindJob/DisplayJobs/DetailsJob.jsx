@@ -37,6 +37,7 @@ function DetailsJob({ job, loadDetails }) {
       }
     });
   };
+
   return (
     <div className="col-span-7 border-2 border-slate-600 w-full h-[46rem] pt-2 rounded-2xl  sticky top-4 max-md:hidden overflow-y-hidden ">
       {loadDetails && (

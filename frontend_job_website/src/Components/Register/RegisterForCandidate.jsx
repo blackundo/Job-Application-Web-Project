@@ -13,10 +13,11 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
 
   // console.log(role);
   const [formData, setFormData] = useState({
-    name: "",
+    // name: "",
     email: "",
     password: "",
   });
+  console.log(role);
   const handleRegister = async () => {
     if (!validateData(formData)) {
       return;
@@ -24,15 +25,16 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
     const loadingToastId = toast.loading("Please wait...", {
       autoClose: false,
     });
+
     await axiosPrivate
       .post(`/api/auth/register?role=${role}`, formData)
       .then((res) => {
+        console.log(res.data);
         toast.dismiss(loadingToastId);
         ToastCustom.success("🦄 Register Success!", { autoClose: 1500 });
         setTimeout(() => {
           setIsRegistered(true);
         }, 2000);
-        console.log(res.data);
       })
       .catch((err) => {
         toast.dismiss(loadingToastId);

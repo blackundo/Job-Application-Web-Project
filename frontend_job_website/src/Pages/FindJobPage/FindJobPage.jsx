@@ -12,15 +12,9 @@ function FindJobPage() {
   // const [filters, setFilters] = useState({});
 
   useEffect(() => {
-    console.log(query);
+    // console.log(query);
   }, [query]);
 
-  // function handleSubmitFilters(filters) {
-  //   setQuery({
-  //     ...query,
-  //     ...filters,
-  //   });
-  // }
   return (
     <>
       <div className="flex items-center justify-center">
@@ -29,7 +23,7 @@ function FindJobPage() {
         </div>
       </div>
       <div className="flex items-center justify-center w-full">
-        <div className="w-full  ">
+        <div className="w-full">
           <BoxFindJob setQuery={setQuery} query={query} />
         </div>
       </div>

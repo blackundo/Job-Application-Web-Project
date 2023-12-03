@@ -1,11 +1,13 @@
 import { RiPagesFill } from "react-icons/ri";
-import { BiMessageAltDetail, BiSolidUser } from "react-icons/bi";
+import { BiMessageAltDetail } from "react-icons/bi";
+import { GrVmMaintenance } from "react-icons/gr";
 import { LuLogOut } from "react-icons/lu";
 import styles from "./HeaderPageCompany.module.css";
 import { AiFillSetting, AiOutlineSearch } from "react-icons/ai";
 // import { MdPayments } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { informationUser } from "../../Utils/TokenToProfile";
 function FiexdMenu({ isOpenMenu }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -14,6 +16,10 @@ function FiexdMenu({ isOpenMenu }) {
       type: "LOGOUT",
     });
     navigate("/");
+  };
+  const handleOnPage = () => {
+    const access_token = JSON.parse(localStorage.getItem("Token")).access_token;
+    dispatch(informationUser(access_token));
   };
   return (
     <div
@@ -34,13 +40,15 @@ function FiexdMenu({ isOpenMenu }) {
           <span className="text-xl">
             <RiPagesFill />
           </span>
-          <Link to={"company_pages"}>Company pages</Link>
+          <Link to={"company_pages"} onClick={handleOnPage}>
+            Company pages
+          </Link>
         </li>
         <li className="flex items-center justify-start gap-2">
           <span className="text-xl">
-            <BiSolidUser />
+            <GrVmMaintenance />
           </span>
-          <span>User</span>
+          <Link to={"update_main_field"}>Update main field</Link>
         </li>
         {/*  <li className="flex items-center justify-start gap-2">
           <span className="text-xl">

@@ -63,6 +63,7 @@ export const informationUser = (accessToken) => async (dispatch) => {
         ]);
         const profileDate = profileResponse.data;
         const image = imageResponse.data;
+
         dispatch(showProfile(profileDate, image, decoded.roles[0]));
       } catch (error) {
         console.log(error);

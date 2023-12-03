@@ -2,6 +2,7 @@ import { BiSolidSearchAlt2 } from "react-icons/bi";
 import BoxFilter from "../BoxFilter/BoxFilter";
 import { useState } from "react";
 import { useEffect } from "react";
+import { debounce } from "lodash";
 
 function BoxFindJob({ setQuery, query }) {
   const [inputValue, setInputValue] = useState("");
@@ -11,21 +12,23 @@ function BoxFindJob({ setQuery, query }) {
       ...filters,
     }));
   }
-  const debounce = (fn, delay) => {
-    let timeoutId;
-    return (...args) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        fn(...args);
-      }, delay);
-    };
-  };
+  // const debounce = (fn, delay) => {
+  //   let timeoutId;
+  //   return (...args) => {
+  //     clearTimeout(timeoutId);
+  //     timeoutId = setTimeout(() => {
+  //       fn(...args);
+  //     }, delay);
+  //   };
+  // };
 
   const handleInputChange = debounce((value) => {
-    setQuery((prev) => ({
-      ...prev,
-      query: value,
-    }));
+    if (value !== undefined) {
+      setQuery((prev) => ({
+        ...prev,
+        query: value,
+      }));
+    }
   }, 300);
   useEffect(() => {
     setInputValue(query.query);
@@ -59,32 +62,3 @@ function BoxFindJob({ setQuery, query }) {
 }
 
 export default BoxFindJob;
-{
-  /* <div className="col-span-3 relative max-md:col-span-1 ">
-            <span className="absolute left-2 top-1/2 -translate-y-1/2 z-10 text-2xl">
-              <FaLocationDot />
-            </span>
-            <select
-              name="Address"
-              id="Address"
-              className="w-full absolute h-11 pl-10 border-l border-gray-700  top-1/2 -translate-y-1/2 text-[1rem] max-md:border-none outline-none"
-              onChange={(e) => {
-                setQuery({
-                  location: e.target.value,
-                });
-              }}
-            >
-              <option value="" className="bg-sky-200">
-                All
-              </option>
-            </select>
-          </div>
-          <div className="col-span-2 flex items-center justify-end px-3 max-md:col-span-1 max-md:pt-5 max-md:border-t border-slate-400">
-            <button
-              className=" h-11 bg-blue-500 rounded-lg w-4/5 max-md:w-full"
-              onClick={handleFindJob}
-            >
-              Advanced search
-            </button>
-          </div> */
-}

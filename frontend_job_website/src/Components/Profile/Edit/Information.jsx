@@ -1,36 +1,88 @@
 import { GoArrowLeft } from "react-icons/go";
 import styles from "./Information.module.css";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastCustom } from "../../ToastCustom/ToastCustom";
-import { ToastContainer } from "react-toastify";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { debounce } from "lodash";
+import Skills from "./Skills";
+import fetchedSkills from "../../../api/FetchAPISkill";
+import axiosPrivate from "../../../api/axios";
+import { toast } from "react-toastify";
 function Information() {
-  const [resettle, setResettle] = useState(false);
+  const [fullName, setFullName] = useState("");
+  const [age, setAge] = useState("");
+  const [fieldName, setFieldName] = useState("");
+  const [gender, setGender] = useState("");
+  const [universityOrCollege, setUniversityOrCollege] = useState("");
+  const [city, setCity] = useState("");
+  const [exp, setExp] = useState("");
+  const [skills, setSkills] = useState([]);
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [queySkills, setQuerySkills] = useState("Java");
 
   const navigate = useNavigate();
-  const handleDisplayResettle = () => {
-    setResettle((r) => !r);
+
+  const handleUpdateProfile = async () => {
+    const loadingToastId = toast.loading("Please wait...", {
+      autoClose: false,
+    });
+    const formattedSkills = selectedSkills.join(", ");
+
+    const data = {
+      fullname: fullName,
+      age,
+      fieldName,
+      gender,
+      universityOrCollege,
+      city,
+      exp,
+      skills: formattedSkills,
+    };
+    await axiosPrivate
+      .put("/api/profile/candidate/update", data)
+      .then((res) => {
+        toast.dismiss(loadingToastId);
+        ToastCustom.success("Update Success!", {
+          autoClose: 2500,
+        });
+        console.log(res.data);
+      })
+      .catch((err) => {
+        ToastCustom.error("Update error!", {
+          autoClose: 2500,
+        });
+        console.log(err);
+      });
+    toast.dismiss(loadingToastId);
   };
-  const handleUpdateProfile = () => {
-    ToastCustom.success("Update Success!", { autoClose: 2500 });
-    //ToastCustom.error("Update Error, Please check filed!", { autoClose: 2500 });
-  };
+  const TOKEN_SKILL = JSON.parse(localStorage.getItem("access_token_skills"));
+  const fetchSkills = debounce(() => {
+    fetchedSkills
+      .get(
+        `https://emsiservices.com/skills/versions/latest/skills?&limit=100&fields=name&q=${queySkills}`,
+        {
+          headers: {
+            Authorization: `Bearer ${TOKEN_SKILL}`,
+          },
+        }
+      )
+      .then((res) => {
+        const fetchedSkills = res.data.data.map((data) => data.name);
+        setSkills(fetchedSkills);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, 500);
+
+  useEffect(() => {
+    fetchSkills();
+    return () => fetchSkills.cancel();
+  }, [fetchSkills, queySkills]);
 
   return (
     <div className="flex items-center justify-center max-md:mt-[5.625rem] ">
-      <ToastContainer
-        position="bottom-right"
-        autoClose={1600}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        limit={1}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
       <div className="w-[34.81rem] max-md:w-[25rem] max-sm:w-[20rem] flex items-center justify-center">
         <div className="w-full pt-3">
           <span className="text-2xl font-bold cursor-pointer">
@@ -38,14 +90,27 @@ function Information() {
           </span>
           <span className="font-bold text-[1.75rem]">Contact information</span>
           <div className={`flex flex-col w-full gap-3 ${styles.form}`}>
-            <label htmlFor="lastName" className="">
-              FullName
-            </label>
-            <input type="text" placeholder="Do Phuoc Dat" />
-            <label htmlFor="firstName">Your Birthday</label>
-            <input type="date" />
-            <label htmlFor="headings">Address</label>
-            <input type="text" placeholder="Phuoc" />
+            <label htmlFor="fullName">Full Name</label>
+            <input
+              type="text"
+              placeholder="John Doe"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+            />
+            <label htmlFor="age">Age</label>
+            <input
+              type="text"
+              placeholder="25"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+            />
+            <label htmlFor="fieldName">Field Name</label>
+            <input
+              type="text"
+              placeholder="Software Developer"
+              value={fieldName}
+              onChange={(e) => setFieldName(e.target.value)}
+            />
             <label htmlFor="numPhone">Phone Number</label>
             <input type="text" placeholder="+325235258" />
             <label htmlFor="numPhone">Gender</label>
@@ -56,7 +121,8 @@ function Information() {
                   name="gender"
                   value={"male"}
                   className="w-4"
-                />{" "}
+                  onChange={() => setGender(0)}
+                />
                 male
               </div>
               <div className="flex items-center justify-center gap-2">
@@ -64,8 +130,9 @@ function Information() {
                   type="radio"
                   name="gender"
                   value={"female"}
+                  onChange={() => setGender(1)}
                   className="w-4"
-                />{" "}
+                />
                 Female
               </div>
               <div className="flex items-center justify-center gap-2">
@@ -74,17 +141,46 @@ function Information() {
                   name="gender"
                   value={"xxx"}
                   className="w-4"
-                />{" "}
+                />
                 xxx
               </div>
             </div>
+            <label htmlFor="universityOrCollege">University or College</label>
+            <input
+              type="text"
+              placeholder="University of XYZ"
+              value={universityOrCollege}
+              onChange={(e) => setUniversityOrCollege(e.target.value)}
+            />
+            <label htmlFor="city">City</label>
+            <input
+              type="text"
+              placeholder="Your City"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
+            <label htmlFor="exp">Experience</label>
+            <input
+              type="text"
+              placeholder="5 years"
+              value={exp}
+              onChange={(e) => setExp(e.target.value)}
+            />
+            <Skills
+              selectedSkills={selectedSkills}
+              setQuerySkills={setQuerySkills}
+              queySkills={queySkills}
+              skills={skills}
+              setSelectedSkills={setSelectedSkills}
+            />
+
             <div className="flex flex-col items-start justify-center gap-1 ">
-              <div className="flex items-center gap-3">
+              {/* <div className="flex items-center gap-3">
                 <input type="checkbox" className="w-[1.56rem] h-[1.56rem] " />
                 <label htmlFor="publicNumberPhone">
                   Show my number on JobHunter
                 </label>
-              </div>
+              </div> */}
               <small className="text-[0.624rem] text-[#858585] ">
                 By submitting the form with this box checked, you confirm that
                 you are the primary user and registrant of the entered phone
@@ -96,7 +192,7 @@ function Information() {
             </div>
           </div>
           <div className="flex flex-col  gap-4">
-            <div className="flex flex-col items-start justify-center pt-5  gap-2  pb-2">
+            {/* <div className="flex flex-col items-start justify-center pt-5  gap-2  pb-2">
               <label htmlFor="email" className="text-lg font-bold">
                 Email
               </label>
@@ -105,8 +201,8 @@ function Information() {
                 placeholder="dat@gmail.com"
                 className={`w-full h-[2.75rem] px-3 outline-none border border-black rounded-md `}
               />
-            </div>
-            <div className="flex flex-col items-start justify-center">
+            </div> */}
+            {/* <div className="flex flex-col items-start justify-center">
               <span className="font-bold text-lg">Work location</span>
               <span>This helps connect you to nearby jobs</span>
             </div>
@@ -188,7 +284,7 @@ function Information() {
                   </label>
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
           <div className="flex items-center justify-center pt-8">
             <button

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 function DetailsJobs() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [errollmentStatus, setErrollmentStatus] = useState("Full-time");
+  const [errollmentStatus, setErrollmentStatus] = useState("");
   const details = location.state?.fDetails || "";
 
   const [moreDetails, setMoreDetails] = useState({
@@ -72,6 +72,25 @@ function DetailsJobs() {
         }));
       }
     });
+    if (moreDetails.maxSalary && moreDetails.minSalary) {
+      const checkMaxSalary = parseFloat(moreDetails.maxSalary);
+      const checkMinSalary = parseFloat(moreDetails.minSalary);
+      console.log("maxSalary", checkMaxSalary);
+      console.log("minSalary", checkMinSalary);
+
+      if (checkMaxSalary <= checkMinSalary) {
+        setErrors((prev) => ({
+          ...prev,
+          maxSalary: "Max Salary must be greater than Min Salary",
+        }));
+        hasInputErrors = true;
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          maxSalary: "",
+        }));
+      }
+    }
 
     if (errollmentStatus === "") {
       setErrors((prev) => ({
@@ -190,7 +209,10 @@ function DetailsJobs() {
                   value={moreDetails.minSalary}
                   onChange={handleInputChange}
                 />
-                <button className="h-10 border w-10 absolute top-0 left-full bg-slate-400 rounded-r-lg text-white font-bold">
+                <button
+                  className="h-10 border w-10 absolute top-0 left-full bg-slate-400 rounded-r-lg text-white font-bold"
+                  disabled
+                >
                   $
                 </button>
               </div>
@@ -207,7 +229,10 @@ function DetailsJobs() {
                   value={moreDetails.maxSalary}
                   onChange={handleInputChange}
                 />
-                <button className="h-10 border w-10 absolute top-0 left-full bg-slate-400 rounded-r-lg text-white font-bold">
+                <button
+                  className="h-10 border w-10 absolute top-0 left-full bg-slate-400 rounded-r-lg text-white font-bold"
+                  disabled
+                >
                   $
                 </button>
               </div>
