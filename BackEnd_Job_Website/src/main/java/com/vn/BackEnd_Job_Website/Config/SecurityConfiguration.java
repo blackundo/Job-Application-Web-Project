@@ -29,10 +29,12 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfiguration {
     private static final String[] WHITE_LIST_URL = {"/api/auth/**",
-            "/",
-            "/ws/**",
-            "/api/profile/download/**",
-            "/api/profile"};
+                                            "/api/test/**",
+                                            "/api/hiring/**",
+                                            "/",
+                                            "/ws/**",
+                                            "/api/profile/download/**",
+                                            "/api/profile"};
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
@@ -55,7 +57,7 @@ public class SecurityConfiguration {
                         auth -> auth.requestMatchers(WHITE_LIST_URL).permitAll()
                                 .requestMatchers("/api/admin/**").hasRole("Admin")
                                 .requestMatchers("/api/company/**").hasRole("Company")
-                                .requestMatchers("/api/hiring/**", "/api/hiring/").hasAnyRole("Company","Candidate")
+//                                .requestMatchers("/api/hiring/**", "/api/hiring/").hasAnyRole("Company","Candidate")
                                 .requestMatchers("/api/candidate/**").hasRole("Candidate")
                                 .requestMatchers("/api/profile/uploadcv").hasRole("Candidate")
                                 .requestMatchers("/api/profile/**").hasAnyRole("Candidate", "Company")

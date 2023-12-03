@@ -1,49 +1,115 @@
 package com.vn.BackEnd_Job_Website.Service.impl;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.util.IOUtils;
+import com.vn.BackEnd_Job_Website.Exception.S3Exception;
 import com.vn.BackEnd_Job_Website.Model.Account;
-import com.vn.BackEnd_Job_Website.Model.Company;
 import com.vn.BackEnd_Job_Website.Respository.CompanyRepository;
 import com.vn.BackEnd_Job_Website.Service.CompanyService;
+import com.vn.BackEnd_Job_Website.Utils.S3Utils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
+    private final AmazonS3 s3;
 
+    @Value("${aws.r2.buckets.avatar}")
+    private String bucketAvatar;
+
+    @Value("${aws.r2.buckets.cover}")
+    private String bucketCover;
 
     @Override
-    public Company addAvatar(MultipartFile avatar) throws Exception {
-        String fileName = StringUtils.cleanPath(avatar.getOriginalFilename());
-        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public void addAvatar(MultipartFile avatar, Account account) throws S3Exception {
+//        String fileName = StringUtils.cleanPath(avatar.getOriginalFilename());
+//        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        try {
+//            if(fileName.contains("..")) {
+//                throw new Exception("Filename contains invalid path sequence " + fileName);
+//            }
+//            companyRepository.uploadAvatarByAccountID(avatar.getBytes(), account.getId());
+//            return null;
+//        } catch (Exception e) {
+//            throw new Exception("Could not save File: " + fileName);
+//        }
+//        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         try {
-            if(fileName.contains("..")) {
-                throw new Exception("Filename contains invalid path sequence " + fileName);
-            }
-            companyRepository.uploadAvatarByAccountID(avatar.getBytes(), account.getId());
-            return null;
-        } catch (Exception e) {
-            throw new Exception("Could not save File: " + fileName);
+            if(avatar.isEmpty()) throw new S3Exception("Avatar not empty !!!");
+            s3.putObject(
+                    new PutObjectRequest(bucketAvatar,
+                            S3Utils.__getFileName__(avatar),
+                            avatar.getInputStream(),
+                            S3Utils.__fromMultipartFile__(avatar)
+                    )
+            );
+
+            companyRepository.uploadAvatarByAccountID(S3Utils.__getFileName__(avatar), account.getId());
+
+        } catch (AmazonServiceException e) {
+            throw new S3Exception(e.getMessage());
+        } catch (Exception e){
+            throw new S3Exception(e.getMessage());
         }
     }
 
     @Override
-    public Company addCover(MultipartFile cover) throws Exception {
-        String fileName = StringUtils.cleanPath(cover.getOriginalFilename());
-        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public void addCover(MultipartFile cover, Account account) throws S3Exception {
+        try {
+            if(cover.isEmpty()) throw new S3Exception("Cover not empty !!!");
+            s3.putObject(
+                    new PutObjectRequest(bucketCover,
+                            S3Utils.__getFileName__(cover),
+                            cover.getInputStream(),
+                            S3Utils.__fromMultipartFile__(cover)
+                    )
+            );
+
+            companyRepository.uploadAvatarByAccountID(S3Utils.__getFileName__(cover), account.getId());
+        } catch (AmazonServiceException e) {
+            throw new S3Exception(e.getMessage());
+        } catch (Exception e){
+            throw new S3Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public byte[] getAvatar(Integer id){
+        var company = companyRepository.findById(id).orElseThrow();
 
         try {
-            if(fileName.contains("..")) {
-                throw new Exception("Filename contains invalid path sequence " + fileName);
-            }
-            companyRepository.uploadCoverByAccountID(cover.getBytes(), account.getId());
-            return null;
-        } catch (Exception e) {
-            throw new Exception("Could not save File: " + fileName);
+            S3Object object = s3.getObject(bucketAvatar, company.getAvatar());
+            return IOUtils.toByteArray(object.getObjectContent());
+        } catch (AmazonServiceException e) {
+            throw new S3Exception(e.getMessage());
+        } catch (IOException e) {
+            throw new S3Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public byte[] getCover(Integer id){
+        var company = companyRepository.findById(id).orElseThrow();
+
+        try {
+            S3Object object = s3.getObject(bucketAvatar, company.getCover());
+            return IOUtils.toByteArray(object.getObjectContent());
+        } catch (AmazonServiceException e) {
+            throw new S3Exception(e.getMessage());
+        } catch (IOException e) {
+            throw new S3Exception(e.getMessage());
         }
     }
 }
