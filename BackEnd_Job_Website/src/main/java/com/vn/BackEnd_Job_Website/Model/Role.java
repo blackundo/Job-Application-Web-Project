@@ -1,5 +1,6 @@
 package com.vn.BackEnd_Job_Website.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
@@ -23,6 +24,7 @@ public class Role {
     @Column(name = "roleName")
     private String roleName;
 
+    @JsonIgnore
     public List<SimpleGrantedAuthority> getAuthorities() {
         var authorities = new ArrayList<SimpleGrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + this.roleName));
