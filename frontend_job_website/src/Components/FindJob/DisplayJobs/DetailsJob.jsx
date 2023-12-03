@@ -1,11 +1,14 @@
 import axiosPrivate from "../../../api/axios";
 import swal from "sweetalert";
+
 import Details from "./details";
 function DetailsJob({ job, loadDetails }) {
+
   const acc = JSON.parse(localStorage.getItem("Profile"));
   const role = acc?.user?.role?.roleName ?? null;
   const handleApplyJob = async () => {
     const tokenAccess = JSON.parse(localStorage.getItem("Token")).access_token;
+    console.log(tokenAccess);
     await swal({
       title: "Are you sure?",
       text: "You Want apply this job?",
@@ -40,6 +43,7 @@ function DetailsJob({ job, loadDetails }) {
 
   return (
     <div className="col-span-7 border-2 border-slate-600 w-full h-[46rem] pt-2 rounded-2xl  sticky top-4 max-md:hidden overflow-y-hidden ">
+
       {loadDetails && (
         <div className="flex items-center justify-center h-full w-full">
           <button
@@ -68,6 +72,7 @@ function DetailsJob({ job, loadDetails }) {
               ></path>
             </svg>
           </button>
+
         </div>
       )}
       {job === null && (

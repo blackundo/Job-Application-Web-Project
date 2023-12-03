@@ -1,17 +1,22 @@
+
 // import img from "../../Assets/imageCP.svg";
 // import logo from "../../Assets/EcomdyLogo.svg";
+
 import { useState } from "react";
 import IntroductionPage from "./IntroductionPage";
 function CompanyPage() {
   const [showMoreMainFields, setShowMoreMainFields] = useState(false);
+
   const profile = JSON.parse(localStorage.getItem("Profile"));
   const user = profile.user;
   const image = profile.image;
+
 
   return (
     <>
       <div className="h-full">
         <div className="w-full relative z-0">
+
           <img
             src={`data:image/png;base64, ${image.cover}`}
             alt=""
@@ -30,6 +35,7 @@ function CompanyPage() {
                 </span>
                 <small>{user.businessEmail}</small>
                 <small>{user.address}</small>
+
               </div>
             </div>
           </div>
@@ -39,8 +45,10 @@ function CompanyPage() {
         <IntroductionPage
           showMoreMainFields={showMoreMainFields}
           setShowMoreMainFields={setShowMoreMainFields}
+
           introduction={user.introduction}
           mainField={user.mainField || "Not Update"}
+
         />
       </div>
       <div className=" border-t-2  border-slate-400 mt-2 flex items-center justify-center">

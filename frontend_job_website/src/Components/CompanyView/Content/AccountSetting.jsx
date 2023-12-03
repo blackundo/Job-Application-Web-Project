@@ -156,6 +156,7 @@ function AccountSetting() {
   };
   return (
     <div className="flex items-center justify-center ">
+
       {!profile ? (
         <LoadingComponent />
       ) : (
@@ -171,6 +172,7 @@ function AccountSetting() {
           updateProfileInfo={updateProfileInfo}
         />
       )}
+
     </div>
   );
 }

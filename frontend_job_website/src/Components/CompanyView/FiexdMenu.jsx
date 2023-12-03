@@ -40,9 +40,11 @@ function FiexdMenu({ isOpenMenu }) {
           <span className="text-xl">
             <RiPagesFill />
           </span>
+
           <Link to={"company_pages"} onClick={handleOnPage}>
             Company pages
           </Link>
+
         </li>
         <li className="flex items-center justify-start gap-2">
           <span className="text-xl">
