@@ -2,6 +2,7 @@ package com.vn.BackEnd_Job_Website;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 
 @SpringBootApplication
 public class BackEndJobWebsiteApplication {

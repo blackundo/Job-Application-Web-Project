@@ -1,10 +1,7 @@
 package com.vn.BackEnd_Job_Website.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vn.BackEnd_Job_Website.Dto.AccountCandidateDto;
-import com.vn.BackEnd_Job_Website.Dto.CandidateRecord;
-import com.vn.BackEnd_Job_Website.Dto.CompanyRecord;
-import com.vn.BackEnd_Job_Website.Dto.ResponseFileCV;
+import com.vn.BackEnd_Job_Website.Dto.*;
 import com.vn.BackEnd_Job_Website.Model.Account;
 import com.vn.BackEnd_Job_Website.Model.Candidate;
 import com.vn.BackEnd_Job_Website.Model.Company;
@@ -56,7 +53,28 @@ public class ProfileController {
         profileservice.info(request,response);
     }
 
+    //chưa handle lỗi
+    @GetMapping("comapny-img/{id}")
+    public ResponseEntity<?> getCompanyImg(@PathVariable Integer id) throws Exception {
 
+        var company = companyRepository.findById(id).orElseThrow(() -> new Exception("Khong tim thay companty"));
+
+        return new ResponseEntity<>(ResponseCompanyImgDto.builder()
+                .avatar(company.getAvatar())
+                .cover(company.getCover())
+                .build(), HttpStatus.OK);
+    }
+
+    @GetMapping("comapny-img-token")
+    public ResponseEntity<?> getCompanyImgToken() throws Exception {
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
+
+        return new ResponseEntity<>(ResponseCompanyImgDto.builder()
+                .avatar(company.getAvatar())
+                .cover(company.getCover())
+                .build(), HttpStatus.OK);
+    }
 
     @PostMapping("/uploadcv")
     public ResponseFileCV uploadCV(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
@@ -88,10 +106,16 @@ public class ProfileController {
     @PutMapping("/company/update")
     public ResponseEntity<?> updateCompany(@RequestBody CompanyRecord request) throws Exception {
         var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Company company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
-
-        BeanUtils.copyProperties(request, company, GetNullPropertyNames.__arrayEmpty__(request));
-        var companyUpdated = companyRepository.save(company);
+        var company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
+        Company companyUpdated = null;
+        if(request.fieldName() != null || request.infoField() != null|| request.activeTime() != null || request.achievement() != null){
+            //update MainField Exist
+            BeanUtils.copyProperties(request, company , GetNullPropertyNames.__arrayEmpty__(request));
+            companyUpdated = companyRepository.save(company);
+        }else {
+            BeanUtils.copyProperties(request, company, GetNullPropertyNames.__arrayEmpty__(request));
+            companyUpdated = companyRepository.save(company);
+        }
 
         return new ResponseEntity<>(companyUpdated, HttpStatus.OK);
     }

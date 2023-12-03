@@ -16,7 +16,7 @@ public class Message {
     @Column(name = "MessageID", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ChatRoomID")
     private ChatRoom chatRoomID;
 

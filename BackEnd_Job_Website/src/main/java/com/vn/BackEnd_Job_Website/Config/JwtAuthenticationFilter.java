@@ -66,44 +66,72 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
 
-        }catch (Exception ex) {
-            ex.printStackTrace();
-            ProblemDetail errDetail = null;
-            if (ex instanceof AccessDeniedException){
-                errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
+        }catch (AccessDeniedException ex) {
+            ProblemDetail errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
                 errDetail.setProperty("access_denied_reason", "Not Authorized !");
                 errDetail.setInstance(URI.create(request.getRequestURI()));
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 response.setContentType("application/json");
                 new ObjectMapper().writeValue(response.getOutputStream(), errDetail);
-                }
-
-            if (ex instanceof SignatureException){
-                errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
+//            ex.printStackTrace();
+//            ProblemDetail errDetail = null;
+//            if (ex instanceof AccessDeniedException){
+//                errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
+//                errDetail.setProperty("access_denied_reason", "Not Authorized !");
+//                errDetail.setInstance(URI.create(request.getRequestURI()));
+//                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//                response.setContentType("application/json");
+//                new ObjectMapper().writeValue(response.getOutputStream(), errDetail);
+//                }
+//
+//            if (ex instanceof SignatureException){
+//                errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
+//                errDetail.setProperty("access_denied_reason", "JWT Signature not valid !");
+//                errDetail.setInstance(URI.create(request.getRequestURI()));
+//                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//                response.setContentType("application/json");
+//                new ObjectMapper().writeValue(response.getOutputStream(), errDetail);
+////                response.getWriter().write("{\"error\": \"Internal Server Error\", \"message\": \"JWT Signature not valid ! \"}");
+//            }
+//
+//            if (ex instanceof ExpiredJwtException){
+//                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//                response.setContentType("application/json");
+//                errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
+//                errDetail.setProperty("access_denied_reason", "JWT already expired !");
+//                errDetail.setInstance(URI.create(request.getRequestURI()));
+//                new ObjectMapper().writeValue(response.getOutputStream(), errDetail);
+//            }
+//            if (ex instanceof MalformedJwtException){
+//                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//                response.setContentType("application/json");
+//                errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
+//                errDetail.setProperty("access_denied_reason", "JWT Wrong !");
+//                errDetail.setInstance(URI.create(request.getRequestURI()));
+//                new ObjectMapper().writeValue(response.getOutputStream(), errDetail);
+//            }
+        }catch (SignatureException ex){
+            ProblemDetail errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
                 errDetail.setProperty("access_denied_reason", "JWT Signature not valid !");
                 errDetail.setInstance(URI.create(request.getRequestURI()));
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 response.setContentType("application/json");
                 new ObjectMapper().writeValue(response.getOutputStream(), errDetail);
-//                response.getWriter().write("{\"error\": \"Internal Server Error\", \"message\": \"JWT Signature not valid ! \"}");
-            }
-
-            if (ex instanceof ExpiredJwtException){
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+////                response.getWriter().write("{\"error\": \"Internal Server Error\", \"message\": \"JWT Signature not valid ! \"}");
+        }catch (ExpiredJwtException ex){
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 response.setContentType("application/json");
-                errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
+            ProblemDetail errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
                 errDetail.setProperty("access_denied_reason", "JWT already expired !");
                 errDetail.setInstance(URI.create(request.getRequestURI()));
                 new ObjectMapper().writeValue(response.getOutputStream(), errDetail);
-            }
-            if (ex instanceof MalformedJwtException){
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        }catch (MalformedJwtException ex){
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 response.setContentType("application/json");
-                errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
+            ProblemDetail errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getMessage());
                 errDetail.setProperty("access_denied_reason", "JWT Wrong !");
                 errDetail.setInstance(URI.create(request.getRequestURI()));
                 new ObjectMapper().writeValue(response.getOutputStream(), errDetail);
-            }
         }
     }
 }

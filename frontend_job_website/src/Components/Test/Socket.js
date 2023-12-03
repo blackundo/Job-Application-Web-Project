@@ -1,27 +1,20 @@
 import { Stomp } from "@stomp/stompjs";
 import { useState, useEffect } from "react";
-import SockJS from "sockjs-client";
 // import Stomp from "stompjs";
 function Socket() {
   const [stompClient, setStompClient] = useState(null);
   useEffect(() => {
-    // const socket = new SockJS(
-    //   "https://5955-2405-4802-706c-4890-f4b8-2eb2-d347-75e.ngrok-free.app/ws",
-    //   {
-    //     withCredentials: true,
-    //   }
-    // );
-    // const stompClient = Stomp.over(socket);
     var stompClient = Stomp.over(function () {
-      return new WebSocket(
-        "ws://5955-2405-4802-706c-4890-f4b8-2eb2-d347-75e.ngrok-free.app/ws"
-      );
+      return new WebSocket("ws://api.modundo.com/ws");
     });
 
     stompClient.connect(
       {},
       () => {
         setStompClient(stompClient);
+        stompClient.subscribe("/user/" + 1 + "/queue/messages", (message) =>
+          onMessageReceived(message)
+        );
       },
       (error) => {
         console.error(error);
@@ -34,8 +27,38 @@ function Socket() {
       }
     };
   }, []);
+  const onMessageReceived = (message) => {
+    // Xử lý tin nhắn nhận được ở đây
+    console.log("Received message:", message);
+  };
 
-  return <div>{stompClient ? "Connected" : "Disconnected"}</div>;
+  const sendMessage = (msg) => {
+    if (msg.trim() !== "" && stompClient) {
+      const message = {
+        senderId: 1, // Replace with your sender ID
+        recipientId: 4, // Replace with your recipient ID
+        content: msg,
+        timestamp: new Date(),
+      };
+
+      stompClient.send("/app/chat", {}, JSON.stringify(message));
+    }
+  };
+
+  return (
+    <div>
+      {stompClient ? (
+        <div>
+          Connected
+          <button onClick={() => sendMessage("Hello, WebSocket!")}>
+            Send Message
+          </button>
+        </div>
+      ) : (
+        "Disconnected"
+      )}
+    </div>
+  );
 }
 
 export default Socket;

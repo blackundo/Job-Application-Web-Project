@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountCandidateDto {
+    private Integer id;
     private String email;
     private Role role;
     private String fullName;

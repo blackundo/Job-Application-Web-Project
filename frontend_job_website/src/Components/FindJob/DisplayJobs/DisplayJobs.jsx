@@ -18,15 +18,22 @@ const DisplayJobs = () => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState("5");
   const [totalItems, setTotalItems] = useState(0);
+  const [load, setLoad] = useState(false);
   const handleChooseJob = async (id) => {
+
+    setLoad(true);
+
     await axiosPrivate
       .get(`/api/hiring/${id}`)
       .then((res) => {
         setJobDetail(res.data);
+        setLoad(true);
       })
       .catch((err) => {
         console.log(err);
+        setLoad(false);
       });
+    setLoad(false);
   };
 
   useEffect(() => {
@@ -199,7 +206,9 @@ const DisplayJobs = () => {
             </span>
           </div>
         </div>
-        <DetailsJob job={jobDetail} />
+
+        <DetailsJob job={jobDetail} loadDetails={load} />
+
       </div>
       <div className=" flex items-center justify-center gap-2 py-[1.875rem] ">
         <div className={`flex flex-nowrap overflow-x-auto gap-1`}>

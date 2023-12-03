@@ -8,6 +8,10 @@ import { RiPhoneFindFill } from "react-icons/ri";
 import { TbReplace } from "react-icons/tb";
 import logoFile from "../../Assets/logoFile.svg";
 import styles from "./InputCV.module.css";
+import swal from "sweetalert";
+import axiosPrivate from "../../api/axios";
+import { ToastCustom } from "../ToastCustom/ToastCustom";
+import { toast } from "react-toastify";
 function InputCV({ initFile }) {
   const [option, setOption] = useState(false);
 
@@ -24,8 +28,46 @@ function InputCV({ initFile }) {
 
     if (e.target.value.length != 0) {
       const selectFile = e.target.files[0];
-      setFile(selectFile);
-      setNameFile(selectFile.name);
+      const loadingToastId = toast.loading("Please wait...", {
+        autoClose: false,
+      });
+      swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this imaginary file!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then(async (yes) => {
+        if (yes) {
+          const access_token = JSON.parse(
+            localStorage.getItem("Token")
+          ).access_token;
+          const data = new FormData();
+          data.append("file", selectFile);
+          console.log("Updating file...", selectFile);
+          await axiosPrivate
+            .post("/api/profile/uploadcv", data, {
+              headers: {
+                Authorization: `Bearer ${access_token}`,
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((res) => {
+              toast.dismiss(loadingToastId);
+              console.log("update cv", res.data);
+              ToastCustom.success("Upload CV Success!");
+              setFile(selectFile);
+              setNameFile(selectFile.name);
+            })
+            .catch((err) => {
+              toast.dismiss(loadingToastId);
+              ToastCustom.error("error updating");
+            });
+        } else {
+          toast.dismiss(loadingToastId);
+          swal("You Canceled updating");
+        }
+      });
     }
   };
 

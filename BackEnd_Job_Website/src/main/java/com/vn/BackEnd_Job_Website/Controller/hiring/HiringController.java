@@ -29,7 +29,7 @@ public class HiringController {
     private final CompanyRepository companyRepository;
     private final Specification<Hiring> spec;
 
-    @GetMapping
+    @GetMapping("/get-all")
     public ResponseEntity<List<Hiring>> getAllHirings() {
         return new ResponseEntity<>(hiringRepository.findAll(), HttpStatus.OK);
     }
@@ -88,6 +88,7 @@ public class HiringController {
         Page<Hiring> list = hiringRepository.findByCompanyID(id, paging);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
 
     @PostMapping("/create")
     public Hiring createHiring(@RequestBody HiringPostDto request) {

@@ -18,17 +18,21 @@ jobs:
       #   with:
       #     java-version: '17'
 
-      - name: cd into backend
-        run: cd BackEnd_Job_Website
+      # - name: cd into backend
+      #   run: cd BackEnd_Job_Website
 
-      - name: Build with Maven
-        run: mvn clean package
+      # - name: Build with Maven
+      #   run: mvn clean package
 
       - name: SSH to Server and Reset
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }} # Thay đổi bằng địa chỉ IP của server
           username: ${{ secrets.SERVER_USERNAME }} # Thay đổi bằng tên người dùng SSH
-          password: ${{ secrets.SERVER_PASSWORD }} # Sử dụng SSH key nếu có thể
+          #password: ${{ secrets.SERVER_PASSWORD }} # Sử dụng SSH key nếu có thể
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SERVER_PASSWORD }}
           script: |
+            cd /home/ubuntu/Job-Application-Web-Project/BackEnd_Job_Website/ && /usr/bin/git pull origin huydev
+            cd /home/ubuntu/Job-Application-Web-Project/BackEnd_Job_Website/ && /opt/apache-maven-3.6.3/bin/mvn package
             sudo systemctl restart Job_Hunter_SpringBoot

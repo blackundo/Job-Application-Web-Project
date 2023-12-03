@@ -1,6 +1,7 @@
 package com.vn.BackEnd_Job_Website.Controller;
 
 import com.vn.BackEnd_Job_Website.Dto.ChatNotification;
+import com.vn.BackEnd_Job_Website.Dto.MessagePayload;
 import com.vn.BackEnd_Job_Website.Model.Account;
 import com.vn.BackEnd_Job_Website.Model.ChatRoom;
 import com.vn.BackEnd_Job_Website.Model.Message;
@@ -52,7 +53,7 @@ public class ChatController {
 
 
     private String createChatId(Account senderId, Account recipientId) {
-        var chatId = String.format("%s_%s", senderId, recipientId);
+        var chatId = String.format("%s_%s", senderId.getId(), recipientId.getId());
 
         ChatRoom senderRecipient = ChatRoom
                 .builder()
@@ -84,13 +85,16 @@ public class ChatController {
     }
 
     @MessageMapping("/chat")
-    public void processMessage(@Payload Message message) {
-        var sender = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        var recipient = accountRepository.findById(message.getId()).orElseThrow();
-        var chatId = getChatRoomId(sender, recipient, true)
-                .orElseThrow();
+    public void processMessage(@Payload MessagePayload payload) {
+        var sender = accountRepository.findById(payload.senderId()).orElseThrow();
+        var recipient = accountRepository.findById(payload.recipientId()).orElseThrow();
+
+        var chatId = getChatRoomId(sender, recipient, true).orElseThrow();
+
         ChatRoom chatRoom = chatRoomRepository.findByChatID(chatId).orElseThrow();
+        Message message = new Message();
         message.setChatRoomID(chatRoom);
+        message.setContent(payload.content());
         messageRepository.save(message);
 
         Message savedMsg = messageRepository.save(message);

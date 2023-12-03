@@ -17,6 +17,11 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 
 @Configuration
 @EnableWebSecurity
@@ -25,7 +30,7 @@ import org.springframework.web.cors.CorsConfiguration;
 public class SecurityConfiguration {
     private static final String[] WHITE_LIST_URL = {"/api/auth/**",
             "/",
-            "/messages/**",
+            "/ws/**",
             "/api/profile/download/**",
             "/api/profile"};
     private final JwtAuthenticationFilter jwtAuthFilter;
@@ -35,7 +40,16 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors
-                        .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
+                        .configurationSource(request -> {
+                            CorsConfiguration config = new CorsConfiguration();
+                            config.applyPermitDefaultValues();
+//                            config.addAllowedOrigin("http://localhost:5173");
+                            config.setAllowedOrigins(Collections.singletonList("*"));
+                            config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
+                            config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+                            return config;
+                        })
+                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers(WHITE_LIST_URL).permitAll()
