@@ -50,21 +50,21 @@ export const informationUser = (accessToken) => async (dispatch) => {
               signal: controller.signal,
             }
           ),
-          axiosPrivate.get(
-            "/api/profile/comapny-img-token",
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-              signal: controller.signal,
-            }
-          ),
+          // axiosPrivate.get(
+          //   `/api/profile/company-cover/${id}`,
+          //   {},
+          //   {
+          //     headers: {
+          //       Authorization: `Bearer ${accessToken}`,
+          //     },
+          //     signal: controller.signal,
+          //   }
+          // ),
         ]);
         const profileDate = profileResponse.data;
-        const image = imageResponse.data;
+        // const image = imageResponse.data;
 
-        dispatch(showProfile(profileDate, image, decoded.roles[0]));
+        dispatch(showProfile(profileDate, "", decoded.roles[0]));
       } catch (error) {
         console.log(error);
       } finally {

@@ -130,12 +130,13 @@ function AccountSetting() {
 
     const data = new FormData();
     data.append("avatar", avatarImage);
-    data.append("cover", coverImage);
+    // data.append("cover", coverImage);
     console.log([...data.entries()]);
     await axiosPrivate
       .patch("/api/profile/company/update", data, {
         headers: {
           Authorization: `Bearer ${access_token}`,
+          "Content-Type": `multipart/form-data`,
         },
       })
       .then((res) => {
@@ -156,7 +157,6 @@ function AccountSetting() {
   };
   return (
     <div className="flex items-center justify-center ">
-
       {!profile ? (
         <LoadingComponent />
       ) : (
@@ -172,7 +172,6 @@ function AccountSetting() {
           updateProfileInfo={updateProfileInfo}
         />
       )}
-
     </div>
   );
 }

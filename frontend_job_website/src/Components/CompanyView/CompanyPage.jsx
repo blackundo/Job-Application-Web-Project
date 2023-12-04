@@ -1,9 +1,9 @@
-
 // import img from "../../Assets/imageCP.svg";
 // import logo from "../../Assets/EcomdyLogo.svg";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import IntroductionPage from "./IntroductionPage";
+import axiosPrivate from "../../api/axios";
 function CompanyPage() {
   const [showMoreMainFields, setShowMoreMainFields] = useState(false);
 
@@ -11,12 +11,35 @@ function CompanyPage() {
   const user = profile.user;
   const image = profile.image;
 
+  const fetchImageCover = useCallback(async () => {
+    await axiosPrivate
+      .get(`/api/profile/company-cover/${profile.user.id}`)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [profile.user.id]);
+  const fetchImageAvatar = useCallback(async () => {
+    await axiosPrivate
+      .get(`/api/profile/company-avatar/${profile.user.id}`)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [profile.user.id]);
+  useEffect(() => {
+    fetchImageCover();
+    fetchImageAvatar();
+  }, [fetchImageCover, fetchImageAvatar]);
 
   return (
     <>
       <div className="h-full">
         <div className="w-full relative z-0">
-
           <img
             src={`data:image/png;base64, ${image.cover}`}
             alt=""
@@ -35,7 +58,6 @@ function CompanyPage() {
                 </span>
                 <small>{user.businessEmail}</small>
                 <small>{user.address}</small>
-
               </div>
             </div>
           </div>
@@ -45,10 +67,8 @@ function CompanyPage() {
         <IntroductionPage
           showMoreMainFields={showMoreMainFields}
           setShowMoreMainFields={setShowMoreMainFields}
-
           introduction={user.introduction}
           mainField={user.mainField || "Not Update"}
-
         />
       </div>
       <div className=" border-t-2  border-slate-400 mt-2 flex items-center justify-center">
