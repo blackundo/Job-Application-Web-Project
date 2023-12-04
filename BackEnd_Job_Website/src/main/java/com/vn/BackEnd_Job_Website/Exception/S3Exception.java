@@ -8,5 +8,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class S3Exception extends RuntimeException{
     public S3Exception(String message) {
         super(message);
+        printStackTrace();
     }
 }

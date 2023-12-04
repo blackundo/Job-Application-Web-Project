@@ -13,8 +13,8 @@ import java.util.Optional;
 public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
     @Transactional
     @Modifying
-    @Query("update Candidate c set c.uploadFileCV = ?1 where c.id = ?2")
-    void updateUploadFileCVById(@NonNull byte[] uploadFileCV, @NonNull Integer id);
+    @Query("update Candidate c set c.uploadFileCV = ?1 where c.account.id  = ?2")
+    void updateUploadFileCVById(@NonNull String uploadFileCV, @NonNull Integer id);
     @Query(value = "select c from Candidate c where c.account.id = :id")
     Optional<Candidate> findByAccountID(Integer id);
 }

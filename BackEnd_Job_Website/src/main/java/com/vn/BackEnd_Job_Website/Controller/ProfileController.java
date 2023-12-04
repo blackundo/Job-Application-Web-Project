@@ -40,8 +40,8 @@ import java.util.Objects;
 @RequestMapping("/api/profile")
 @RequiredArgsConstructor
 public class ProfileController {
-    private final ProfileService profileservice;
-    private final CandidateService candidateservice;
+    private final ProfileService profileService;
+    private final CandidateService candidateService;
     private final CompanyService companyService;
 
     private final CompanyRepository companyRepository;
@@ -53,15 +53,15 @@ public class ProfileController {
             HttpServletRequest request,
             HttpServletResponse response
     )throws IOException {
-        profileservice.info(request,response);
+        profileService.info(request,response);
     }
 
     //chưa handle lỗi
     @GetMapping(
-            value = "company-avatar/{id}",
+            value = "/company-avatar/{id}",
             produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE}
     )
-    public byte[] getCompanyAvatar(@PathVariable Integer id) throws Exception {
+    public byte[] getCompanyAvatar(@PathVariable Integer id) {
         return companyService.getAvatar(id);
 
 //        var company = companyRepository.findById(id).orElseThrow(() -> new Exception("Khong tim thay companty"));
@@ -72,37 +72,40 @@ public class ProfileController {
     }
 
     @GetMapping(
-            value = "company-cover/{id}",
+            value = "/company-cover/{id}",
             produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE}
     )
-    public byte[] getCompanyCover(@PathVariable Integer id) throws Exception {
+    public byte[] getCompanyCover(@PathVariable Integer id)  {
         return companyService.getCover(id);
     }
 
-//    @GetMapping("comapny-img-token")
-//    public ResponseEntity<?> getCompanyImgToken() throws Exception {
-//        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        var company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
-//
-//        return new ResponseEntity<>(ResponseCompanyImgDto.builder()
-//                .avatar(company.getAvatar())
-//                .cover(company.getCover())
-//                .build(), HttpStatus.OK);
-//    }
-
-    @PostMapping("/uploadcv")
-    public ResponseFileCV uploadCV(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
-        Candidate candidate = null;
-        candidate = candidateservice.addCV(file, request);
-        String downloadURl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(String.valueOf(candidate.getId()))
-                .toUriString();
-        return new ResponseFileCV(file.getName(),
-                downloadURl,
-                file.getContentType(),
-                file.getSize());
+    @GetMapping(
+            value = "/company-avatar-token",
+            produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE}
+    )
+    public byte[] getCompanyAvatarToken() {
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return companyService.getCoverWithToken(account);
     }
+
+    @GetMapping(
+            value = "/company-cover-token",
+            produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE}
+    )
+    public byte[] getCompanyCoverToken() {
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return companyService.getAvatarWithToken(account);
+    }
+
+
+    @GetMapping(
+            value = "/candidate-cv/{id}",
+            produces = MediaType.APPLICATION_PDF_VALUE
+    )
+    public byte[] getCandidateCV(@PathVariable Integer id)  {
+        return candidateService.getCV(id);
+    }
+
 
 
     @PutMapping("/company/update")
@@ -122,10 +125,21 @@ public class ProfileController {
         return new ResponseEntity<>(companyUpdated, HttpStatus.OK);
     }
 
+    @PutMapping("/candidate/update")
+    public ResponseEntity<?> updateCandidate(@RequestBody CandidateRecord request) throws Exception {
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow();
+
+        BeanUtils.copyProperties(request, candidate, GetNullPropertyNames.__arrayEmpty__(request));
+        var candidateUpdated = candidateRepository.save(candidate);
+
+        return new ResponseEntity<>(candidateUpdated, HttpStatus.OK);
+    }
+
 
     @PatchMapping( "/company/update")
     public ResponseEntity<?> updateLobCompany(@RequestParam(required = false) MultipartFile avatar,
-                                              @RequestParam(required = false) MultipartFile cover) throws Exception{
+                                              @RequestParam(required = false) MultipartFile cover) throws S3Exception{
         var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         //update avatar
@@ -146,18 +160,23 @@ public class ProfileController {
             }
         }
 
+//        if (avatar == null && cover == null) return ResponseEntity.badRequest().body("Required Param Multipart");
+
+        return ResponseEntity.ok().body("Upload Done");
+    }
+
+    @PatchMapping("/candidate/update")
+    public ResponseEntity<?> uploadCV(@RequestParam("file") MultipartFile file) {
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        try {
+            candidateService.addCV(file, account);
+        } catch (S3Exception e) {
+            return ResponseEntity.badRequest().body("Error upload cv  " + e.getMessage());
+        }
         return ResponseEntity.ok().body("Upload Done");
     }
 
 
-    @PutMapping("/candidate/update")
-    public ResponseEntity<?> updateCandidate(@RequestBody CandidateRecord request) throws Exception {
-        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow();
 
-        BeanUtils.copyProperties(request, candidate, GetNullPropertyNames.__arrayEmpty__(request));
-        var candidateUpdated = candidateRepository.save(candidate);
-
-        return new ResponseEntity<>(candidateUpdated, HttpStatus.OK);
-    }
 }

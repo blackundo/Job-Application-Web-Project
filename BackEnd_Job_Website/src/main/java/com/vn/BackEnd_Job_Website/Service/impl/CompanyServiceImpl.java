@@ -13,11 +13,9 @@ import com.vn.BackEnd_Job_Website.Utils.S3Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -48,15 +46,16 @@ public class CompanyServiceImpl implements CompanyService {
 
         try {
             if(avatar.isEmpty()) throw new S3Exception("Avatar not empty !!!");
+            final String fileName = S3Utils.__getFileName__(avatar);
             s3.putObject(
                     new PutObjectRequest(bucketAvatar,
-                            S3Utils.__getFileName__(avatar),
+                            fileName,
                             avatar.getInputStream(),
                             S3Utils.__fromMultipartFile__(avatar)
                     )
             );
 
-            companyRepository.uploadAvatarByAccountID(S3Utils.__getFileName__(avatar), account.getId());
+            companyRepository.uploadAvatarByAccountID(fileName, account.getId());
 
         } catch (AmazonServiceException e) {
             throw new S3Exception(e.getMessage());
@@ -69,15 +68,16 @@ public class CompanyServiceImpl implements CompanyService {
     public void addCover(MultipartFile cover, Account account) throws S3Exception {
         try {
             if(cover.isEmpty()) throw new S3Exception("Cover not empty !!!");
+            final String fileName = S3Utils.__getFileName__(cover);
             s3.putObject(
                     new PutObjectRequest(bucketCover,
-                            S3Utils.__getFileName__(cover),
+                            fileName,
                             cover.getInputStream(),
                             S3Utils.__fromMultipartFile__(cover)
                     )
             );
 
-            companyRepository.uploadAvatarByAccountID(S3Utils.__getFileName__(cover), account.getId());
+            companyRepository.uploadCoverByAccountID(fileName, account.getId());
         } catch (AmazonServiceException e) {
             throw new S3Exception(e.getMessage());
         } catch (Exception e){
@@ -100,11 +100,17 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public byte[] getAvatarWithToken(Account account) {
+        var company = companyRepository.findByAccountID(account.getId()).orElseThrow();
+        return getAvatar(company.getId());
+    }
+
+    @Override
     public byte[] getCover(Integer id){
         var company = companyRepository.findById(id).orElseThrow();
 
         try {
-            S3Object object = s3.getObject(bucketAvatar, company.getCover());
+            S3Object object = s3.getObject(bucketCover, company.getCover());
             return IOUtils.toByteArray(object.getObjectContent());
         } catch (AmazonServiceException e) {
             throw new S3Exception(e.getMessage());
@@ -112,4 +118,11 @@ public class CompanyServiceImpl implements CompanyService {
             throw new S3Exception(e.getMessage());
         }
     }
+    @Override
+    public byte[] getCoverWithToken(Account account) {
+        var company = companyRepository.findByAccountID(account.getId()).orElseThrow();
+        return getCover(company.getId());
+    }
+
+
 }
