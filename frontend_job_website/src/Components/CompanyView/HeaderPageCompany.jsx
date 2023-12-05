@@ -7,7 +7,7 @@ import { MdEmail, MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { Link } from "react-router-dom";
 const acc = JSON.parse(localStorage.getItem("Profile"));
 
-function HeaderPageCompany({ toggleMenu }) {
+function HeaderPageCompany({ toggleMenu, isOpenMenu }) {
   const user = acc?.user;
   // console.log(user?.email);
   return (
@@ -57,7 +57,12 @@ function HeaderPageCompany({ toggleMenu }) {
           />
           {/* <RxAvatar className="text-5xl" /> */}
           <span className="max-md:hidden">{user?.email}</span>
-          <span className={`text-3xl`} onClick={toggleMenu}>
+          <span
+            className={`text-3xl cursor-pointer ${
+              isOpenMenu ? "rotate-180" : ""
+            }`}
+            onClick={toggleMenu}
+          >
             <MdOutlineKeyboardArrowDown />
           </span>
         </div>

@@ -39,8 +39,13 @@ function Information() {
       exp,
       skills: formattedSkills,
     };
+    const accessToken = JSON.parse(localStorage.getItem("Token")).access_token;
     await axiosPrivate
-      .put("/api/profile/candidate/update", data)
+      .put("/api/profile/candidate/update", data, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
       .then((res) => {
         toast.dismiss(loadingToastId);
         ToastCustom.success("Update Success!", {
@@ -56,6 +61,7 @@ function Information() {
       });
     toast.dismiss(loadingToastId);
   };
+
   const TOKEN_SKILL = JSON.parse(localStorage.getItem("access_token_skills"));
   const fetchSkills = debounce(() => {
     fetchedSkills

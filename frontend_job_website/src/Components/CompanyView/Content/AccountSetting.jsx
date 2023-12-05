@@ -130,7 +130,7 @@ function AccountSetting() {
 
     const data = new FormData();
     data.append("avatar", avatarImage);
-    // data.append("cover", coverImage);
+    data.append("cover", coverImage);
     console.log([...data.entries()]);
     await axiosPrivate
       .patch("/api/profile/company/update", data, {

@@ -3,7 +3,11 @@ import { BiMessageAltDetail } from "react-icons/bi";
 import { GrVmMaintenance } from "react-icons/gr";
 import { LuLogOut } from "react-icons/lu";
 import styles from "./HeaderPageCompany.module.css";
-import { AiFillSetting, AiOutlineSearch } from "react-icons/ai";
+import {
+  AiFillSetting,
+  AiOutlineAppstoreAdd,
+  AiOutlineSearch,
+} from "react-icons/ai";
 // import { MdPayments } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,7 +27,7 @@ function FiexdMenu({ isOpenMenu }) {
   };
   return (
     <div
-      className={`top-[4.5rem] right-3  w-auto border-2 border-slate-500 shadow-lg rounded-md p-3 bg-gray-600 z-[999] ${
+      className={`top-[4.5rem] right-3  w-auto border-2 border-slate-500 shadow-lg rounded-md p-3 bg-gray-500 z-[999]  ${
         isOpenMenu ? "absolute" : "hidden"
       }`}
     >
@@ -44,11 +48,10 @@ function FiexdMenu({ isOpenMenu }) {
           <Link to={"company_pages"} onClick={handleOnPage}>
             Company pages
           </Link>
-
         </li>
         <li className="flex items-center justify-start gap-2">
-          <span className="text-xl">
-            <GrVmMaintenance />
+          <span className="text-xl ">
+            <AiOutlineAppstoreAdd />
           </span>
           <Link to={"update_main_field"}>Update main field</Link>
         </li>

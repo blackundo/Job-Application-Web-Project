@@ -1,59 +1,47 @@
 // import img from "../../Assets/imageCP.svg";
 // import logo from "../../Assets/EcomdyLogo.svg";
 
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import IntroductionPage from "./IntroductionPage";
-import axiosPrivate from "../../api/axios";
+import defaultAvatar from "../../Assets/defaultAvatar.jpg";
+import defaultCover from "../../Assets/defaultCover.jpg";
+
 function CompanyPage() {
   const [showMoreMainFields, setShowMoreMainFields] = useState(false);
 
   const profile = JSON.parse(localStorage.getItem("Profile"));
   const user = profile.user;
-  const image = profile.image;
-
-  const fetchImageCover = useCallback(async () => {
-    await axiosPrivate
-      .get(`/api/profile/company-cover/${profile.user.id}`)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [profile.user.id]);
-  const fetchImageAvatar = useCallback(async () => {
-    await axiosPrivate
-      .get(`/api/profile/company-avatar/${profile.user.id}`)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [profile.user.id]);
-  useEffect(() => {
-    fetchImageCover();
-    fetchImageAvatar();
-  }, [fetchImageCover, fetchImageAvatar]);
+  const [imageCoverError, setImageCoverError] = useState(false);
+  const [imageAvatarError, setImageAvatarError] = useState(false);
 
   return (
     <>
       <div className="h-full">
         <div className="w-full relative z-0">
           <img
-            src={`data:image/png;base64, ${image.cover}`}
-            alt=""
-            className="w-full rounded-b-xl  z-0 h-32 object-cover overflow-hidden"
+            src={
+              imageCoverError
+                ? defaultCover
+                : `http://api.modundo.com/api/profile/company-cover/${user.id}`
+            }
+            className="w-full rounded-b-xl  z-0 h-96 object-cover overflow-hidden"
+            onError={() => setImageCoverError(true)}
           />
           <div className=" absolute -bottom-12 left-3  max-md:-bottom-3 rounded-full z-0">
-            <div className="flex items-end gap-3">
+            <div className="flex items-end gap-3 b">
               <img
-                src={`data:image/png;base64, ${image.avatar}`}
+                // src={`data:image/png;base64, ${avatar}`}
+                src={
+                  imageAvatarError
+                    ? defaultAvatar
+                    : `http://api.modundo.com/api/profile/company-avatar/${user.id}`
+                }
+                onError={() => setImageAvatarError(true)}
                 alt=""
-                className="rounded-full w-24 h-24 shadow-2xl max-md:w-10 max-md:h-10 bg-white"
+                className="rounded-full w-32 h-32 shadow-2xl max-md:w-10 max-md:h-10 bg-white  border-[6px] border-white"
               />
               <div className="flex flex-col">
-                <span className="font-bold text-4xl text-emerald-400">
+                <span className="font-bold text-4xl text-emerald-400 border-b-2 border-black">
                   {user.companyName || "Loading..."}
                 </span>
                 <small>{user.businessEmail}</small>

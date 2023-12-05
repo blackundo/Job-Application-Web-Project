@@ -1,21 +1,22 @@
 import { FaBan, FaSuitcase } from "react-icons/fa";
 import { AiFillFlag, AiFillHeart } from "react-icons/ai";
-function Details({ job, role, handleApplyJob }) {
+import imageDefault from "../../../Assets/defaultCover.jpg";
+function Details({ job, role, handleApplyJob, cover }) {
   return (
     <>
       <div className=" p-3 ">
         <div className="relative h-52">
-          {/* <img
-                src={`${urlDecodeData}`}
-                alt=""
-                className="w-full  object-cover h-3/4 absolute z-10 rounded-lg "
-              /> */}
-          <div className="flex flex-col items-start justify-center gap-2 absolute z-50 top-1/2 backdrop-blur-xl w-full px-5 ">
+          <img
+            src={imageDefault}
+            alt=""
+            className="w-full object-cover h-3/4 absolute z-10 rounded-lg "
+          />
+          <div className="flex flex-col items-start justify-center gap-2 absolute z-50 top-2/3 backdrop-blur-xl w-full px-5 ">
             <div className="flex flex-col">
               <span className="font-bold text-[1.5rem]">
                 {job.company_name}
               </span>
-              <span className="text-[1.125rem]">{job.hiringName}</span>
+              <span className="text-[1.3rem] font-bold ">{job.hiringName}</span>
             </div>
             <span>location: {job.location}</span>
           </div>

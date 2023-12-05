@@ -3,24 +3,30 @@ import BoxFilter from "../BoxFilter/BoxFilter";
 import { useState } from "react";
 import { useEffect } from "react";
 import { debounce } from "lodash";
+import axiosPrivate from "../../../api/axios";
 
-function BoxFindJob({ setQuery, query }) {
+function BoxFindJob({ setQuery, query, setJob }) {
   const [inputValue, setInputValue] = useState("");
+
   function handleSubmitFilters(filters) {
     setQuery((prev) => ({
       ...prev,
       ...filters,
     }));
   }
-  // const debounce = (fn, delay) => {
-  //   let timeoutId;
-  //   return (...args) => {
-  //     clearTimeout(timeoutId);
-  //     timeoutId = setTimeout(() => {
-  //       fn(...args);
-  //     }, delay);
-  //   };
-  // };
+  const handleFind = async () => {
+    setJob(null);
+    await axiosPrivate
+      .get(
+        `/api/hiring/find-hirings?hiringName=${query.query}&salary=${query.Salary}`
+      )
+      .then((res) => {
+        setJob(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleInputChange = debounce((value) => {
     if (value !== undefined) {
@@ -30,9 +36,6 @@ function BoxFindJob({ setQuery, query }) {
       }));
     }
   }, 300);
-  useEffect(() => {
-    setInputValue(query.query);
-  }, [query.query]);
 
   return (
     <div className="border-t border-slate-500 py-5 max-md:mt-[5.625rem] border-b ">
@@ -52,6 +55,12 @@ function BoxFindJob({ setQuery, query }) {
                 handleInputChange(e.target.value);
               }}
             />
+            <button
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 text-xl bg-sky-100 p-2 rounded-lg font-bold"
+              onClick={handleFind}
+            >
+              Search
+            </button>
           </div>
         </div>
       </div>

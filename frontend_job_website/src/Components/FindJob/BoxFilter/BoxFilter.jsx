@@ -42,11 +42,13 @@ function BoxFilter({ onSubmit }) {
             onChange={(e) => handleFilterChange("Salary", e.target.value)}
           >
             <option value="">Any Salary</option>
-            <option value="4.500.000">4.500.000,00₫+/month</option>
-            <option value="10.000.000">10.000.000,00₫+/month </option>
-            <option value="18.000.000">18.000.000,00₫+/month</option>
-            <option value="22.500.000">22.500.000,00₫+/month </option>
-            <option value="25.000.000">25.000.000,00₫+/month</option>
+            <option value="100">100$/month</option>
+            <option value="200">200$/month </option>
+            <option value="400">400$/month</option>
+            <option value="600">600$/month </option>
+            <option value="1000">1000$/month</option>
+            <option value="1500">1500$/month </option>
+            <option value="2000">2000$/month</option>
           </select>
           <select
             name="JobType"
