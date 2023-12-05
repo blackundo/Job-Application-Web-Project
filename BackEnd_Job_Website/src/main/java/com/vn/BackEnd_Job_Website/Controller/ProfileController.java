@@ -2,6 +2,7 @@ package com.vn.BackEnd_Job_Website.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vn.BackEnd_Job_Website.Dto.*;
+import com.vn.BackEnd_Job_Website.Exception.S3Exception;
 import com.vn.BackEnd_Job_Website.Model.Account;
 import com.vn.BackEnd_Job_Website.Model.Candidate;
 import com.vn.BackEnd_Job_Website.Model.Company;
@@ -32,13 +33,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/profile")
 @RequiredArgsConstructor
 public class ProfileController {
-    private final ProfileService profileservice;
-    private final CandidateService candidateservice;
+    private final ProfileService profileService;
+    private final CandidateService candidateService;
     private final CompanyService companyService;
 
     private final CompanyRepository companyRepository;
@@ -50,56 +53,58 @@ public class ProfileController {
             HttpServletRequest request,
             HttpServletResponse response
     )throws IOException {
-        profileservice.info(request,response);
+        profileService.info(request,response);
     }
 
     //chưa handle lỗi
-    @GetMapping("comapny-img/{id}")
-    public ResponseEntity<?> getCompanyImg(@PathVariable Integer id) throws Exception {
+    @GetMapping(
+            value = "/company-avatar/{id}",
+            produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE}
+    )
+    public byte[] getCompanyAvatar(@PathVariable Integer id) {
+        return companyService.getAvatar(id);
 
-        var company = companyRepository.findById(id).orElseThrow(() -> new Exception("Khong tim thay companty"));
-
-        return new ResponseEntity<>(ResponseCompanyImgDto.builder()
-                .avatar(company.getAvatar())
-                .cover(company.getCover())
-                .build(), HttpStatus.OK);
+//        var company = companyRepository.findById(id).orElseThrow(() -> new Exception("Khong tim thay companty"));
+//        return new ResponseEntity<>(ResponseCompanyImgDto.builder()
+//                .avatar(company.getAvatar())
+//                .cover(company.getCover())
+//                .build(), HttpStatus.OK);
     }
 
-    @GetMapping("comapny-img-token")
-    public ResponseEntity<?> getCompanyImgToken() throws Exception {
+    @GetMapping(
+            value = "/company-cover/{id}",
+            produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE}
+    )
+    public byte[] getCompanyCover(@PathVariable Integer id)  {
+        return companyService.getCover(id);
+    }
+
+    @GetMapping(
+            value = "/company-avatar-token",
+            produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE}
+    )
+    public byte[] getCompanyAvatarToken() {
         var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        var company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
-
-        return new ResponseEntity<>(ResponseCompanyImgDto.builder()
-                .avatar(company.getAvatar())
-                .cover(company.getCover())
-                .build(), HttpStatus.OK);
+        return companyService.getCoverWithToken(account);
     }
 
-    @PostMapping("/uploadcv")
-    public ResponseFileCV uploadCV(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
-        Candidate candidate = null;
-        candidate = candidateservice.addCV(file, request);
-        String downloadURl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(String.valueOf(candidate.getId()))
-                .toUriString();
-        return new ResponseFileCV(file.getName(),
-                downloadURl,
-                file.getContentType(),
-                file.getSize());
+    @GetMapping(
+            value = "/company-cover-token",
+            produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE}
+    )
+    public byte[] getCompanyCoverToken() {
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return companyService.getAvatarWithToken(account);
     }
-//    @GetMapping("/download/{fileId}")
-//    public ResponseEntity<Resource> downloadFile(@PathVariable int fileId) throws Exception {
-//        Candidate candidate = null;
-//        candidate = candidateservice.getCV(fileId);
-//        return ResponseEntity.ok()
-//                .contentType(MediaType.parseMediaType("application/pdf"))
-//                .header(HttpHeaders.CONTENT_DISPOSITION,
-//                        "attachment; filename=\"" + candidate.getFullname()
-//                                + "\"")
-//                .body(new ByteArrayResource(candidate.getUploadFileCV()));
-//    }
+
+
+    @GetMapping(
+            value = "/candidate-cv/{id}",
+            produces = MediaType.APPLICATION_PDF_VALUE
+    )
+    public byte[] getCandidateCV(@PathVariable Integer id)  {
+        return candidateService.getCV(id);
+    }
 
 
 
@@ -120,63 +125,6 @@ public class ProfileController {
         return new ResponseEntity<>(companyUpdated, HttpStatus.OK);
     }
 
-
-    @PatchMapping("/company/update")
-    public ResponseEntity<?> updateLobCompany(@RequestParam(required = false) MultipartFile avatar,
-                                              @RequestParam(required = false) MultipartFile cover) throws Exception{
-//        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        Company company = companyRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Khong tim thay companty"));
-
-
-
-//        if (request.fieldName() != null){
-//            if (company.getMainFieldID() == null){
-//                MainField mainField = new MainField(null, request.fieldName(), request.infoField(),request.achievement(), request.activeTime());
-//                mainFieldRepository.save(mainField);
-//            }else {
-//                MainField mainField = mainFieldRepository.findById(company.getMainFieldID().getId()).orElseThrow();
-//                mainField.setFieldName(request.fieldName());
-//                mainField.setInfoField(request.infoField());
-//                mainField.setAchievement(request.achievement());
-//                mainField.setActiveTime(request.activeTime());
-//                mainFieldRepository.save(mainField);
-//            }
-//        }
-        Company company1 = null;
-        //update avatar
-        if(avatar != null){
-            try {
-                companyService.addAvatar(avatar);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-        //update cover
-        if(cover != null){
-            try {
-                companyService.addCover(cover);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-        //update other field
-
-//        BeanUtils.copyProperties(request, company, GetNullPropertyNames.__arrayEmpty__(request));
-
-//        company.setCompanyName(request.companyName());
-//        company.setIntroduction(request.introduction());
-//        company.setAddress(request.address());
-//        company.setFouding(request.fouding());
-//        company.setBusinessEmail(request.businessEmail());
-//        company.setOrganizational(request.organizational());
-//        company.setPhoneNumber(request.phoneNumber());
-
-        //save
-//        var companyUpdated = companyRepository.save(company);
-        return new ResponseEntity<>("company", HttpStatus.OK);
-    }
-
-
     @PutMapping("/candidate/update")
     public ResponseEntity<?> updateCandidate(@RequestBody CandidateRecord request) throws Exception {
         var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -187,4 +135,48 @@ public class ProfileController {
 
         return new ResponseEntity<>(candidateUpdated, HttpStatus.OK);
     }
+
+
+    @PatchMapping( "/company/update")
+    public ResponseEntity<?> updateLobCompany(@RequestParam(required = false) MultipartFile avatar,
+                                              @RequestParam(required = false) MultipartFile cover) throws S3Exception{
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        //update avatar
+        if(avatar != null){
+            try {
+                companyService.addAvatar(avatar, account);
+            } catch (S3Exception e) {
+                return ResponseEntity.badRequest().body("Error upload avatar  " + e.getMessage());
+            }
+        }
+
+        //update cover
+        if(cover != null){
+            try {
+                companyService.addCover(cover, account);
+            } catch (S3Exception e) {
+                return ResponseEntity.badRequest().body("Error upload cover  " + e.getMessage());
+            }
+        }
+
+//        if (avatar == null && cover == null) return ResponseEntity.badRequest().body("Required Param Multipart");
+
+        return ResponseEntity.ok().body("Upload Done");
+    }
+
+    @PatchMapping("/candidate/update")
+    public ResponseEntity<?> uploadCV(@RequestParam("file") MultipartFile file) {
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        try {
+            candidateService.addCV(file, account);
+        } catch (S3Exception e) {
+            return ResponseEntity.badRequest().body("Error upload cv  " + e.getMessage());
+        }
+        return ResponseEntity.ok().body("Upload Done");
+    }
+
+
+
 }

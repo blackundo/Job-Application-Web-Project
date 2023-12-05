@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { AiOutlineDownload, AiOutlineEye } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { FaRegFilePdf } from "react-icons/fa6";
 import { ImBin } from "react-icons/im";
 import { IoIosArrowForward } from "react-icons/io";
 import { RiPhoneFindFill } from "react-icons/ri";
@@ -12,20 +11,19 @@ import swal from "sweetalert";
 import axiosPrivate from "../../api/axios";
 import { ToastCustom } from "../ToastCustom/ToastCustom";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 function InputCV({ initFile }) {
   const [option, setOption] = useState(false);
-
   const [nameFile, setNameFile] = useState(initFile || "default");
   const [file, setFile] = useState(null);
-
+  const [displayPDF, setDisplayPDF] = useState("");
+  const [displayPDFStatus, setDisplayPDFStatus] = useState("loading");
   const handleDisplayOption = () => {
     setOption((o) => !o);
   };
-  const currentFile = initFile || "default";
 
   const handleOnchangeFile = (e) => {
     console.log(e.target.value);
-
     if (e.target.value.length != 0) {
       const selectFile = e.target.files[0];
       const loadingToastId = toast.loading("Please wait...", {
@@ -46,7 +44,7 @@ function InputCV({ initFile }) {
           data.append("file", selectFile);
           console.log("Updating file...", selectFile);
           await axiosPrivate
-            .post("/api/profile/uploadcv", data, {
+            .patch("/api/profile/candidate/update", data, {
               headers: {
                 Authorization: `Bearer ${access_token}`,
                 "Content-Type": "multipart/form-data",
@@ -70,6 +68,22 @@ function InputCV({ initFile }) {
       });
     }
   };
+
+  useEffect(() => {
+    setDisplayPDFStatus("loading");
+    axiosPrivate
+      .get(`http://api.modundo.com/api/profile/candidate-cv/1`, {
+        responseType: "blob",
+      })
+      .then((res) => {
+        setDisplayPDFStatus("pass");
+        setDisplayPDF(URL.createObjectURL(res.data));
+      })
+      .catch((err) => {
+        setDisplayPDFStatus("error");
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div className="flex flex-col  gap-3 ">
@@ -106,29 +120,40 @@ function InputCV({ initFile }) {
           file ? "justify-center" : "justify-between"
         } px-3 relative transition-all`}
       >
-        <div className="flex items-center justify-center gap-3">
-          {!file && <FaRegFilePdf className="text-5xl" />}
+        <div className="flex items-center justify-center gap-3 w-full">
+          {/* {!file && <FaRegFilePdf className="text-5xl" />} */}
           <div
             className={`flex flex-col ${
               file ? "items-center" : "items-start"
-            } justify-center h-full`}
+            } justify-center h-full w-full`}
           >
-            {file ? (
+            {displayPDFStatus === "loading" && <div>Loading....</div>}
+            {displayPDFStatus === "pass" && !file && (
               <object
-                data={URL.createObjectURL(file)}
+                data={displayPDF}
                 type="application/pdf"
-                className={`${styles.previewPdf} `}
+                className={`${styles.previewPdf}`}
               >
                 <p>
                   Alternative text - include a link{" "}
-                  <a href={URL.createObjectURL(file)}>to the PDF!</a>
+                  <a href={displayPDF}>to the PDF!</a>
                 </p>
               </object>
-            ) : (
-              <>
-                <span className="text-lg font-bold">Your CV.Pdf</span>
-                <small>Important today</small>
-              </>
+            )}
+            {displayPDFStatus === "error" && (
+              <p>It seems You forgot to upload your CV and try again</p>
+            )}
+            {file && (
+              <object
+                data={URL.createObjectURL(file)}
+                type="application/pdf"
+                className={`${styles.previewPdf}`}
+              >
+                <p>
+                  Alternative text - include a link{" "}
+                  <a href={file}>to the PDF!</a>
+                </p>
+              </object>
             )}
           </div>
         </div>
@@ -144,11 +169,11 @@ function InputCV({ initFile }) {
           <ul className="flex flex-col items-start justify-evenly h-full px-2">
             <li className="flex items-center justify-start text-[1rem] gap-2 cursor-pointer hover:text-blue-600">
               <RiPhoneFindFill className="text-2xl" />
-              <a href={file && URL.createObjectURL(file)}>See</a>
+              <a href={displayPDF && displayPDF}>See</a>
             </li>
             <li className="flex items-center justify-start text-[1rem] gap-2 cursor-pointer hover:text-blue-600">
               <AiOutlineDownload className="text-2xl" />
-              <a href={file && URL.createObjectURL(file)} download={file?.name}>
+              <a href={displayPDF && displayPDF} download={"DPF"}>
                 Download
               </a>
             </li>

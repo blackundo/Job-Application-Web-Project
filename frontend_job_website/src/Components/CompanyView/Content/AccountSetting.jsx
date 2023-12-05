@@ -136,6 +136,7 @@ function AccountSetting() {
       .patch("/api/profile/company/update", data, {
         headers: {
           Authorization: `Bearer ${access_token}`,
+          "Content-Type": `multipart/form-data`,
         },
       })
       .then((res) => {
@@ -156,7 +157,6 @@ function AccountSetting() {
   };
   return (
     <div className="flex items-center justify-center ">
-
       {!profile ? (
         <LoadingComponent />
       ) : (
@@ -172,7 +172,6 @@ function AccountSetting() {
           updateProfileInfo={updateProfileInfo}
         />
       )}
-
     </div>
   );
 }

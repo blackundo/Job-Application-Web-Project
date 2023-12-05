@@ -50,12 +50,10 @@ public class Company {
     @Column(name = "PhoneNumber")
     private String phoneNumber;
 
-    @Lob
     @Column(name = "Avatar")
-    private byte[] avatar;
+    private String avatar;
 
-    @Lob
     @Column(name = "Cover")
-    private byte[] cover;
+    private String cover;
 
 }
