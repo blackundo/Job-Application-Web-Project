@@ -1,6 +1,7 @@
 package com.vn.BackEnd_Job_Website.Controller.hiring;
 
 import com.vn.BackEnd_Job_Website.Dto.HiringPostDto;
+import com.vn.BackEnd_Job_Website.Dto.RequestHiringAndCompanyID;
 import com.vn.BackEnd_Job_Website.Model.*;
 import com.vn.BackEnd_Job_Website.Respository.*;
 import com.vn.BackEnd_Job_Website.Specification.HiringSpecification;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,10 +70,22 @@ public class HiringController {
         return new ResponseEntity<>(hirings, HttpStatus.OK);
     }
 
-
+    // find one
     @GetMapping("/{id}")
     public ResponseEntity<?> getHiringById(@PathVariable int id) {
         Optional<Hiring> hiring = hiringRepository.findById(id);
+        if (hiring.isPresent()) {
+            return ResponseEntity.ok(hiring.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //find one with company
+    @GetMapping("/with-comapny")
+    public ResponseEntity<?> findByIdAndCompanyId(@RequestBody RequestHiringAndCompanyID request) {
+
+        Optional<Hiring> hiring = hiringRepository.findByIdAndCompanyId(request.hiringId(), request.CompanyId());
         if (hiring.isPresent()) {
             return ResponseEntity.ok(hiring.get());
         } else {
