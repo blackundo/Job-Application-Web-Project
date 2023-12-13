@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 function InformationJob() {
   const [details, setDetails] = useState({
     titlePost: "",
-    applicationLimit: 0,
+    applicationLimit: "",
     dateEnd: "",
   });
   const [errors, setErrors] = useState({
@@ -136,6 +136,7 @@ function InformationJob() {
             value={details.titlePost}
             onChange={(e) => handleInputChange(e)}
           />
+          <small>Eg: Hiring Summer, ....</small>
         </div>
 
         <div className="py-5 flex flex-col items-start justify-center gap-2">
@@ -150,6 +151,7 @@ function InformationJob() {
             placeholder="The number of people"
             onChange={(e) => handleInputChange(e)}
           />
+          <small className="text-red-400">Note: limit {`>`} 0</small>
         </div>
 
         <div>
@@ -158,6 +160,9 @@ function InformationJob() {
             label={"Choose active hiring"}
             handleDateChange={handleDateChange}
           />
+          <small className="text-red-400">
+            Note: Please choose after the current date
+          </small>
         </div>
       </div>
 

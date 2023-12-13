@@ -1,9 +1,7 @@
 import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import { LicenseInfo } from "@mui/x-license-pro";
-
 import Router from "./router/Router";
-
 import { ToastContainer } from "react-toastify";
 import Socket from "./Components/Test/Socket";
 

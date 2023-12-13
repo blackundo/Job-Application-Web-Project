@@ -51,23 +51,31 @@ function IntroductionPage({ showMoreMainFields, setShowMoreMainFields }) {
   const handleToggleMore = () => {
     setShowMoreMainFields(!showMoreMainFields);
   };
+  const intro = JSON.parse(localStorage.getItem("Profile"))?.user?.introduction;
 
   return (
     <div>
       <div>
         <span className="text-xl font-bold ">Introduction:</span>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis quae
-          saepe repudiandae possimus commodi voluptas doloribus, harum deserunt
-          pariatur magnam eveniet dicta iste voluptatibus aliquid quisquam culpa
-          eius nostrum repellat! Officia fugit eaque odio? Error animi unde
-          consequatur sit facilis reiciendis id eveniet tenetur nam tempore,
-          repudiandae magnam accusamus tempora eos repellat eius impedit
-          recusandae perspiciatis? Modi accusamus illum saepe! Quis perspiciatis
-          quae corporis, animi impedit odio, ex optio eveniet rem autem
-          voluptatem voluptates fuga quos. Est veritatis soluta expedita, sit
-          iure, ratione, omnis ut modi accusamus et mollitia illum.
-        </p>
+        <div>
+          {intro ? (
+            <span>{intro}</span>
+          ) : (
+            <>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis quae
+              saepe repudiandae possimus commodi voluptas doloribus, harum
+              deserunt pariatur magnam eveniet dicta iste voluptatibus aliquid
+              quisquam culpa eius nostrum repellat! Officia fugit eaque odio?
+              Error animi unde consequatur sit facilis reiciendis id eveniet
+              tenetur nam tempore, repudiandae magnam accusamus tempora eos
+              repellat eius impedit recusandae perspiciatis? Modi accusamus
+              illum saepe! Quis perspiciatis quae corporis, animi impedit odio,
+              ex optio eveniet rem autem voluptatem voluptates fuga quos. Est
+              veritatis soluta expedita, sit iure, ratione, omnis ut modi
+              accusamus et mollitia illum.
+            </>
+          )}
+        </div>
       </div>
       <div>
         <span className="text-xl font-bold">Main field</span>

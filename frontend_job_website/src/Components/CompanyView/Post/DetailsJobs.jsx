@@ -75,9 +75,6 @@ function DetailsJobs() {
     if (moreDetails.maxSalary && moreDetails.minSalary) {
       const checkMaxSalary = parseFloat(moreDetails.maxSalary);
       const checkMinSalary = parseFloat(moreDetails.minSalary);
-      console.log("maxSalary", checkMaxSalary);
-      console.log("minSalary", checkMinSalary);
-
       if (checkMaxSalary <= checkMinSalary) {
         setErrors((prev) => ({
           ...prev,
@@ -173,10 +170,11 @@ function DetailsJobs() {
             type="text"
             name="hiringName"
             className="w-full border h-10 rounded-lg px-3"
-            placeholder="hiringName"
+            placeholder="Marketing, Backend-Java, Frontend-React,..."
             value={moreDetails.hiringName}
             onChange={handleInputChange}
           />
+          <small>Eg: Backend, Frontend, Marketing, Java-React, ....</small>
         </div>
         <div className="py-5 flex flex-col items-start justify-center gap-2 border-t">
           <div className="flex flex-col items-start justify-center">
@@ -188,11 +186,12 @@ function DetailsJobs() {
             type="text"
             name="fieldName"
             className="w-full border h-10 rounded-lg px-3"
-            placeholder="fieldName"
+            placeholder="Marketing, Java, React"
             min={0}
             value={moreDetails.fieldName}
             onChange={handleInputChange}
           />
+          <small>Eg: Java, React, Marketing, CCNA, MOS,...</small>
         </div>
         <div>
           <span className="text-xl font-semibold">Salary</span>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import Header from "./Header";
 import axiosPrivate from "../../../api/axios";

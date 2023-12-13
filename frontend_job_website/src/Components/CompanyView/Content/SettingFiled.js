@@ -75,15 +75,19 @@ function SettingFiled({
             value={profile.introduction}
             name="introduction"
             rows={5}
+            maxLength={500}
             className={`outline-none border-b border-slate-500 w-full focus:border-b-2 focus:border-black rounded-lg px-3 transition-[border] ${
               errors.introduction && "border-red-500"
             }`}
             placeholder={`${
               profile.introduction || "You can update your introduction"
             }`}
-            onChange={(value) =>
-              handleInputChange("introduction", value.target.value)
-            }
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value.length <= 500) {
+                handleInputChange("introduction", e.target.value);
+              }
+            }}
           />
           {errors.introduction && (
             <span className="text-red-500">{errors.introduction}</span>
@@ -111,8 +115,8 @@ function SettingFiled({
                 placeholder={profile.founding || "none"}
                 name="founding"
                 value={profile.founding}
-                onChange={(value) => {
-                  handleInputChange("founding", value.target.value);
+                onChange={(e) => {
+                  handleInputChange("founding", e.target.value);
                 }}
               />
 
