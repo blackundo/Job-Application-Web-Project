@@ -1,11 +1,13 @@
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
-import { useRef, useState } from "react";
-import axiosPrivate from "../../api/axios";
-import axios from "axios";
+import { useRef } from "react";
 
 const options = {
-  height: 200,
+  showPathLabel: false,
+  charCounter: true,
+  maxCharCount: 1500,
+  minHeight: "200px",
+  maxHeight: "200px",
   buttonList: [
     ["undo", "redo"],
     ["font", "fontSize", "formatBlock"],
@@ -13,67 +15,57 @@ const options = {
     ["removeFormat"],
     ["outdent", "indent"],
     ["align", "horizontalRule", "list", "lineHeight"],
-    ["table", "link", "video", "image"],
+    ["table", "link"],
     ["fullScreen", "showBlocks", "codeView"],
   ],
 };
 
 export default function SuneditorCustom({ setContent, content, setNext }) {
-  const [charCount, setCharCount] = useState(0);
   const editor = useRef();
-  const maxLength = 1500;
   const handleChange = (value) => {
-    // if (value.includes("<img")) {
-    //   // Có thẻ img -> Báo lỗi
-    //   alert("Không được nhập hình ảnh!");
-    //   setNext(false);
-    //   return;
-    // }
-    let sanitizedValue = value.replace(/<[^>]*>/g, "");
-    sanitizedValue = sanitizedValue.slice(0, maxLength);
-    setContent(value);
-    setCharCount(sanitizedValue.length);
-    if (sanitizedValue.length === maxLength) {
+    if (value.includes("<img")) {
+      // Có thẻ img -> Báo lỗi
+      alert("Không được nhập hình ảnh!");
       setNext(false);
-    } else {
-      setNext(true);
+      return;
     }
+    setContent(value);
   };
 
   const getSunEditorInstance = (sunEditor) => {
     editor.current = sunEditor;
   };
 
-  const isExceeded = charCount === maxLength;
-  function onImageUploadBefore(e) {
-    console.log(e);
-    return (files, _info, _core, uploadHandler) => {
-      console.log(files);
-      // (async () => {
-      //   const formData = new FormData();
-      //   formData.append("file", files[0]);
+  // const onImageUploadBefore = (files, info, core, uploadHandler) => {
+  //   console.log(hasInsertedImage);
+  //   if (hasInsertedImage) {
+  //     editor.current.core.getEditor().querySelector("img").remove();
+  //     console.error("You can only insert one image");
+  //     return;
+  //   }
+  //   () => {
+  //     console.log("inserting image");
+  //     setHasInsertedImage(true);
+  //   };
+  //   // Check if the file is an image and has a valid URL
+  //   if (files.length === 1 && /^https?:\/\/\S+\.\S+/.test(files[0])) {
+  //     setHasInsertedImage(true);
+  //     const imageUrl = files[0];
+  //     const res = {
+  //       result: [
+  //         {
+  //           url: imageUrl,
+  //           name: "inserted-image",
+  //         },
+  //       ],
+  //     };
 
-      //   const { data } = await axios.post(
-      //     "http://localhost:1000/api/v1/upload/single",
-      //     formData
-      //   );
-
-      //   const res = {
-      //     result: [
-      //       {
-      //         url: data?.url,
-      //         name: "thumbnail",
-      //       },
-      //     ],
-      //   };
-
-      //   uploadHandler(res);
-      // })();
-
-      // called here for stop double image
-      uploadHandler();
-    };
-  }
+  //     uploadHandler(res);
+  //   } else {
+  //     // Reject the upload
+  //     console.error("Invalid image URL");
+  //   }
+  // };
 
   return (
     <div className="flex flex-col items-end justify-center w-full ">
@@ -84,15 +76,12 @@ export default function SuneditorCustom({ setContent, content, setNext }) {
             width="100%"
             height="12.5rem"
             setContents={content}
-            onImageUploadBefore={(e) => onImageUploadBefore(e)}
+            // onImageUploadBefore={(e) => onImageUploadBefore(e)}
             onChange={handleChange}
             setOptions={options}
           />
         </div>
       </div>
-      <p className={`${isExceeded ? "text-red-700" : ""}`}>
-        Character Count: {charCount} / {maxLength}
-      </p>
     </div>
   );
 }

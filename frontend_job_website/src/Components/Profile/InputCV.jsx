@@ -57,7 +57,7 @@ function InputCV({ initFile }) {
               setFile(selectFile);
               setNameFile(selectFile.name);
             })
-            .catch((err) => {
+            .catch(() => {
               toast.dismiss(loadingToastId);
               ToastCustom.error("error updating");
             });
@@ -72,7 +72,7 @@ function InputCV({ initFile }) {
   useEffect(() => {
     setDisplayPDFStatus("loading");
     axiosPrivate
-      .get(`http://api.modundo.com/api/profile/candidate-cv/1`, {
+      .get(`http://localhost:80/api/profile/candidate-cv/1`, {
         responseType: "blob",
       })
       .then((res) => {

@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://api.modundo.com/";
-
+const BASE_URL = "http://localhost:80";
 
 const axiosPrivate = axios.create({
   baseURL: BASE_URL,

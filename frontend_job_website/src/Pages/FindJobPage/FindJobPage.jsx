@@ -16,9 +16,9 @@ function FindJobPage() {
   const [totalItems, setTotalItems] = useState(0);
   const [loadJob, setLoadJob] = useState(false);
   const [load, setLoad] = useState(false);
-  useEffect(() => {
-    console.log(query);
-  }, [query]);
+  // useEffect(() => {
+  //   console.log(query);
+  // }, [query]);
 
   useEffect(() => {
     async function fetchDataJobs() {

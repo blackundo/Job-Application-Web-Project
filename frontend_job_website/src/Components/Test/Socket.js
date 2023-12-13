@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 // import Stomp from "stompjs";
 function Socket() {
   const [stompClient, setStompClient] = useState(null);
+  const [connected, setConnected] = useState(false);
   useEffect(() => {
     var stompClient = Stomp.over(function () {
       return new WebSocket("ws://api.modundo.com/ws");
@@ -11,10 +12,12 @@ function Socket() {
     stompClient.connect(
       {},
       () => {
+        setConnected(true);
         setStompClient(stompClient);
-        stompClient.subscribe("/user/" + 1 + "/queue/messages", (message) =>
-          onMessageReceived(message)
-        );
+        stompClient.subscribe("/user/" + 1 + "/queue/messages", (message) => {
+          console.log(message);
+          onMessageReceived(message);
+        });
       },
       (error) => {
         console.error(error);
@@ -29,19 +32,32 @@ function Socket() {
   }, []);
   const onMessageReceived = (message) => {
     // Xử lý tin nhắn nhận được ở đây
+    const body = JSON.parse(message.body);
+    console.log(body);
     console.log("Received message:", message);
   };
 
   const sendMessage = (msg) => {
+    console.log("Sending message:", msg);
     if (msg.trim() !== "" && stompClient) {
       const message = {
         senderId: 1, // Replace with your sender ID
         recipientId: 4, // Replace with your recipient ID
         content: msg,
-        timestamp: new Date(),
+        //  timestamp: new Date(),
       };
 
-      stompClient.send("/app/chat", {}, JSON.stringify(message));
+      if (connected) {
+        stompClient.send("/app/chat", {}, JSON.stringify(message), (error) => {
+          if (error) {
+            console.error("Error sending message:", error);
+          } else {
+            console.log("Message sent successfully");
+          }
+        });
+      } else {
+        console.log("Disconnected");
+      }
     }
   };
 
@@ -49,7 +65,7 @@ function Socket() {
     <div>
       {stompClient ? (
         <div>
-          Connected
+          <span> Connected</span>
           <button onClick={() => sendMessage("Hello, WebSocket!")}>
             Send Message
           </button>
