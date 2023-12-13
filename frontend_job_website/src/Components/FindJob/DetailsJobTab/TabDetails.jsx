@@ -12,7 +12,9 @@ function TabDetails({ job, role }) {
         exit={{ opacity: 0, x: -20 }}
         transition={{ duration: 0.5 }}
       >
-        <span className="p-3 font-bold text-[1.5rem]">Job Details</span>
+        <span className="p-3 font-bold text-[1.5rem]">
+          {job.hiringContentID.title}
+        </span>
         <div className=" p-3  flex items-center justify-evenly gap-2">
           {/* <span className="text-[#2D2D2D] font-sans ">
                   {job.description}
@@ -24,7 +26,18 @@ function TabDetails({ job, role }) {
             </div>
             <div>
               <span className="h-[1.68rem]  bg-[#D9D9D9] text-[#5A5A5A] p-1 text-[0.875rem] rounded-sm ">
-                Full-time
+                {job.errollmentStatus}
+              </span>
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center justify-center gap-2">
+              <FaSuitcase />
+              <span>Position</span>
+            </div>
+            <div>
+              <span className="h-[1.68rem]  bg-[#D9D9D9] text-[#5A5A5A] p-1 text-[0.875rem] rounded-sm ">
+                {job.fieldName}
               </span>
             </div>
           </div>
@@ -34,11 +47,11 @@ function TabDetails({ job, role }) {
               <span>Salary</span>
             </div>
             <div className="flex items-center justify-start gap-3">
-              <span className="h-[1.68rem]  bg-sky-300 text-black p-1 text-[0.875rem] rounded-lg ">
+              <span className="h-[1.68rem] bg-[#D9D9D9] text-black p-1 text-[0.875rem] rounded-lg ">
                 {job.minSalary} $
               </span>
               -
-              <span className="h-[1.68rem]  bg-[#D9D9D9] text-[#5A5A5A] p-1 text-[0.875rem] rounded-lg ">
+              <span className="h-[1.68rem]  bg-sky-300  text-[#5A5A5A] p-1 text-[0.875rem] rounded-lg ">
                 {job.maxSalary} $
               </span>
             </div>
@@ -63,13 +76,13 @@ function TabDetails({ job, role }) {
 
       <motion.div
         className=" border-t-2 border-slate-700/40 overflow-y-auto h-full pb-[12rem] px-4"
-        key="details"
+        key="details_2"
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 100 }}
         transition={{ duration: 0.5 }}
       >
-        <span className="text-2xl font-bold">{job.hiringContentID.title}</span>
+        <span className="text-2xl font-bold">{job.hiringName}</span>
         <span>{job.experience_years}</span>
         <br />
         <span>{job.education_level}</span>

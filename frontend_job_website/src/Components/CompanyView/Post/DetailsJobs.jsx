@@ -38,10 +38,24 @@ function DetailsJobs() {
     }
   }, []);
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    let inputValue = e.target.value;
+
+    // Kiểm tra giới hạn tối đa 50 ký tự
+    if (inputValue.length > 30) {
+      inputValue = inputValue.slice(0, 30);
+    }
+
+    // Kiểm tra và giới hạn số lượng dấu phẩy tối đa là 3
+    const commaCount = (inputValue.match(/,/g) || []).length;
+    if (commaCount > 3) {
+      // Nếu có nhiều hơn 3 dấu phẩy, giữ lại chỉ 3 dấu phẩy đầu tiên
+      inputValue = inputValue.replace(/(,[^,]*){3}$/, "");
+    }
+
+    const { name } = e.target;
     setMoreDetails({
       ...moreDetails,
-      [name]: value,
+      [name]: inputValue,
     });
   };
 
@@ -163,7 +177,10 @@ function DetailsJobs() {
         <div className="py-5 flex flex-col items-start justify-center gap-2 border-t">
           <div className="flex flex-col items-start justify-center">
             <label htmlFor="" className="text-sm font-semibold">
-              Hiring Name <span>*</span>
+              Hiring Name{" "}
+              <small className="text-red-400 ">
+                Note: Limit 20 characters and fields separated by commas
+              </small>
             </label>
           </div>
           <input
