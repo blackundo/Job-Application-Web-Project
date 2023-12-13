@@ -20,7 +20,6 @@ public class Hiring {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnore
     @JoinColumn(name = "CompanyID")
     private Company companyID;
 
