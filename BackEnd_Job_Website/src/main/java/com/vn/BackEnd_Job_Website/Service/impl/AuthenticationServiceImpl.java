@@ -103,6 +103,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .build();
+             //chưa bắt lỗi trùng
             repoAccount.save(user);
         }catch (DataIntegrityViolationException ex){
             ex.printStackTrace();
@@ -122,7 +123,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         repoCandidate.save(candidate);
 
         //send mail
-        String link = "http://localhost/api/auth/verify?token=" + tokenVeri;
+        String link = "http://api.modundo.com/api/auth/verify?token=" + tokenVeri;
         emailService.send(
                 request.getEmail(),
                 BuildEmail.build(request.getFullName(), link));
@@ -243,7 +244,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }else {
             //send mail
             EmailTokenVeri tokenVeri = generateVerificationToken(account, true);
-            String link = "http://localhost/api/auth/verify?token=" + tokenVeri.getId();
+            String link = "http://api.modundo.com/api/auth/verify?token=" + tokenVeri.getId();
             emailService.send(
                     userEmail,
                     BuildEmail.build("Bro", link));
