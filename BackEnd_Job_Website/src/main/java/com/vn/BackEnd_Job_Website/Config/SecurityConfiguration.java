@@ -33,7 +33,8 @@ public class SecurityConfiguration {
                                             "/api/hiring/**",
                                             "/",
                                             "/ws/**",
-                                            "/api/profile/download/**",
+                                            "/api/profile/company-avatar/**",
+                                            "/api/profile/company-cover/**",
                                             "/api/profile"};
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
