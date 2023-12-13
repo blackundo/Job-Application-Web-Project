@@ -20,13 +20,12 @@ const options = {
   ],
 };
 
-export default function SuneditorCustom({ setContent, content, setNext }) {
+export default function SuneditorCustom({ setContent, content }) {
   const editor = useRef();
   const handleChange = (value) => {
     if (value.includes("<img")) {
       // Có thẻ img -> Báo lỗi
       alert("Không được nhập hình ảnh!");
-      setNext(false);
       return;
     }
     setContent(value);

@@ -1,8 +1,7 @@
 import axiosPrivate from "../../../api/axios";
 import swal from "sweetalert";
-
 import Details from "./details";
-import { useState } from "react";
+
 function DetailsJob({ job, loadDetails }) {
   const acc = JSON.parse(localStorage.getItem("Profile"));
   const role = acc?.user?.role?.roleName ?? null;
@@ -40,9 +39,10 @@ function DetailsJob({ job, loadDetails }) {
       }
     });
   };
+  console.log(job);
 
   return (
-    <div className="col-span-7 border-2 border-slate-600 w-full h-[46rem] pt-2 rounded-2xl  sticky top-4 max-md:hidden overflow-y-hidden ">
+    <div className="col-span-7 border-2 border-slate-600 w-full h-[46rem]  rounded-2xl  sticky top-4 max-md:hidden overflow-y-hidden ">
       {loadDetails && (
         <div className="flex items-center justify-center h-full w-full">
           <button

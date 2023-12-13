@@ -25,4 +25,5 @@ public interface HiringRepository extends PagingAndSortingRepository<Hiring, Int
 
     @Query(value = "select h from Hiring h where h.id = :id and h.companyID.id = :companyId")
     Optional<Hiring> findByIdAndCompanyId(Integer id, Integer companyId);
+
 }

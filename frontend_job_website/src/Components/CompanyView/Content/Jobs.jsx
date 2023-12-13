@@ -32,13 +32,12 @@ function Jobs() {
   useEffect(() => {
     async function getHiring() {
       const userID = JSON.parse(localStorage.getItem("Profile"))?.user?.id;
-      console.log(userID);
+      // console.log(userID);
       await axiosPrivate
         .get(`api/hiring/company/${userID}?page=${page}&size=${pageSize}`)
         .then((res) => {
           const data = res.data.content;
           setMyJobs(data);
-          console.log(data);
           setRefresh(true);
         })
         .catch((err) => {
@@ -66,7 +65,6 @@ function Jobs() {
             },
           })
           .then((res) => {
-            console.log(res);
             swal("Poof! Your imaginary file has been deleted!", {
               icon: "success",
             });
