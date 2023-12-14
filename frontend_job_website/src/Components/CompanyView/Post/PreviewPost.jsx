@@ -8,7 +8,6 @@ import { ToastCustom } from "../../ToastCustom/ToastCustom";
 
 import swal from "sweetalert";
 
-
 function PreviewPost() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -68,32 +67,17 @@ function PreviewPost() {
         toast.dismiss(loadingToastId);
       }
     });
-
   };
 
   return (
     <div className="flex items-center justify-center flex-col ">
-      <ToastContainer
-        position="bottom-right"
-        autoClose={1600}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
       <div className=" w-[46.98rem] ">
         <div className="pb-6">
           <img src={img} alt="" />
         </div>
         <div
           dangerouslySetInnerHTML={{ __html: previewContent }}
-
           className={`w-full border ${styles.wrapper} ql-editor  overflow-y-auto prose prose-lg px-10`}
-
         />
         <div className="pt-2 flex items-center justify-between">
           <button

@@ -8,7 +8,6 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { IoIosNotifications } from "react-icons/io";
 import { BiSolidMessageDetail, BiSolidUser } from "react-icons/bi";
-import { RxAvatar } from "react-icons/rx";
 import Gravatar from "react-gravatar";
 import axiosPrivate from "../../api/axios";
 
@@ -18,7 +17,7 @@ function Navbar() {
   const dispatch = useDispatch();
   const acc = JSON.parse(localStorage.getItem("Profile"));
   const role = acc?.user?.role?.roleName ?? null;
-  console.log(acc?.user?.email);
+  // console.log(acc?.user?.email);
   const toggleButtonClick = () => {
     setToggleActive(!toggleActive);
   };
@@ -151,7 +150,7 @@ function Navbar() {
                         Profile
                       </Link>
                       <Link
-                        to={"job_applied"}
+                        to={"/user/job_applied"}
                         className="text-start w-full hover:bg-sky-200 h-12 flex items-center justify-center rounded-lg border-b-2 hover:border-t-2 border-sky-500 cursor-pointer transition-all"
                       >
                         Job Applied

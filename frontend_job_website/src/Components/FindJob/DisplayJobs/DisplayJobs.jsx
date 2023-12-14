@@ -10,47 +10,31 @@ import { useEffect } from "react";
 import axiosPrivate from "../../../api/axios";
 import ReactPaginate from "react-paginate";
 
-const DisplayJobs = () => {
-  const [loadDetail, setLoadDetail] = useState(false);
-  const [jobs, setJobs] = useState([]);
+const DisplayJobs = ({
+  jobs,
+  setPage,
+  setPageSize,
+  totalItems,
+  pageSize,
+  loadJob,
+}) => {
   const mobile = window.innerWidth <= 768;
   const [jobDetail, setJobDetail] = useState(null);
-  const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState("5");
-  const [totalItems, setTotalItems] = useState(0);
+  const [load, setLoad] = useState(false);
   const handleChooseJob = async (id) => {
-    setLoadDetail(false);
+    setLoad(true);
     await axiosPrivate
-      .get(`http://localhost:80/api/hiring/${id}`)
+      .get(`/api/hiring/${id}`)
       .then((res) => {
-        // console.log(res.data);
-        setLoadDetail(true);
-        // console.log(res.data[0].image_company);
         setJobDetail(res.data);
+
+        setLoad(true);
       })
       .catch((err) => {
-        console.log(err);
+        setLoad(false);
       });
+    setLoad(false);
   };
-
-  useEffect(() => {
-    async function fetchDataJobs() {
-      await axiosPrivate
-        .get(
-          `http://localhost:80/api/hiring/get?page=${page}&size=${
-            pageSize === "All" ? "" : pageSize
-          }`
-        )
-        .then((res) => {
-          // console.log(res.data);
-          const data = res.data.content;
-          setJobs(data);
-          setTotalItems(res.data.totalElements);
-        })
-        .catch((err) => console.log(err));
-    }
-    fetchDataJobs();
-  }, [page, pageSize]);
 
   const handlePageChange = (selectedPage) => {
     setPage(selectedPage);
@@ -66,7 +50,10 @@ const DisplayJobs = () => {
   return (
     <>
       <div className="grid grid-cols-12 place-content-center place-items-start pt-5 gap-5 max-md:px-10">
-        <div className="col-span-5 max-md:col-span-12">
+        <div
+          className={`col-span-5 max-md:col-span-12 
+          `}
+        >
           <div className="border-b border-slate-300 pb-4 ">
             <span className="text-blue-400 text-[0.875rem]">
               Post your resume
@@ -92,7 +79,12 @@ const DisplayJobs = () => {
             </div>
           </div>
 
-          {jobs.length === 0 ? (
+          {loadJob && (
+            <div className=" font-bold text-3xl text-rose-600 mb-2 mx-auto max-w-sm w-full p-4 rounded-md">
+              Load fails ‼️⛔
+            </div>
+          )}
+          {jobs === null && !loadJob ? (
             Array.from({ length: 5 }, (_, k) => {
               return (
                 <div
@@ -193,7 +185,8 @@ const DisplayJobs = () => {
             </span>
           </div>
         </div>
-        <DetailsJob job={jobDetail} load={loadDetail} />
+
+        <DetailsJob job={jobDetail} loadDetails={load} />
       </div>
       <div className=" flex items-center justify-center gap-2 py-[1.875rem] ">
         <div className={`flex flex-nowrap overflow-x-auto gap-1`}>

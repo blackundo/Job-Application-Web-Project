@@ -1,11 +1,17 @@
 import { RiPagesFill } from "react-icons/ri";
-import { BiMessageAltDetail, BiSolidUser } from "react-icons/bi";
+import { BiMessageAltDetail } from "react-icons/bi";
+import { GrVmMaintenance } from "react-icons/gr";
 import { LuLogOut } from "react-icons/lu";
 import styles from "./HeaderPageCompany.module.css";
-import { AiFillSetting, AiOutlineSearch } from "react-icons/ai";
+import {
+  AiFillSetting,
+  AiOutlineAppstoreAdd,
+  AiOutlineSearch,
+} from "react-icons/ai";
 // import { MdPayments } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { informationUser } from "../../Utils/TokenToProfile";
 function FiexdMenu({ isOpenMenu }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -15,9 +21,13 @@ function FiexdMenu({ isOpenMenu }) {
     });
     navigate("/");
   };
+  const handleOnPage = () => {
+    const access_token = JSON.parse(localStorage.getItem("Token")).access_token;
+    dispatch(informationUser(access_token));
+  };
   return (
     <div
-      className={`top-[4.5rem] right-3  w-auto border-2 border-slate-500 shadow-lg rounded-md p-3 bg-gray-600 z-[999] ${
+      className={`top-[4.5rem] right-3  w-auto border-2 border-slate-500 shadow-lg rounded-md p-3 bg-gray-500 z-[999]  ${
         isOpenMenu ? "absolute" : "hidden"
       }`}
     >
@@ -34,13 +44,16 @@ function FiexdMenu({ isOpenMenu }) {
           <span className="text-xl">
             <RiPagesFill />
           </span>
-          <span>Company pages</span>
+
+          <Link to={"company_pages"} onClick={handleOnPage}>
+            Company pages
+          </Link>
         </li>
         <li className="flex items-center justify-start gap-2">
-          <span className="text-xl">
-            <BiSolidUser />
+          <span className="text-xl ">
+            <AiOutlineAppstoreAdd />
           </span>
-          <span>User</span>
+          <Link to={"update_main_field"}>Update main field</Link>
         </li>
         {/*  <li className="flex items-center justify-start gap-2">
           <span className="text-xl">
@@ -68,7 +81,7 @@ function FiexdMenu({ isOpenMenu }) {
           <span className="text-xl">
             <AiOutlineSearch />
           </span>
-          <span>Visit Hunterjob for Seekers</span>
+          <Link to={"/findJobs"}>Visit Hunterjob for Seekers</Link>
         </li>
         <li className="flex items-center justify-start gap-2">
           <span className="text-xl">

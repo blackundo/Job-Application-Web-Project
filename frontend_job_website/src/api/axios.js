@@ -1,6 +1,6 @@
 import axios from "axios";
-const BASE_URL =
-  "https://5955-2405-4802-706c-4890-f4b8-2eb2-d347-75e.ngrok-free.app";
+
+const BASE_URL = "http://api.modundo.com";
 
 const axiosPrivate = axios.create({
   baseURL: BASE_URL,

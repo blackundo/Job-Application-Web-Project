@@ -19,5 +19,8 @@ export const ToastCustom = {
   error: (message, options) => {
     return toast.error(message, { ...defaultOptions, ...options });
   },
+  warning: (message, options) => {
+    return toast.warning(message, { ...defaultOptions, ...options });
+  },
   // Add other toast types as needed
 };

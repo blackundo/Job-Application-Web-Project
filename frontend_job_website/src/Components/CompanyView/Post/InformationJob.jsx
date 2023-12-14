@@ -3,11 +3,12 @@ import img from "../../../Assets/imgPostJobs.png";
 import { FiAlertCircle, FiArrowRight } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import BasicDatePicker from "../../PickDateCustoms/BasicDatePicker";
+import dayjs from "dayjs";
 
 function InformationJob() {
   const [details, setDetails] = useState({
     titlePost: "",
-    applicationLimit: 0,
+    applicationLimit: "",
     dateEnd: "",
   });
   const [errors, setErrors] = useState({
@@ -35,14 +36,35 @@ function InformationJob() {
   };
 
   const handleDateChange = (date) => {
-    const formattedDate = date ? date.format("YYYY-MM-DD") : null;
+    /*    const formattedDate = date ? date.format("YYYY-MM-DD") : null;
 
     setDetails((prevDetails) => ({
       ...prevDetails,
       dateEnd: formattedDate,
     }));
     //kiem tra xem date da duoc chọn hay chua
-    setIsDateSelected(!!formattedDate);
+    setIsDateSelected(!!formattedDate); */
+    const currentDate = dayjs();
+    const formattedDate = date ? dayjs(date.format("YYYY-MM-DD")) : null;
+
+    if (formattedDate && formattedDate.isBefore(currentDate, "day")) {
+      console.log("beforedate");
+      setErrors((prev) => ({
+        ...prev,
+        dateEnd: "Choose a future date",
+      }));
+      setIsDateSelected(false);
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        dateEnd: "",
+      }));
+      setDetails((prevDetails) => ({
+        ...prevDetails,
+        dateEnd: formattedDate ? formattedDate.format("YYYY-MM-DD") : null,
+      }));
+      setIsDateSelected(true);
+    }
   };
   const handleNextStep = () => {
     let hasInputErrors = false;
@@ -114,6 +136,7 @@ function InformationJob() {
             value={details.titlePost}
             onChange={(e) => handleInputChange(e)}
           />
+          <small>Eg: Hiring Summer, ....</small>
         </div>
 
         <div className="py-5 flex flex-col items-start justify-center gap-2">
@@ -128,6 +151,7 @@ function InformationJob() {
             placeholder="The number of people"
             onChange={(e) => handleInputChange(e)}
           />
+          <small className="text-red-400">Note: limit {`>`} 0</small>
         </div>
 
         <div>
@@ -136,21 +160,10 @@ function InformationJob() {
             label={"Choose active hiring"}
             handleDateChange={handleDateChange}
           />
+          <small className="text-red-400">
+            Note: Please choose after the current date
+          </small>
         </div>
-        {/* <div className="py-5 flex flex-col items-start justify-center gap-2 border-t">
-          <div className="flex flex-col items-start justify-center">
-            <label htmlFor="" className="text-sm font-semibold">
-              Where would you live to advertise this job <span>*</span>
-            </label>
-            <small>Enter your location</small>
-          </div>
-          <input
-            type="text"
-            name="location"
-            className="w-full border h-10 rounded-lg px-3"
-            placeholder="Location"
-          />
-        </div> */}
       </div>
 
       {hasErrors() && (

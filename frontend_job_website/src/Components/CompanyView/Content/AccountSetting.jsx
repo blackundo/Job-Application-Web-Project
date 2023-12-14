@@ -1,152 +1,177 @@
 import { useState } from "react";
+import axiosPrivate from "../../../api/axios";
+import { useDispatch } from "react-redux";
+import { informationUser } from "../../../Utils/TokenToProfile";
+import swal from "sweetalert";
+import { ToastCustom } from "../../ToastCustom/ToastCustom";
+import { toast } from "react-toastify";
+import LoadingComponent from "../../LoadingComponent/LoadingComponent";
+import SettingFiled from "./SettingFiled";
 
 function AccountSetting() {
-  const [updateProfile, setUpdateProfile] = useState({
-    address: "",
-    businessEmail: "",
-    companyName: "",
-    email: "",
-    founding: "",
-    introduction: "",
-    orgn: "",
-    phone: "",
-  });
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUpdateProfile({
-      ...updateProfile,
-      [name]: value,
+  const [avatarImage, setAvatarImage] = useState(null);
+  const [coverImage, setCoverImage] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [profile, setProfile] = useState(
+    JSON.parse(localStorage.getItem("Profile")).user
+  );
+  const dispatch = useDispatch();
+
+  const handleInputChange = (field, value) => {
+    setProfile((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePhoneNumber = (phoneNumber) => /^\d{10,11}$/.test(phoneNumber);
+  const validateFounding = (years) => /^\d{4}$/.test(years);
+  const validations = [
+    { field: "companyName", message: "Company name is required" },
+    { field: "address", message: "Address is required" },
+    { field: "orgn", message: "Organizational is required" },
+    { field: "introduction", message: "Introduction is required" },
+    {
+      field: "founding",
+      message: "founding field is required and format YYYY",
+      validator: validateFounding,
+    },
+    {
+      field: "businessEmail",
+      message: "Invalid email address",
+      validator: validateEmail,
+    },
+    {
+      field: "phone",
+      message: "Invalid phone number",
+      validator: validatePhoneNumber,
+    },
+  ];
+  const validata = () => {
+    let newErrors = {};
+    validations.forEach(({ field, message, validator }) => {
+      const value = profile[field];
+      if (!value || (validator && !validator(value))) {
+        console.log(field);
+        newErrors[field] = message;
+      }
+    });
+
+    setErrors((prevErrors) => {
+      return { ...prevErrors, ...newErrors };
+    });
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const updateProfileInfo = async () => {
+    if (!validata()) {
+      ToastCustom.error("Input required!", {
+        autoClose: 2500,
+      });
+      return;
+    }
+    const updateProfile = {
+      address: profile.address,
+      businessEmail: profile.businessEmail,
+      companyName: profile.companyName,
+      fouding: profile.founding,
+      introduction: profile.introduction,
+      organizational: profile.orgn,
+      phoneNumber: profile.phone,
+      // //Main field
+      // fieldName: profile.mainField,
+      // activeTime: "",
+      // infoField: "",
+      // achievement: "",
+    };
+
+    await swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (yes) => {
+      if (yes) {
+        const loadingToastId = toast.loading("Please wait...", {
+          autoClose: false,
+        });
+
+        await axiosPrivate
+          .put("api/profile/company/update", updateProfile)
+          .then(() => {
+            const access_token = JSON.parse(
+              localStorage.getItem("Token")
+            ).access_token;
+            dispatch(informationUser(access_token));
+            toast.dismiss(loadingToastId);
+            ToastCustom.success("Update success!", {
+              autoClose: 2500,
+            });
+            setErrors({});
+          })
+          .catch((err) => {
+            toast.dismiss(loadingToastId);
+            ToastCustom.error("Update Error!, You can update again", {
+              autoClose: 2500,
+            });
+            console.error("Error:", err);
+          });
+      } else {
+        swal("Canceled");
+      }
     });
   };
-  const user = JSON.parse(localStorage.getItem("Profile"))?.user;
-  console.log(user);
+
+  const updateAvatarCoverImage = async () => {
+    const loadingToastId = toast.loading("Please wait...", {
+      autoClose: false,
+    });
+    const access_token = JSON.parse(localStorage.getItem("Token")).access_token;
+
+    const data = new FormData();
+    data.append("avatar", avatarImage);
+    data.append("cover", coverImage);
+    console.log([...data.entries()]);
+    await axiosPrivate
+      .patch("/api/profile/company/update", data, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": `multipart/form-data`,
+        },
+      })
+      .then((res) => {
+        toast.dismiss(loadingToastId);
+        console.log(res.data);
+
+        ToastCustom.success("Update Success", {
+          autoClose: 2500,
+        });
+      })
+      .catch((error) => {
+        toast.dismiss(loadingToastId);
+        ToastCustom.error("Update Error!, You can update again", {
+          autoClose: 2500,
+        });
+        console.log(error);
+      });
+  };
   return (
     <div className="flex items-center justify-center ">
-      <div className="w-[80%] ">
-        <h1>Account Setting</h1>
-        <hr />
-        <div className="pt-10 flex flex-col items-center justify-center gap-7">
-          <div className="w-full flex flex-col items-start justify-center gap-4">
-            <label htmlFor="" className="">
-              Name Company:
-            </label>
-            <input
-              type="text"
-              className="outline-none border-b border-slate-500 w-full focus:border-b-2 focus:border-black rounded-lg px-3 transition-[border]"
-              placeholder={`${user.companyName}`}
-              name="companyName"
-              value={updateProfile.companyName}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="w-full flex flex-col items-start justify-center gap-4">
-            <label htmlFor="" className="">
-              Email:
-            </label>
-            <input
-              type="email"
-              className="outline-none border-b border-slate-500 w-full focus:border-b-2 focus:border-black rounded-lg px-3 transition-[border]"
-              placeholder={`${user.email}`}
-              name="email"
-              value={updateProfile.email}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="w-full flex flex-col items-start justify-center gap-4">
-            <label htmlFor="" className="">
-              businessEmail:
-            </label>
-            <input
-              type="email"
-              className="outline-none border-b border-slate-500 w-full focus:border-b-2 focus:border-black rounded-lg px-3 transition-[border]"
-              value={updateProfile.businessEmail}
-              name="businessEmail"
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="w-full flex flex-col items-start justify-center gap-4">
-            <label htmlFor="" className="">
-              Phone:
-            </label>
-            <input
-              type="number"
-              className="outline-none border-b border-slate-500 w-full focus:border-b-2 focus:border-black rounded-lg px-3 transition-[border]"
-              value={updateProfile.phone}
-              name="phone"
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="w-full flex flex-col items-start justify-center gap-4">
-            <label htmlFor="" className="">
-              Address:
-            </label>
-            <input
-              type="text"
-              className="outline-none border-b border-slate-500 w-full focus:border-b-2 focus:border-black rounded-lg px-3 transition-[border]"
-              value={updateProfile.address}
-              name="address"
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="w-full flex flex-col items-start justify-center gap-4">
-            <label htmlFor="" className="">
-              Organizational:
-            </label>
-            <input
-              type="number"
-              className="outline-none border-b border-slate-500 w-full focus:border-b-2 focus:border-black rounded-lg px-3 transition-[border]"
-              value={updateProfile.orgn}
-              name="orgn"
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="w-full flex flex-col items-start justify-center gap-4">
-            <label htmlFor="" className="">
-              Introduction:
-            </label>
-            <textarea
-              value={updateProfile.introduction}
-              name="introduction"
-              rows={5}
-              className="outline-none border-b border-slate-500 w-full focus:border-b-2 focus:border-black rounded-lg px-3  transition-[border]"
-              placeholder={`${
-                user.introduction || "You can update your introduction"
-              }`}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="w-full flex items-start justify-center gap-4">
-            <div className="w-full">
-              <label htmlFor="" className="">
-                Main Filed:
-              </label>
-              <input
-                type="text"
-                className="outline-none border-b border-slate-500 w-full focus:border-b-2 focus:border-black rounded-lg px-3 transition-[border] "
-              />
-            </div>
-            <div className="w-full flex flex-col">
-              <label htmlFor="" className="">
-                Founding:
-              </label>
-              <input
-                type="date"
-                value={updateProfile.founding}
-                name="founding"
-                onChange={handleInputChange}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="py-5 flex items-center justify-evenly">
-          <button className="bg-blue-500 p-2 w-16 rounded-lg font-bold text-white">
-            Save
-          </button>
-          <button className="bg-slate-500 p-2 w-16 rounded-lg text-white font-bold">
-            Clear
-          </button>
-        </div>
-      </div>
+      {!profile ? (
+        <LoadingComponent />
+      ) : (
+        <SettingFiled
+          profile={profile}
+          avatarImage={avatarImage}
+          coverImage={coverImage}
+          errors={errors}
+          handleInputChange={handleInputChange}
+          setAvatarImage={setAvatarImage}
+          setCoverImage={setCoverImage}
+          updateAvatarCoverImage={updateAvatarCoverImage}
+          updateProfileInfo={updateProfileInfo}
+        />
+      )}
     </div>
   );
 }
