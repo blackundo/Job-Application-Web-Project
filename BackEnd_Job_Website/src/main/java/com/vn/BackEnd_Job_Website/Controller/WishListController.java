@@ -1,14 +1,15 @@
 package com.vn.BackEnd_Job_Website.Controller;
 
-import com.vn.BackEnd_Job_Website.Model.Account;
-import com.vn.BackEnd_Job_Website.Model.Candidate;
-import com.vn.BackEnd_Job_Website.Model.Hiring;
-import com.vn.BackEnd_Job_Website.Model.WishList;
+import com.vn.BackEnd_Job_Website.Model.*;
 import com.vn.BackEnd_Job_Website.Respository.CandidateRepository;
 import com.vn.BackEnd_Job_Website.Respository.WishListRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/wish")
@@ -16,6 +17,14 @@ import org.springframework.web.bind.annotation.*;
 public class WishListController {
     private final CandidateRepository candidateRepository;
     private final WishListRepository wishListRepository;
+
+    @GetMapping("/")
+    public ResponseEntity<?> get_wish(){
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow();
+        List<WishList> list = wishListRepository.findByCandidateID_Id(candidate.getId());
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
     @PostMapping("/")
     public void wished(@RequestBody Hiring hiring){
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
