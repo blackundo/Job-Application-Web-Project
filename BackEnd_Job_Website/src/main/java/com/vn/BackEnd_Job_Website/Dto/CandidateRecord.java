@@ -6,6 +6,6 @@ public record CandidateRecord(String fullname,
                               Boolean gender,
                               String universityOrCollege,
                               String city,
-                              char exp,
+                              Integer exp,
                               String skills) {
 }
