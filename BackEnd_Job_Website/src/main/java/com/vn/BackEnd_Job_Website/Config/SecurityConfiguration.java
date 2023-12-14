@@ -33,6 +33,7 @@ public class SecurityConfiguration {
                                             "/api/hiring/**",
                                             "/",
                                             "/ws/**",
+            "/api/admin/**",
                                             "/api/profile/company-avatar/**",
                                             "/api/profile/company-cover/**",
                                             "/api/profile"};
