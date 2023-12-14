@@ -13,4 +13,6 @@ public interface ApplyHireRepository extends JpaRepository<ApplyHire, Integer> {
     Optional<ApplyHire> findByHiringID_CompanyID(Company company);
 
     Optional<ApplyHire> findByHiringID_CompanyIDAndHiringID_Id(Company company, Integer hiringID);
+
+    Optional<ApplyHire> findByCandidateID_IdAndHiringID_Id(Integer candidate_id, Integer hiring_id);
 }

@@ -13,11 +13,11 @@ public class WishList {
     @Column(name = "WishListID", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CandidateID")
     private Candidate candidateID;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "HiringID")
     private Hiring hiringID;
 
