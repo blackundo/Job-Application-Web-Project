@@ -26,4 +26,11 @@ public interface HiringRepository extends PagingAndSortingRepository<Hiring, Int
     @Query(value = "select h from Hiring h where h.id = :id and h.companyID.id = :companyId")
     Optional<Hiring> findByIdAndCompanyId(Integer id, Integer companyId);
 
+
+    @Query(value = "select COUNT_BIG(h) from Hiring h where h.status = 'close'")
+    Long countJobsClose();
+
+    @Query(value = "select COUNT_BIG(h) from Hiring h where h.status = 'open'")
+    Long countJobsOpen();
+
 }
