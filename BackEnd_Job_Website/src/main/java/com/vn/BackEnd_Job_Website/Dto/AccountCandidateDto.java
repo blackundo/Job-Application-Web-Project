@@ -16,8 +16,11 @@ public class AccountCandidateDto {
     private Role role;
     private String fullName;
     private int age;
+    private String fieldName;
     private boolean gender;
     private String universityOrCollege;
     private String city;
     private boolean status;
+    private int exp;
+    private String skill;
 }

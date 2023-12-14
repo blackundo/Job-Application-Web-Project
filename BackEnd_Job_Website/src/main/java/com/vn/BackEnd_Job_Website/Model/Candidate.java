@@ -43,7 +43,7 @@ public class Candidate {
     private Account account;
 
     @Column(name = "Exp")
-    private char exp;
+    private Integer exp;
 
     @Column(name = "SKILLS")
     private String skills;
