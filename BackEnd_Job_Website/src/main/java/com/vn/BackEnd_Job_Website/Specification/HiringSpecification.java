@@ -9,13 +9,23 @@ public class HiringSpecification {
                 criteriaBuilder.like(root.get("hiringContentID").get("title"), "%" + text + "%");
     }
 
-    public static Specification<Hiring> salaryGreaterThan(double salary) {
+    public static Specification<Hiring> salaryLessThanOrEqualTo(double salary) {
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.greaterThan(root.get("minSalary"), salary);
+                criteriaBuilder.lessThanOrEqualTo(root.get("minSalary"), salary);
     }
 
     public static Specification<Hiring> nameContains(String text) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.like(root.get("hiringName"), "%" + text + "%");
+    }
+
+    public static Specification<Hiring> addressContains(String text) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.like(root.get("companyID").get("address"), "%" + text + "%");
+    }
+
+    public static Specification<Hiring> errollmentStatus(String text) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.like(root.get("errollmentStatus"), "%" + text + "%");
     }
 }

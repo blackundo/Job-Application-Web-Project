@@ -57,10 +57,13 @@ public class ProfileServiceImpl implements ProfileService {
                     .role(account.getRole())
                     .fullName(candidate.getFullname())
                     .age(candidate.getAge())
+                    .fieldName(candidate.getFieldName())
                     .gender(candidate.getGender())
                     .universityOrCollege(candidate.getUniversityOrCollege())
                     .city(candidate.getCity())
                     .status(account.isStatus())
+                    .exp(candidate.getExp())
+                    .skill(candidate.getSkills())
                     .build();
         }
         response.setContentType("application/json");

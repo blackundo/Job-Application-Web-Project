@@ -38,12 +38,12 @@ public class Candidate {
     @Column(name = "UploadFileCV")
     private String uploadFileCV;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "AccountID")
     private Account account;
 
     @Column(name = "Exp")
-    private char exp;
+    private Integer exp;
 
     @Column(name = "SKILLS")
     private String skills;

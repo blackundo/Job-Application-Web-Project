@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vn.BackEnd_Job_Website.Controller.auth.AuthenticationRequest;
 import com.vn.BackEnd_Job_Website.Controller.auth.AuthenticationResponse;
 import com.vn.BackEnd_Job_Website.Controller.auth.RegisterRequest;
+import com.vn.BackEnd_Job_Website.Exception.UniqueException;
 import com.vn.BackEnd_Job_Website.Model.Account;
 import com.vn.BackEnd_Job_Website.Model.Candidate;
 import com.vn.BackEnd_Job_Website.Model.Company;
@@ -105,8 +106,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .build();
              //chưa bắt lỗi trùng
             repoAccount.save(user);
-        }catch (DataIntegrityViolationException ex){
-            ex.printStackTrace();
+        }catch (Exception ex){
+            throw new UniqueException(ex.getMessage());
         }
 
         String tokenVeri = String.valueOf(generateVerificationToken(user, false).getId());
