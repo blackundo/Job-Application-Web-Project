@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class UniqueException extends RuntimeException{
     public UniqueException(String message){
         super(message);
-        printStackTrace();
+//        printStackTrace();
     }
 }
