@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/apply")
 @RequiredArgsConstructor
@@ -32,9 +34,16 @@ public class ApplyHireController {
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Not found candidate"));
         var hiring = hiringRepository.findById(request.hiringID()).orElseThrow();
-        ApplyHire applyHire = new ApplyHire( candidate, hiring, request.status());
-        ApplyHire save = applyHireRepository.save(applyHire);
-        return new ResponseEntity<>(save, HttpStatus.OK);
+
+        Optional<ApplyHire> applyExists = applyHireRepository.findByCandidateID_IdAndHiringID_Id(candidate.getId(), hiring.getId());
+        if(applyExists.isPresent()){
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }else {
+            ApplyHire applyHire = new ApplyHire( candidate, hiring, request.status());
+            ApplyHire save = applyHireRepository.save(applyHire);
+            return new ResponseEntity<>(save, HttpStatus.OK);
+        }
+
     }
 
     @DeleteMapping("/")
