@@ -21,6 +21,6 @@ public class AccountCandidateDto {
     private String universityOrCollege;
     private String city;
     private boolean status;
-    private int exp;
+    private Integer exp;
     private String skill;
 }
