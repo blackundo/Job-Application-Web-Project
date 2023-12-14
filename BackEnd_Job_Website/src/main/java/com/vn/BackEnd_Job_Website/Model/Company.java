@@ -18,9 +18,8 @@ public class Company {
     @Column(name = "CompanyID", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "AccountID")
-    @JsonIgnore
     private Account account;
 
     @Nationalized

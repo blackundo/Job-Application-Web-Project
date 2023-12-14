@@ -52,6 +52,8 @@ public class HiringController {
     public ResponseEntity<?> findHirings(
             @RequestParam(required = false) String text,
             @RequestParam(required = false) String hiringName,
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String errollmentStatus,
             @RequestParam(required = false) Double salary){
         Specification<Hiring> spec = this.spec;
         if (text != null) {
@@ -64,8 +66,19 @@ public class HiringController {
 
         if (salary != null) {
             System.out.println(salary);
-            spec = spec.and(HiringSpecification.salaryGreaterThan(salary));
+            spec = spec.and(HiringSpecification.salaryLessThanOrEqualTo(salary));
         }
+
+        if (address != null) {
+            System.out.println(address);
+            spec = spec.and(HiringSpecification.addressContains(address));
+        }
+
+        if (errollmentStatus != null) {
+            System.out.println(errollmentStatus);
+            spec = spec.and(HiringSpecification.errollmentStatus(errollmentStatus));
+        }
+
         List<Hiring> hirings = hiringRepository.findAll(spec);
         return new ResponseEntity<>(hirings, HttpStatus.OK);
     }
@@ -138,21 +151,21 @@ public class HiringController {
                                           @RequestBody HiringPostDto request) throws Exception {
         Hiring hiring = hiringRepository.findById(id).orElseThrow(() -> new Exception("Resource not found"));
         HiringContent content = hiringContentRepository.findById(hiring.getHiringContentID().getId()).orElseThrow(() -> new Exception("Resource not found"));
+
+        if (request.getContentPost() != null || request.getTitlePost() != null) {
+            content.setTitle(request.getTitlePost());
+            content.setContent(request.getContentPost());
+            hiringContentRepository.save(content);
+        }
         //
-//        if (request.getContentPost() != null || request.getTitlePost() != null) {
-//            content.setTitle(request.getTitlePost());
-//            content.setContent(request.getContentPost());
-//            hiringContentRepository.save(content);
-//        }
-//        //
-//        hiring.setHiringName(request.getHiringName());
-//        hiring.setApplicationLimit(request.getApplicationLimit());
-//        hiring.setStatus(request.getStatus());
-//        hiring.setFieldName(request.getFieldName());
-//        hiring.setMinSalary(request.getMinSalary());
-//        hiring.setMaxSalary(request.getMaxSalary());
-//        hiring.setErrollmentStatus(request.getErrollmentStatus());
-//        hiringRepository.save(hiring);
+        hiring.setHiringName(request.getHiringName());
+        hiring.setApplicationLimit(request.getApplicationLimit());
+        hiring.setStatus(request.getStatus());
+        hiring.setFieldName(request.getFieldName());
+        hiring.setMinSalary(request.getMinSalary());
+        hiring.setMaxSalary(request.getMaxSalary());
+        hiring.setErrollmentStatus(request.getErrollmentStatus());
+        hiringRepository.save(hiring);
 
 
         BeanUtils.copyProperties(request, hiring, GetNullPropertyNames.__arrayEmpty__(request));
