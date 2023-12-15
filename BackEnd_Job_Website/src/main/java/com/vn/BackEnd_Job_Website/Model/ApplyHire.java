@@ -14,7 +14,7 @@ public class ApplyHire {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CandidateID")
     @JsonIgnore
     private Candidate candidateID;
