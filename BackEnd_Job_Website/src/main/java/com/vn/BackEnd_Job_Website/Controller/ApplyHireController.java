@@ -81,13 +81,22 @@ public class ApplyHireController {
 
 
     @GetMapping("/get-hiring-applied/{hiringid}")
-    public ResponseEntity<?> getApplyByCandidateAndHiring(@PathVariable Integer hiringid) throws ResourceNotFoundException{
+    public ResponseEntity<?> getApplyByCompanyAndHiring(@PathVariable Integer hiringid) throws ResourceNotFoundException{
         var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var company = companyRepository.findByAccountID(account.getId()).orElseThrow();
         var applied = applyHireRepository.findByHiringID_CompanyIDAndHiringID_Id(company, hiringid).orElseThrow(() -> {
                 new ResourceNotFoundException("Không timf thấy hoặc hiring baif đăng kh phải của m").printStackTrace();
                 return new ResourceNotFoundException("Không timf thấy hoặc hiring baif đăng kh phải của m");}
         );
+        return new ResponseEntity<>(applied, HttpStatus.OK);
+    }
+
+    @GetMapping("/get-hiring-applied-candidate/{hiringid}")
+    public ResponseEntity<?> getApplyByCandidateAndHiring(@PathVariable Integer hiringid) throws ResourceNotFoundException{
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow();
+
+        var applied = applyHireRepository.findByCandidateID_IdAndHiringID_Id(candidate.getId(), hiringid);
         return new ResponseEntity<>(applied, HttpStatus.OK);
     }
 }
