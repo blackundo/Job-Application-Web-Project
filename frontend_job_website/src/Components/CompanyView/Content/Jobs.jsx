@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import Header from "./Header";
 import axiosPrivate from "../../../api/axios";
@@ -16,7 +16,7 @@ function Jobs() {
   const [query, setQuery] = useState("");
   const access_token = JSON.parse(localStorage.getItem("Token"))?.access_token;
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState("All");
+  const [pageSize, setPageSize] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
 
   const memoizedJobs = useMemo(() => {
@@ -32,14 +32,12 @@ function Jobs() {
   useEffect(() => {
     async function getHiring() {
       const userID = JSON.parse(localStorage.getItem("Profile"))?.user?.id;
-      console.log(userID);
+      // console.log(userID);
       await axiosPrivate
-        .get(`api/hiring/company/${userID}`)
+        .get(`api/hiring/company/${userID}?page=${page}&size=${pageSize}`)
         .then((res) => {
           const data = res.data.content;
-
           setMyJobs(data);
-          // console.log(data);
           setRefresh(true);
         })
         .catch((err) => {
@@ -48,7 +46,7 @@ function Jobs() {
         });
     }
     getHiring();
-  }, [statusJobs, refresh]);
+  }, [statusJobs, refresh, pageSize, page]);
 
   const handleDeleteJob = async (id) => {
     const accessToken = JSON.parse(localStorage.getItem("Token")).access_token;
@@ -67,7 +65,6 @@ function Jobs() {
             },
           })
           .then((res) => {
-            console.log(res);
             swal("Poof! Your imaginary file has been deleted!", {
               icon: "success",
             });
@@ -84,41 +81,6 @@ function Jobs() {
       }
     });
   };
-  const debounce = (func, delay) => {
-    let debounceTimer;
-    return function () {
-      const context = this;
-      const args = arguments;
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => func.apply(context, args), delay);
-    };
-  };
-  const handleSearch = useCallback(
-    (query) => {
-      axiosPrivate
-        .get("/api/hiring/find-hirings", {
-          params: {
-            text: query,
-          },
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        })
-        .then((res) => {
-          setMyJobs(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    [access_token]
-  );
-
-  useEffect(() => {
-    const debouncedSearch = debounce((query) => handleSearch(query), 500);
-
-    debouncedSearch(query);
-  }, [query, handleSearch]);
 
   return (
     <>

@@ -6,7 +6,6 @@ import SuneditorCustom from "../../Suneditor/SuneditorCustom";
 
 function WriteJobs() {
   const [content, setContent] = useState("");
-  const [next, setNext] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
   const details = location.state?.detailsStep || "";
@@ -34,11 +33,7 @@ function WriteJobs() {
             Job description *
           </span>
 
-          <SuneditorCustom
-            content={content}
-            setContent={setContent}
-            setNext={setNext}
-          />
+          <SuneditorCustom content={content} setContent={setContent} />
 
           <div className="pt-2 flex items-center justify-between">
             <button
@@ -48,30 +43,29 @@ function WriteJobs() {
               <FiArrowLeft className="text-xl " />
               Back
             </button>
-            {next && (
-              <Link
-                to={"/company/post_jobs/preview"}
-                state={{
-                  previewContent: content,
-                  detailsStep: {
-                    hiringName: details.hiringName,
-                    applicationLimit: details.applicationLimit,
-                    dateEnd: details.dateEnd,
-                    titlePost: details.titlePost,
-                    contentPost: content,
-                    fieldName: details.fieldName,
-                    maxSalary: details.maxSalary,
-                    minSalary: details.minSalary,
-                    errollmentStatus: details.errollmentStatus,
-                  },
-                }}
-                onClick={handleNextStep}
-                className="bg-blue-400 p-1 h-12 rounded-lg w-fit text-center font-semibold text-white hover:scale-110 flex items-center justify-center"
-              >
-                Next Page Preview
-                <FiArrowRight className="text-xl " />
-              </Link>
-            )}
+
+            <Link
+              to={"/company/post_jobs/preview"}
+              state={{
+                previewContent: content,
+                detailsStep: {
+                  hiringName: details.hiringName,
+                  applicationLimit: details.applicationLimit,
+                  dateEnd: details.dateEnd,
+                  titlePost: details.titlePost,
+                  contentPost: content,
+                  fieldName: details.fieldName,
+                  maxSalary: details.maxSalary,
+                  minSalary: details.minSalary,
+                  errollmentStatus: details.errollmentStatus,
+                },
+              }}
+              onClick={handleNextStep}
+              className="bg-blue-400 p-1 h-12 rounded-lg w-fit text-center font-semibold text-white hover:scale-110 flex items-center justify-center"
+            >
+              Next Page Preview
+              <FiArrowRight className="text-xl " />
+            </Link>
           </div>
         </div>
       </div>

@@ -34,7 +34,7 @@ function EditJobs() {
         const res = await axiosPrivate.get(`/api/hiring/${id}`);
         setJobData(res.data);
         setTitlePost(res.data?.hiringContentID.title);
-        console.log(res.data);
+        // console.log(res.data);
       } catch (err) {
         console.log(err);
       }
@@ -47,7 +47,7 @@ function EditJobs() {
   };
   const handleSubmit = async () => {
     if (!validate()) return;
-
+    console.log(titlePost);
     const updatedJob = {
       hiringName: jobData.hiringName,
       applicationLimit: jobData.applicationLimit,
@@ -117,7 +117,6 @@ function EditJobs() {
                 placeholder="Title"
                 value={titlePost}
                 onChange={(e) => {
-                  console.log(e);
                   setTitlePost(e.target.value);
                 }}
               />

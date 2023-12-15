@@ -38,6 +38,9 @@ import AccountSetting from "../Components/CompanyView/Content/AccountSetting";
 import JobApplied from "../Components/Profile/JobApplied/JobApplied";
 
 import EditJobs from "../Components/CompanyView/Content/EditJobs";
+import CompanyPage from "../Components/CompanyView/CompanyPage";
+
+import UpdateMainField from "../Components/CompanyView/Content/UpdateMainField";
 
 // const roles = ["Candidate", "Company", "admin", null];
 function Router() {
@@ -134,8 +137,11 @@ function Router() {
             <Route path="jobs" element={<Jobs />} />
 
             <Route path="edit_jobs/:id" element={<EditJobs />} />
-
             <Route path="account_setting" element={<AccountSetting />} />
+
+            <Route path="update_main_field" element={<UpdateMainField />} />
+
+            <Route path="company_pages" element={<CompanyPage />} />
             <Route path="candidate" element={<Candidate />} />
             <Route path="interview" element={<Interview />} />
             <Route path="post_jobs" element={<PostJobs />}>

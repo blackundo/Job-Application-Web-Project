@@ -24,9 +24,7 @@ function CompanyView() {
     <>
       <div className="flex">
         <div
-
           className={` bg-slate-700 flex flex-col items-center justify-start dashboard sticky top-0 h-screen max-[400px]:max-w-[50px]`}
-
         >
           <div
             className={`flex items-center ${
@@ -56,10 +54,13 @@ function CompanyView() {
           </AnimatePresence>
         </div>
 
-        <div className="w-full">
-          <HeaderPageCompany toggleMenu={toggleMenu} />
+        <div className="w-full ">
+          <HeaderPageCompany toggleMenu={toggleMenu} isOpenMenu={isOpenMenu} />
           <div className="flex items-center justify-center pt-2">
-            <div className="w-[98%]  p-2 min-h-[calc(100vh-4.5rem)]">
+            <div
+              className="w-[98%]  p-2 min-h-[calc(100vh-4.5rem)]"
+              onClick={() => setIsOpenMenu(false)}
+            >
               <Outlet />
             </div>
           </div>

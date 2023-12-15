@@ -9,6 +9,8 @@ import InputCV from "./InputCV";
 import Gravatar from "react-gravatar";
 import { BsGenderAmbiguous } from "react-icons/bs";
 import { LuSchool } from "react-icons/lu";
+import { useEffect } from "react";
+import fetchedSkills from "../../api/FetchAPISkill";
 
 function Profile() {
   const info = JSON.parse(localStorage.getItem("Profile"));
@@ -23,6 +25,27 @@ function Profile() {
     uploadCv: fileCV,
   } = info.user;
 
+  useEffect(() => {
+    async function fetchSkills() {
+      await fetchedSkills
+        .post("connect/token", {
+          client_id: "mq77ngheemcifeix",
+          client_secret: "oDveptwd",
+          scope: "emsi_open",
+          grant_type: "client_credentials",
+        })
+        .then((res) => {
+          localStorage.setItem(
+            "access_token_skills",
+            JSON.stringify(res.data.access_token)
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    fetchSkills();
+  }, []);
   if (info === null && info === undefined) return;
 
   return (

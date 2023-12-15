@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -36,6 +37,7 @@ public class ApplyHireController {
         var hiring = hiringRepository.findById(request.hiringID()).orElseThrow();
 
         Optional<ApplyHire> applyExists = applyHireRepository.findByCandidateID_IdAndHiringID_Id(candidate.getId(), hiring.getId());
+        // if exist return 204, can't apply 2 time in 1 job
         if(applyExists.isPresent()){
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }else {
@@ -63,8 +65,11 @@ public class ApplyHireController {
     public ResponseEntity<?> getApplyByCompany(){
         var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var company = companyRepository.findByAccountID(account.getId()).orElseThrow();
-        var applied = applyHireRepository.findByHiringID_CompanyID(company).orElseThrow();
-        return new ResponseEntity<>(applied, HttpStatus.OK);
+        List<ApplyHire> list = applyHireRepository.findByHiringID_CompanyID(company);
+        if (!list.isEmpty()){
+            return new ResponseEntity<>(list, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 
 

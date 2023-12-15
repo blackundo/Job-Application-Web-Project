@@ -4,22 +4,42 @@ import DisplayJobs from "../../Components/FindJob/DisplayJobs/DisplayJobs";
 import FooterHome from "../../Components/Home/FooterHome";
 import BoxFindJob from "../../Components/FindJob/BoxFindJob/BoxFindJob";
 import { useState } from "react";
+import { useEffect } from "react";
+import axiosPrivate from "../../api/axios";
 
 function FindJobPage() {
-  // const [cities, setCities] = useState(null);
-  const [query, setQuery] = useState({ query: "", location: "" });
-  // const { isLoading, jobs, error } = useJobs(query);
-
+  const [query, setQuery] = useState("");
+  const [jobs, setJobs] = useState(null);
+  // const [filters, setFilters] = useState({});
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState("5");
+  const [totalItems, setTotalItems] = useState(0);
+  const [loadJob, setLoadJob] = useState(false);
+  const [load, setLoad] = useState(false);
   // useEffect(() => {
-  //   async function citiesFetch() {
-  //     await axiosPrivate.get("http://localhost:9001/Jobs").then((res) => {
-  //       const data = res.data;
-  //       const citiesNew = data?.map((d) => d.location);
-  //       setCities([...new Set(citiesNew)]);
-  //     });
-  //   }
-  //   citiesFetch();
-  // }, []);
+  //   console.log(query);
+  // }, [query]);
+
+  useEffect(() => {
+    async function fetchDataJobs() {
+      await axiosPrivate
+        .get(
+          `/api/hiring/get?page=${page}&size=${
+            pageSize === "All" ? "" : pageSize
+          }`
+        )
+        .then((res) => {
+          const data = res.data.content;
+          setJobs(data);
+          setTotalItems(res.data.totalElements);
+        })
+        .catch((err) => {
+          setLoadJob(true);
+          console.log(err);
+        });
+    }
+    fetchDataJobs();
+  }, [page, pageSize]);
 
   return (
     <>
@@ -29,13 +49,20 @@ function FindJobPage() {
         </div>
       </div>
       <div className="flex items-center justify-center w-full">
-        <div className="w-full  ">
-          <BoxFindJob setQuery={setQuery} />
+        <div className="w-full">
+          <BoxFindJob setQuery={setQuery} query={query} setJob={setJobs} />
         </div>
       </div>
       <div className="flex items-center justify-center w-full">
         <div className="xl:w-[1200px] lg:w-[1000px] md:w-[900px] sm:w-[700px] ">
-          <DisplayJobs />
+          <DisplayJobs
+            jobs={jobs}
+            loadJob={loadJob}
+            pageSize={pageSize}
+            setPage={setPage}
+            setPageSize={setPageSize}
+            totalItems={totalItems}
+          />
         </div>
       </div>
       <div className="flex items-center justify-center w-full">
