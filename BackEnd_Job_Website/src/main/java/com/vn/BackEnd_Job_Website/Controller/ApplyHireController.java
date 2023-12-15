@@ -37,11 +37,11 @@ public class ApplyHireController {
 
         Optional<ApplyHire> applyExists = applyHireRepository.findByCandidateID_IdAndHiringID_Id(candidate.getId(), hiring.getId());
         if(applyExists.isPresent()){
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        }else {
             ApplyHire applyHire = new ApplyHire( candidate, hiring, request.status());
             ApplyHire save = applyHireRepository.save(applyHire);
             return new ResponseEntity<>(save, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
 
     }
@@ -63,8 +63,11 @@ public class ApplyHireController {
     public ResponseEntity<?> getApplyByCompany(){
         var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var company = companyRepository.findByAccountID(account.getId()).orElseThrow();
-        var applied = applyHireRepository.findByHiringID_CompanyID(company).orElseThrow();
-        return new ResponseEntity<>(applied, HttpStatus.OK);
+        var applyExists = applyHireRepository.findByHiringID_CompanyID(company);
+        if (applyExists.isPresent()){
+            return new ResponseEntity<>(applyExists.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 
 
