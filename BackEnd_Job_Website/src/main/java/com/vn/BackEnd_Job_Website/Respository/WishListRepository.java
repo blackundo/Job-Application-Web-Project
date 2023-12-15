@@ -13,4 +13,6 @@ public interface WishListRepository extends JpaRepository<WishList, Integer> {
     Optional<WishList> findByHiringID(Integer id);
 
     List<WishList> findByCandidateID_Id(Integer candidate_id);
+
+
 }
