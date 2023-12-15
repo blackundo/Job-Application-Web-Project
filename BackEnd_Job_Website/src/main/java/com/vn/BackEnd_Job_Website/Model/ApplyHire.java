@@ -16,7 +16,6 @@ public class ApplyHire {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CandidateID")
-    @JsonIgnore
     private Candidate candidateID;
 
     @ManyToOne(fetch = FetchType.LAZY)
