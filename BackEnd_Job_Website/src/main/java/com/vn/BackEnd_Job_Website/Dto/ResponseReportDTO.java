@@ -14,4 +14,6 @@ public class ResponseReportDTO {
     Long jobs;
     Long jobsClose;
     Long jobsOpen;
+    Long company;
+    Long candidate;
 }
