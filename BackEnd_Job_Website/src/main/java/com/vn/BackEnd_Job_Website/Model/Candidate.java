@@ -38,7 +38,7 @@ public class Candidate {
     @Column(name = "UploadFileCV")
     private String uploadFileCV;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "AccountID")
     private Account account;
 

@@ -18,7 +18,7 @@ public class Company {
     @Column(name = "CompanyID", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "AccountID")
     private Account account;
 
