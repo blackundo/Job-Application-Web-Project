@@ -12,6 +12,9 @@ import com.vn.BackEnd_Job_Website.Respository.CompanyRepository;
 import com.vn.BackEnd_Job_Website.Respository.HiringRepository;
 import lombok.RequiredArgsConstructor;
 import net.kaczmarzyk.spring.data.jpa.domain.In;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,11 +51,12 @@ public class ApplyHireController {
 
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@RequestPart Integer id) throws Exception {
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow(() -> new Exception("Not found candidate"));
-        return new ResponseEntity<>(HttpStatus.OK);
+        applyHireRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
@@ -62,10 +66,13 @@ public class ApplyHireController {
      * @return
      */
     @GetMapping("/get-applied")
-    public ResponseEntity<?> getApplyByCompany(){
+    public ResponseEntity<?> getApplyByCompany(@RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "5") int size){
         var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var company = companyRepository.findByAccountID(account.getId()).orElseThrow();
-        List<ApplyHire> list = applyHireRepository.findByHiringID_CompanyID(company);
+
+        Pageable paging = PageRequest.of(page, size);
+        Page<ApplyHire> list = applyHireRepository.findByHiringID_CompanyID(company, paging);
         if (!list.isEmpty()){
             return new ResponseEntity<>(list, HttpStatus.OK);
         }
@@ -74,13 +81,22 @@ public class ApplyHireController {
 
 
     @GetMapping("/get-hiring-applied/{hiringid}")
-    public ResponseEntity<?> getApplyByCandidateAndHiring(@PathVariable Integer hiringid) throws ResourceNotFoundException{
+    public ResponseEntity<?> getApplyByCompanyAndHiring(@PathVariable Integer hiringid) throws ResourceNotFoundException{
         var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var company = companyRepository.findByAccountID(account.getId()).orElseThrow();
         var applied = applyHireRepository.findByHiringID_CompanyIDAndHiringID_Id(company, hiringid).orElseThrow(() -> {
                 new ResourceNotFoundException("Không timf thấy hoặc hiring baif đăng kh phải của m").printStackTrace();
                 return new ResourceNotFoundException("Không timf thấy hoặc hiring baif đăng kh phải của m");}
         );
+        return new ResponseEntity<>(applied, HttpStatus.OK);
+    }
+
+    @GetMapping("/get-hiring-applied-candidate/{hiringid}")
+    public ResponseEntity<?> getApplyByCandidateAndHiring(@PathVariable Integer hiringid) throws ResourceNotFoundException{
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow();
+
+        var applied = applyHireRepository.findByCandidateID_IdAndHiringID_Id(candidate.getId(), hiringid);
         return new ResponseEntity<>(applied, HttpStatus.OK);
     }
 }

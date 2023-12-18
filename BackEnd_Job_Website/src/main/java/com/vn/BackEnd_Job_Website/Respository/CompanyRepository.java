@@ -8,6 +8,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
@@ -23,4 +24,6 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
     @Modifying
     @Query("update Company c set c.cover = ?1 where c.account.id = ?2")
     void uploadCoverByAccountID(@NonNull String cover, @NonNull Integer id);
+
+    List<Company> findByAccountStatusIsFalse();
 }
