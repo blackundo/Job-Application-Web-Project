@@ -17,7 +17,6 @@ function LabelDashboard() {
       });
   }, []);
 
-  //const { jobs, jobsClose: jobsClosed, jobsOpen } = countLabel;
   return (
     <>
       <div
@@ -32,7 +31,7 @@ function LabelDashboard() {
               start={0}
               end={countLabel?.jobs || 10}
               duration={2}
-              prefix="$"
+              // prefix="$"
             />
           </h1>
           <small className="text-gray-400/50">more details</small>
@@ -75,7 +74,7 @@ function LabelDashboard() {
               <h1 className={` text-[2rem] font-bold`}>
                 <NumberCounter
                   start={0}
-                  end={countLabel?.jobsClosed || 10}
+                  end={countLabel?.jobsClose || 10}
                   duration={1.3}
                 />
               </h1>
@@ -90,6 +89,26 @@ function LabelDashboard() {
                 />
               </h1>
               <span className="">Job Doing</span>
+            </div>
+            <div className="text-[#4ec34a]">
+              <h1 className={` text-[2rem] font-bold`}>
+                <NumberCounter
+                  start={0}
+                  end={countLabel?.company || 10}
+                  duration={1.3}
+                />
+              </h1>
+              <span className="">Company</span>
+            </div>
+            <div className="text-[#525ac6]">
+              <h1 className={` text-[2rem] font-bold`}>
+                <NumberCounter
+                  start={0}
+                  end={countLabel?.candidate || 10}
+                  duration={1.7}
+                />
+              </h1>
+              <span className="">Candidate</span>
             </div>
           </div>
         </div>

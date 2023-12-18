@@ -21,6 +21,7 @@ function FindJobPage() {
   }, [query]); */
 
   const fetchDataJobs = useCallback(async () => {
+    setJobs(null);
     await axiosPrivate
       .get(
         `/api/hiring/get?page=${page}&size=${
@@ -30,6 +31,7 @@ function FindJobPage() {
       .then((res) => {
         const data = res.data.content;
         setJobs(data);
+
         setTotalItems(res.data.totalElements);
       })
       .catch((err) => {

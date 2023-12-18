@@ -14,7 +14,7 @@ function CompanyManager() {
   const [listCompanyPending, setListCompanyPending] = useState(null);
   const companyPending = async () => {
     await axiosPrivate
-      .get("/api/admin/companies/pending")
+      .get("/api/admin/company")
       .then((res) => {
         console.log(res.data);
         setListCompanyPending(res.data);

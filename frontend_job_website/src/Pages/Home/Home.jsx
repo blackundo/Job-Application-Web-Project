@@ -15,6 +15,8 @@ import { ToastCustom } from "../../Components/ToastCustom/ToastCustom";
 import { informationUser } from "../../Utils/TokenToProfile";
 import { useCallback, useEffect } from "react";
 import DialogVerify from "../../Components/DialogCustoms/Dialog";
+import { jwtDecode } from "jwt-decode";
+
 function Home() {
   const acc = JSON.parse(localStorage.getItem("Profile"));
   const token_access = JSON.parse(localStorage.getItem("Token"))?.token_access;
@@ -49,9 +51,12 @@ function Home() {
   };
   const handleCheckStatusEmail = useCallback(() => {
     if (
-      !verifyEmail &&
-      verifyEmail != null &&
-      acc.user.role.roleName === "Candidate"
+      (!verifyEmail &&
+        verifyEmail != null &&
+        acc.user.role.roleName === "Candidate") ||
+      (!verifyEmail &&
+        verifyEmail != null &&
+        acc.user.role.roleName === "Company")
     ) {
       console.log("Email not verify");
       setOpen(true);

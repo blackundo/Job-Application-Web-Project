@@ -1,11 +1,7 @@
 import Role from "../../Components/Role/Role";
 
 function RolePage() {
-  return (
-    <>
-      <Role />
-    </>
-  );
+  return <Role />;
 }
 
 export default RolePage;

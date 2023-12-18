@@ -1,6 +1,5 @@
 import { SlArrowDown } from "react-icons/sl";
 import LayoutAdminManager from "../../../Layouts/LayoutAdminManager";
-import { rows } from "./rows";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { FaExchangeAlt } from "react-icons/fa";
 import { BsFilter } from "react-icons/bs";
@@ -8,6 +7,8 @@ import TableCandidateCustom from "../../TableCustom/TableCandidateCustom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axiosPrivate from "../../../api/axios";
+import { toast } from "react-toastify";
+import swal from "sweetalert";
 
 function CandidateManager() {
   const [detailSummary, setDetailSummary] = useState(null);
@@ -17,7 +18,7 @@ function CandidateManager() {
   const [listCandidatePending, setListCandidatePending] = useState(null);
   const candidatePending = async () => {
     await axiosPrivate
-      .get("/api/admin/candidate/pending")
+      .get("/api/admin/candidate")
       .then((res) => {
         console.log(res.data);
         setListCandidatePending(res.data);
@@ -30,6 +31,43 @@ function CandidateManager() {
   useEffect(() => {
     candidatePending();
   }, []);
+  const handleAcceptAccount = async (id) => {
+    const loadingToastId = toast.loading("Please wait...", {
+      autoClose: false,
+    });
+    await swal({
+      title: "Are you sure?",
+      text: "Do you want to accept this account",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        axiosPrivate
+          .patch(`/api/admin/candidates/${id}/accept`)
+          .then(() => {
+            toast.dismiss(loadingToastId);
+            candidatePending();
+            swal("Active Success", {
+              icon: "success",
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.dismiss(loadingToastId);
+            ToastCustom.error(
+              "Opps, Active fails, Maybe account Accepted then please reload page ",
+              {
+                autoClose: 2500,
+              }
+            );
+          });
+      } else {
+        toast.dismiss(loadingToastId);
+        swal("Cancelled");
+      }
+    });
+  };
   return (
     <>
       <LayoutAdminManager>
@@ -60,10 +98,13 @@ function CandidateManager() {
           </div>
         </div>
         <div className="px-6">
-          <TableCandidateCustom
-            rows={rows}
-            setDetailSummary={setDetailSummary}
-          />
+          {listCandidatePending != null && listCandidatePending && (
+            <TableCandidateCustom
+              rows={listCandidatePending}
+              setDetailSummary={setDetailSummary}
+              handleAcceptAccount={handleAcceptAccount}
+            />
+          )}
         </div>
       </LayoutAdminManager>
       {detailSummary && (
@@ -75,7 +116,7 @@ function CandidateManager() {
             <div className="flex flex-col items-start justify-center w-full gap-5 py-6">
               <div className="flex items-center justify-start w-full">
                 <span className="w-1/5">Create at</span>
-                <span>16/06/2023, 12:02:07</span>
+                <span>Unknown</span>
               </div>
               <div className="flex items-center justify-start w-full">
                 <span className="w-1/5">Role</span>
@@ -83,39 +124,70 @@ function CandidateManager() {
               </div>
               <div className="flex items-center justify-start w-full">
                 <span className="w-1/5">FullName</span>
-                <span>{detailSummary.fullName}</span>
+                <span
+                  className={`${detailSummary.fullname || "text-sky-600"} `}
+                >
+                  {detailSummary.fullname || "Not Yet Update!"}
+                </span>
               </div>
               <div className="flex items-center justify-start w-full">
                 <span className="w-1/5">University Or College</span>
-                <span>{detailSummary.universityOrCollege}</span>
+                <span
+                  className={`${
+                    detailSummary.universityOrCollege || "text-sky-600"
+                  } `}
+                >
+                  {detailSummary.universityOrCollege || "Not Yet Update!"}
+                </span>
               </div>
               <div className="flex items-center justify-start w-full">
-                <span className="w-1/5">Birthday</span>
-                <span>12/05/2003</span>
+                <span className="w-1/5">Age</span>
+                <span className="text-sky-600">
+                  {detailSummary.age || "Not Yet Update!"}
+                </span>
               </div>
               <div className="flex items-center justify-start w-full">
                 <span className="w-1/5">Gender</span>
-                <span>Male</span>
+                <span>{detailSummary.gender ? "Male" : "Famale"}</span>
               </div>
               <div className="flex items-center justify-start w-full">
                 <span className="w-1/5">Email</span>
-                <span>datdo77@gmail.com</span>
+                <span className={`${detailSummary.email || "text-sky-600"} `}>
+                  {detailSummary.email || "Not Yet Update!"}
+                </span>
               </div>
-              <div className="flex items-center justify-start w-full">
-                <span className="w-1/5">Phone number</span>
-                <span>+84789444093</span>
-              </div>
-              <div className="flex items-center justify-start w-full">
-                <span className="w-1/5">Country</span>
-                <span>{detailSummary.country}</span>
-              </div>
+
               <div className="flex items-center justify-start w-full">
                 <span className="w-1/5">City</span>
-                <span>Da Nang</span>
+                <span className={`${detailSummary.city || "text-sky-600"} `}>
+                  {detailSummary.city || "Not Yet Update!"}
+                </span>
               </div>
               <div className="flex items-center justify-start w-full">
                 <span className="w-1/5">Status</span>
-                <span>Active</span>
+                <span className="border px-10 py-2 rounded-lg border-black">
+                  {detailSummary.account.status ? "Active" : "Offline"}
+                </span>
+              </div>
+              <div className="flex items-center justify-start w-full">
+                <span className="w-1/5">Experience</span>
+                <span className={`${detailSummary.exp || "text-sky-600"} `}>
+                  {detailSummary.exp || "Not Yet Update!"}
+                </span>
+              </div>
+              <div className="flex items-center justify-start w-full">
+                <span className="w-1/5">Field Name</span>
+                <span
+                  className={`${detailSummary.fieldName || "text-sky-600"} `}
+                >
+                  {detailSummary.fieldName || "Not Yet Update!"}
+                </span>
+              </div>
+              <div className="flex items-center justify-start w-full">
+                <span className="w-1/5">Skills</span>
+                <span className={`${detailSummary.skills || "text-sky-600"} `}>
+                  {detailSummary.skills || "Not Yet Update!"}
+                </span>
               </div>
             </div>
           </div>
