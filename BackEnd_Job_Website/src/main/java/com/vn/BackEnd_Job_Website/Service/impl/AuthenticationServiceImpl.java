@@ -127,7 +127,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String link = "http://api.modundo.com/api/auth/verify?token=" + tokenVeri;
         emailService.send(
                 request.getEmail(),
-                BuildEmail.build(request.getFullName(), link));
+                BuildEmail.registerCandidate(request.getFullName(), link));
 
         var accessToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
@@ -248,7 +248,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             String link = "http://api.modundo.com/api/auth/verify?token=" + tokenVeri.getId();
             emailService.send(
                     userEmail,
-                    BuildEmail.build("Bro", link));
+                    BuildEmail.registerCandidate("Bro", link));
 
             return "Email has send !!!";
         }

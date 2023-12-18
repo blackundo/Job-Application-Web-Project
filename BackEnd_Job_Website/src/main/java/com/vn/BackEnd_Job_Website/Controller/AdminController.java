@@ -9,6 +9,8 @@ import com.vn.BackEnd_Job_Website.Respository.AccountRepository;
 import com.vn.BackEnd_Job_Website.Respository.CandidateRepository;
 import com.vn.BackEnd_Job_Website.Respository.CompanyRepository;
 import com.vn.BackEnd_Job_Website.Respository.HiringRepository;
+import com.vn.BackEnd_Job_Website.Service.EmailService;
+import com.vn.BackEnd_Job_Website.Utils.BuildEmail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ public class AdminController {
     private final CompanyRepository companyRepository;
     private final CandidateRepository candidateRepository;
     private final AccountRepository accountRepository;
+    private final EmailService emailService;
 
     @GetMapping("/report")
     public ResponseEntity<?> report(){
@@ -56,6 +59,9 @@ public class AdminController {
         if (account != null && !account.getStatus()) {
             account.setStatus(true);
             accountRepository.save(account);
+            emailService.send(
+                    account.getEmail(),
+                    BuildEmail.accountApprovedEmail(company.getCompanyName()));
             return new ResponseEntity<>("Company accepted successfully", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Company not found or already accepted", HttpStatus.BAD_REQUEST);
