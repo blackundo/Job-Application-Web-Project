@@ -1,6 +1,7 @@
 package com.vn.BackEnd_Job_Website.Controller.hiring;
 
 import com.vn.BackEnd_Job_Website.Dto.HiringPostDto;
+import com.vn.BackEnd_Job_Website.Dto.HiringResponse;
 import com.vn.BackEnd_Job_Website.Dto.RequestHiringAndCompanyID;
 import com.vn.BackEnd_Job_Website.Model.*;
 import com.vn.BackEnd_Job_Website.Respository.*;
@@ -9,6 +10,7 @@ import com.vn.BackEnd_Job_Website.Utils.GetNullPropertyNames;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +32,10 @@ public class HiringController {
     private final HiringRepository hiringRepository;
     private final HiringContentRepository hiringContentRepository;
     private final CompanyRepository companyRepository;
+    private final WishListRepository wishListRepository;
     private final Specification<Hiring> spec;
+    private final CandidateRepository candidateRepository;
+    private final ApplyHireRepository applyHireRepository;
 
     @GetMapping("/get-all")
     public ResponseEntity<List<Hiring>> getAllHirings() {
@@ -46,6 +52,35 @@ public class HiringController {
         Page<Hiring> pageHiring = hiringRepository.findAll(paging);
 //        List<Hiring> hirings = pageHiring.getContent();
         return new ResponseEntity<>(pageHiring, HttpStatus.OK);
+    }
+
+    @GetMapping("/get-candidate")
+    public ResponseEntity<?> getHiringCandidate(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow();
+
+        Page<Hiring> hirings = hiringRepository.findAll(pageable);
+
+        List<HiringResponse> hiringResponses = new ArrayList<>();
+
+        for (Hiring hiring : hirings) {
+            Boolean isWishlisted = wishListRepository.existsByCandidateIDAndAndHiringID_Id(candidate, hiring.getId());
+            Boolean isApplied = applyHireRepository.existsByCandidateIDAndAndHiringID_Id(candidate, hiring.getId());
+            HiringResponse hiringResponse = new HiringResponse();
+            hiringResponse.setHiring(hiring);
+            hiringResponse.setWishlisted(isWishlisted);
+            hiringResponse.setApplied(isApplied);
+            hiringResponses.add(hiringResponse);
+        }
+        // phân page
+        Page<HiringResponse> result = new PageImpl<>(hiringResponses, pageable, hirings.getTotalElements());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/find-hirings")

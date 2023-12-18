@@ -18,4 +18,5 @@ public interface WishListRepository extends JpaRepository<WishList, Integer> {
     List<WishList> findByCandidateID_Id(Integer candidate_id);
 
 
+    Boolean existsByCandidateIDAndAndHiringID_Id(Candidate candidate, Integer hiring_id);
 }
