@@ -240,7 +240,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 //        EmailTokenVeri tokenVeri = repoEmailVeri.findByAccount(account).orElseThrow(() -> new EntityNotFoundException("Token not found !!"));
 
 
-        if (account.isStatus() == true){
+        if (Boolean.TRUE.equals(account.getStatus())){
             return "error !! Email already confirm";
         }else {
             //send mail

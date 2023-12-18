@@ -53,12 +53,26 @@ public class AdminController {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new RuntimeException("Company not found"));
         Account account = company.getAccount();
-        if (account != null && !account.isStatus()) {
+        if (account != null && !account.getStatus()) {
             account.setStatus(true);
             accountRepository.save(account);
             return new ResponseEntity<>("Company accepted successfully", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Company not found or already accepted", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/companies/{candidateId}/delete")
+    public ResponseEntity<String> deleteCompany(@PathVariable Integer companyId) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new RuntimeException("Company not found"));
+        Account account = company.getAccount();
+        if (account != null && !account.getStatus()) {
+            account.setStatus(null);
+            accountRepository.save(account);
+            return new ResponseEntity<>("Company remove successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Company not found or already remove", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -79,12 +93,27 @@ public class AdminController {
         Candidate candidate = candidateRepository.findById(candidateId)
                 .orElseThrow(() -> new RuntimeException("Candidate not found"));
         Account account = candidate.getAccount();
-        if (account != null && !account.isStatus()) {
+        if (account != null && !account.getStatus()) {
             account.setStatus(true);
             accountRepository.save(account);
-            return new ResponseEntity<>("Company accepted successfully", HttpStatus.OK);
+            return new ResponseEntity<>("Candidate accepted successfully", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Company not found or already accepted", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Candidate not found or already accepted", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @DeleteMapping("/candidates/{candidateId}/delete")
+    public ResponseEntity<String> deleteCandidate(@PathVariable Integer candidateId) {
+        Candidate candidate = candidateRepository.findById(candidateId)
+                .orElseThrow(() -> new RuntimeException("Candidate not found"));
+        Account account = candidate.getAccount();
+        if (account != null && !account.getStatus()) {
+            account.setStatus(null);
+            accountRepository.save(account);
+            return new ResponseEntity<>("Candidate remove successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Candidate not found or already remove", HttpStatus.BAD_REQUEST);
+        }
+    }
+    
 }
