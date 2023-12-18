@@ -12,6 +12,7 @@ import {
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { informationUser } from "../../Utils/TokenToProfile";
+const user = JSON.parse(localStorage.getItem("Profile"))?.user || "Not found";
 function FiexdMenu({ isOpenMenu }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -70,7 +71,7 @@ function FiexdMenu({ isOpenMenu }) {
         <span className="w-full">
           <hr />
         </span>
-        <li>datdo775@gmail.com</li>
+        <li>{user?.email}</li>
         {/*  <li className="flex items-center justify-start gap-2">
           <span className="text-xl">
             <AiFillSetting />

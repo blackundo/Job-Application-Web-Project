@@ -3,7 +3,7 @@ import styles from "./PreviewPost.module.css";
 import img from "../../../Assets/imgPreview.png";
 import { FiArrowLeft } from "react-icons/fi";
 import axiosPrivate from "../../../api/axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { ToastCustom } from "../../ToastCustom/ToastCustom";
 
 import swal from "sweetalert";
@@ -29,7 +29,7 @@ function PreviewPost() {
       },
       data: {
         ...detailsStep,
-        status: "open",
+        status: "Open",
       },
     };
 
@@ -41,7 +41,7 @@ function PreviewPost() {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        swal("Poof! Your imaginary file has been deleted!", {
+        swal("Post Success", {
           icon: "success",
         });
         try {
@@ -54,6 +54,8 @@ function PreviewPost() {
           localStorage.removeItem("jobDetails");
           localStorage.removeItem("moreDetails");
           localStorage.removeItem("jobContent");
+          localStorage.removeItem("postedDetails");
+          console.clear();
           navigate("/company");
         } catch (err) {
           console.log(err);

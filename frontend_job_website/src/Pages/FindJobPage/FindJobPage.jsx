@@ -3,7 +3,7 @@ import Navbar from "../../Components/Home/Navbar";
 import DisplayJobs from "../../Components/FindJob/DisplayJobs/DisplayJobs";
 import FooterHome from "../../Components/Home/FooterHome";
 import BoxFindJob from "../../Components/FindJob/BoxFindJob/BoxFindJob";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useEffect } from "react";
 import axiosPrivate from "../../api/axios";
 
@@ -16,30 +16,30 @@ function FindJobPage() {
   const [totalItems, setTotalItems] = useState(0);
   const [loadJob, setLoadJob] = useState(false);
   const [load, setLoad] = useState(false);
-  // useEffect(() => {
-  //   console.log(query);
-  // }, [query]);
+  /*   useEffect(() => {
+    console.log(query);
+  }, [query]); */
 
-  useEffect(() => {
-    async function fetchDataJobs() {
-      await axiosPrivate
-        .get(
-          `/api/hiring/get?page=${page}&size=${
-            pageSize === "All" ? "" : pageSize
-          }`
-        )
-        .then((res) => {
-          const data = res.data.content;
-          setJobs(data);
-          setTotalItems(res.data.totalElements);
-        })
-        .catch((err) => {
-          setLoadJob(true);
-          console.log(err);
-        });
-    }
-    fetchDataJobs();
+  const fetchDataJobs = useCallback(async () => {
+    await axiosPrivate
+      .get(
+        `/api/hiring/get?page=${page}&size=${
+          pageSize === "All" ? "" : pageSize
+        }`
+      )
+      .then((res) => {
+        const data = res.data.content;
+        setJobs(data);
+        setTotalItems(res.data.totalElements);
+      })
+      .catch((err) => {
+        setLoadJob(true);
+        console.log(err);
+      });
   }, [page, pageSize]);
+  useEffect(() => {
+    fetchDataJobs();
+  }, [fetchDataJobs]);
 
   return (
     <>

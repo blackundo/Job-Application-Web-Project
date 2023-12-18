@@ -22,7 +22,7 @@ function CompanyPage() {
             src={
               imageCoverError
                 ? defaultCover
-                : `http://localhost/api/profile/company-cover/${user.id}`
+                : `http://api.modundo.com/api/profile/company-cover/${user.id}`
             }
             className="w-full rounded-b-xl  z-0 h-96 object-cover overflow-hidden"
             onError={() => setImageCoverError(true)}
@@ -34,7 +34,7 @@ function CompanyPage() {
                 src={
                   imageAvatarError
                     ? defaultAvatar
-                    : `http://localhost/api/profile/company-avatar/${user.id}`
+                    : `http://api.modundo.com/api/profile/company-avatar/${user.id}`
                 }
                 onError={() => setImageAvatarError(true)}
                 alt=""
