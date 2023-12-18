@@ -11,6 +11,7 @@ import lombok.*;
 public class WishList {
     @Id
     @Column(name = "WishListID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)

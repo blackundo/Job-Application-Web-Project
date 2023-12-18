@@ -41,6 +41,11 @@ public class AdminController {
         return new ResponseEntity<>(companyRepository.findByAccountStatusIsFalse(), HttpStatus.OK);
     }
 
+    @GetMapping("/company")
+    public ResponseEntity<?> getCompanies() {
+        return new ResponseEntity<>(companyRepository.findAll(), HttpStatus.OK);
+    }
+
 
 //    chưa gửi mail
     @PatchMapping("/companies/{companyId}/accept")
@@ -57,9 +62,16 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/companies/pending")
-    public ResponseEntity<?> getPendingcandidates() {
+
+
+    @GetMapping("/candidates/pending")
+    public ResponseEntity<?> getPendingCandidates() {
         return new ResponseEntity<>(candidateRepository.findByAccountStatusIsFalse(), HttpStatus.OK);
+    }
+
+    @GetMapping("/candidate")
+    public ResponseEntity<?> getCandidates() {
+        return new ResponseEntity<>(candidateRepository.findAll(), HttpStatus.OK);
     }
 
     @PatchMapping("/candidates/{candidateId}/accept")
