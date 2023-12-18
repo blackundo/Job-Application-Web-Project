@@ -95,7 +95,7 @@ public class HiringController {
     }
 
     //find one with company
-    @GetMapping("/with-comapny")
+    @GetMapping("/with-company")
     public ResponseEntity<?> findByIdAndCompanyId(@RequestBody RequestHiringAndCompanyID request) {
 
         Optional<Hiring> hiring = hiringRepository.findByIdAndCompanyId(request.hiringId(), request.CompanyId());

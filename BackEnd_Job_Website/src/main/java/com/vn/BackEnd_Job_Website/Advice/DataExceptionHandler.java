@@ -21,12 +21,7 @@ public class DataExceptionHandler {
         errDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
         errDetail.setProperty("access_denied_reason", "Authentication Failure");
         if(msg.contains("UNIQUE KEY")) {
-            System.out.println("huy");
-            System.out.println("huy");
-            System.out.println("huy");
-            System.out.println("huy");
-            System.out.println("huy");
-            System.out.println("huy");
+
             errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), ex.getMessage());
             errDetail.setProperty("access_denied_reason", "Authentication Failure");
         }
