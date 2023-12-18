@@ -1,9 +1,10 @@
 import axios from "axios";
-
-const BASE_URL = "http://api.modundo.com";
+const BASE_LOCAL = "http://localhost";
+const BASE_SERVER = "http://api.modundo.com";
+const BASE_URL = BASE_LOCAL;
 
 const axiosPrivate = axios.create({
-  baseURL: BASE_URL,
+  baseURL: BASE_SERVER,
   headers: { "Content-Type": "application/json" },
 });
 

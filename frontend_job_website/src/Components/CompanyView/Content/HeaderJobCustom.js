@@ -138,6 +138,7 @@ function HeaderJobCustom({
           value={pageSize}
           className="border"
         >
+          <option value="All">all</option>
           <option value="1">1 per page</option>
           <option value="5">5 per page</option>
           <option value="10">10 per page</option>

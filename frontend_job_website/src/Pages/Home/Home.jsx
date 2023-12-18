@@ -13,8 +13,7 @@ import { useDispatch } from "react-redux";
 import axiosPrivate from "../../api/axios";
 import { ToastCustom } from "../../Components/ToastCustom/ToastCustom";
 import { informationUser } from "../../Utils/TokenToProfile";
-import { useCallback } from "react";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import DialogVerify from "../../Components/DialogCustoms/Dialog";
 function Home() {
   const acc = JSON.parse(localStorage.getItem("Profile"));

@@ -1,18 +1,17 @@
-import React, { useState } from "react";
-import Typography from "@mui/material/Typography";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useNavigate } from "react-router-dom";
-import styles from "./TableCollapsible.module.css";
+import * as React from "react";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
+import styles from "./TableCollapsible.module.css";
 import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
-
+import TableHead from "@mui/material/TableHead";
 function convertToDateString(date) {
   if (!date) return "";
 
@@ -22,9 +21,9 @@ function convertToDateString(date) {
   return dateObject.toISOString().split("T")[0];
 }
 
-export default function Row(props) {
+export function Row(props) {
   const { row, handleDeleteJob } = props;
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
   const handleEdit = (id) => {
     navigate(`/company/edit_jobs/${id}`);
@@ -59,14 +58,7 @@ export default function Row(props) {
         <TableCell align="right" className={`${styles.dateEnd}`}>
           {convertToDateString(row.dateEnd)}
         </TableCell>
-        <TableCell
-          align="right"
-          className={`uppercase ${
-            row.status === "Open" ? "!text-sky-400" : "!text-red-500"
-          } `}
-        >
-          {row.status}
-        </TableCell>
+        <TableCell align="right">{row.status}</TableCell>
         <TableCell align="right">
           <div className="flex items-center justify-center gap-1">
             <button

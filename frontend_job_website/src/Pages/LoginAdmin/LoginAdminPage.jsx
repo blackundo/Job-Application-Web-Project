@@ -25,7 +25,6 @@ const LoginAdminPage = () => {
     });
   };
 
-  console.log(formData);
   const handleLogin = async () => {
     const loadingToastId = toast.loading("Please wait...", {
       autoClose: false,

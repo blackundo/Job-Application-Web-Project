@@ -14,7 +14,7 @@ function Socket() {
       () => {
         setConnected(true);
         setStompClient(stompClient);
-        stompClient.subscribe("/user/" + 22 + "/queue/messages", (message) => {
+        stompClient.subscribe("/user/" + 1 + "/queue/messages", (message) => {
           console.log(message);
           onMessageReceived(message);
         });
@@ -41,8 +41,8 @@ function Socket() {
     console.log("Sending message:", msg);
     if (msg.trim() !== "" && stompClient) {
       const message = {
-        senderId: 22, // Replace with your sender ID
-        recipientId: 31, // Replace with your recipient ID
+        senderId: 1, // Replace with your sender ID
+        recipientId: 4, // Replace with your recipient ID
         content: msg,
         //  timestamp: new Date(),
       };

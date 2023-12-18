@@ -62,14 +62,7 @@ function BoxFilter({ onSubmit }) {
             <option value="PART_TIME">part-time</option>
             <option value="Internship">Internship</option>
           </select>
-          {/* <select
-          name="Location"
-          id="Location"
-          className="bg-slate-200 h-11 rounded-lg col-span-4"
-        >
-          <option value="">All Location</option>
-          <option value="">(Location)(X)</option>
-        </select> */}
+
           <select
             name="Company"
             id="Company"

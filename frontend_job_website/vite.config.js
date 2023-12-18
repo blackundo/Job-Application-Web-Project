@@ -38,4 +38,7 @@ export default defineConfig({
   commonjsOptions: {
     esmExternals: true,
   },
+  server: {
+    port: 5173,
+  },
 });

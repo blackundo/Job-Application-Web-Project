@@ -10,8 +10,8 @@ function ChartContent() {
       className={` grid grid-cols-10 pt-3 place-items-center ${styles.charts} gap-1`}
     >
       <LabelDashboard />
-      {/* <Overview /> */}
-      <div className="col-span-10 w-full h-[27rem] pb-2">
+      <Overview />
+      <div className="col-span-10 w-full h-[27rem] ">
         <ChartLine />
       </div>
       <div className="col-span-6 w-full h-[27rem] ">

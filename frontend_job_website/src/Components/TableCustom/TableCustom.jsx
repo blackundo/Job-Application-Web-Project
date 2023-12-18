@@ -1,189 +1,213 @@
-/* eslint-disable react/no-unknown-property */
-import { useState, useEffect } from "react";
-import axiosPrivate from "../../api/axios";
+import React, { useState } from "react";
+import { Virtuoso } from "react-virtuoso";
+import { GrStatusGoodSmall } from "react-icons/gr";
+import styles from "./TableCustom.module.css";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
-const PageSizeOptions = [10, 25, 50];
+import DialogCustoms from "../DialogCustoms/DialogCustoms";
+import { Checkbox } from "@mui/material";
 
-const CustomTable = ({
-  data,
-  setPage,
-  setSize,
+export default function TableCustom({
+  rows,
   setDetailSummary,
-  setDisplayPDF,
-  rejectCandidate,
-}) => {
+  setSelectedIndex,
+  selectedIndex,
+  setRows,
+}) {
+  const [open, setOpen] = useState(false);
+
+  const [dialogMessage, setDialogMessage] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(PageSizeOptions[0]);
-
-  const handleSelectAll = () => {
-    if (selectedRows.length === data.content.length) {
-      setSelectedRows([]);
-    } else {
-      setSelectedRows(data.content.map((row) => row.id));
-    }
+  const handleClickOpen = (message, index) => {
+    setSelectedIndex(index);
+    setDialogMessage(message);
+    setOpen(true);
   };
 
-  const handleSelectRow = (rowId) => {
-    setSelectedRows((prevSelected) => {
-      if (prevSelected.includes(rowId)) {
-        return prevSelected.filter((id) => id !== rowId);
-      } else {
-        return [...prevSelected, rowId];
+  const getStatusInfo = (status) => {
+    const statusMap = {
+      Active: {
+        className: "border-green-400",
+        icon: <GrStatusGoodSmall className="fill-green-400" />,
+        label: "Active",
+      },
+      Interview: {
+        className: "border-blue-400",
+        icon: <GrStatusGoodSmall />,
+        label: "Interview",
+        labelClassName: "text-blue-500 font-bold",
+      },
+      Reject: {
+        className: "border-red-400 text-red-400",
+        icon: <GrStatusGoodSmall />,
+        label: "Reject",
+      },
+    };
+
+    return statusMap[status] || statusMap["Reject"];
+  };
+  const rowRenderer = (index) => {
+    const row = rows[index];
+    const isItemSelected = selectedRows.includes(row.id);
+
+    if (!row) return null;
+    const { className, icon, label, labelClassName } = getStatusInfo(
+      row.Status
+    );
+    const handleSelectOne = (event, id) => {
+      const selectedIndex = selectedRows.indexOf(id);
+      let newSelectedRows = [];
+
+      if (selectedIndex === -1) {
+        newSelectedRows = newSelectedRows.concat(selectedRows, id);
+      } else if (selectedIndex === 0) {
+        newSelectedRows = newSelectedRows.concat(selectedRows.slice(1));
+      } else if (selectedIndex === selectedRows.length - 1) {
+        newSelectedRows = newSelectedRows.concat(selectedRows.slice(0, -1));
+      } else if (selectedIndex > 0) {
+        newSelectedRows = newSelectedRows.concat(
+          selectedRows.slice(0, selectedIndex),
+          selectedRows.slice(selectedIndex + 1)
+        );
       }
-    });
-  };
 
-  const handlePageChange = (page) => {
-    setPage(page);
-    setCurrentPage(page);
-  };
+      setSelectedRows(newSelectedRows);
+    };
 
-  const handlePageSizeChange = (size) => {
-    setSize(size);
-    setPageSize(size);
-    setCurrentPage(1); // Reset to the first page when changing page size
-  };
-
-  useEffect(() => {
-    setCurrentPage(1); // Reset current page when data changes
-  }, [data]);
-
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = Math.min(startIndex + pageSize, data.totalElements);
-  const visibleRows = data.content.slice(startIndex, endIndex);
-
-  const handleShowCv = async (id) => {
-    await axiosPrivate
-      .get(`/api/profile/candidate-cv/${id}`, {
-        responseType: "blob",
-      })
-      .then((res) => {
-        setDisplayPDF(URL.createObjectURL(res.data));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  return (
-    <div>
-      <table className="w-full border-collapse border">
-        <thead>
-          <tr>
-            <th className="border p-2">
-              <input
-                type="checkbox"
-                indeterminate={
-                  selectedRows.length > 0 &&
-                  selectedRows.length < data.content.length
-                    ? "true"
-                    : undefined
-                }
-                checked={
-                  data.content.length > 0 &&
-                  selectedRows.length === data.content.length
-                }
-                onChange={handleSelectAll}
-              />
-            </th>
-            <th className="border p-2">Name</th>
-            <th className="border p-2">Status</th>
-            <th className="border p-2">Action</th>
-          </tr>
-        </thead>
-        <tbody className="">
-          {visibleRows.map((row) => (
-            <tr
-              key={row.id}
-              className={`border cursor-pointer hover:bg-sky-400 ${
-                selectedRows.includes(row.id) ? "bg-slate-200" : ""
-              }`}
-              onClick={() => {
-                handleShowCv(row.candidateID.id);
-                setDetailSummary(row);
-              }}
-            >
-              <td className="border p-2 text-center">
-                <input
-                  type="checkbox"
-                  checked={selectedRows.includes(row.id)}
-                  onChange={() => handleSelectRow(row.id)}
-                />
-              </td>
-              <td className="border p-2 text-center">
-                {row.candidateID.account.email}
-              </td>
-              <td className="border p-2 text-center">{row.status}</td>
-              <td className="border p-2 text-center">
-                <div className=" flex w-full items-center justify-around gap-4 ">
-                  <button
-                    className="border p-1 rounded-md w-20 text-[0.9rem] border-red-400 text-red-400 font-bold hover:bg-red-500 hover:text-white"
-                    onClick={() => rejectCandidate(row.id)}
-                  >
-                    Reject
-                  </button>
-                  <button
-                    className="border p-1 rounded-md w-20 text-[0.9rem] border-blue-400 text-blue-400 font-bold hover:bg-blue-500 hover:text-white"
-                    // onClick={() => handleStatusChange("Interview")}
-                  >
-                    Interview
-                  </button>
-                  <button className="border p-1 rounded-md w-20 text-[0.9rem] border-orange-400 text-orange-400 font-bold hover:bg-orange-500 hover:text-white">
-                    Cancel
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="flex items-center justify-between mt-4">
-        <div>
-          <span>Show</span>
-          <select
-            value={pageSize}
-            onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-            className="ml-2 p-1"
+    return (
+      <TableRow
+        key={index}
+        className={`hover:bg-sky-200 cursor-pointer relative`}
+        onClick={() => {
+          setDetailSummary(row || null);
+          setSelectedIndex(index);
+        }}
+      >
+        <TableCell padding="checkbox" className="-mb-[9px]">
+          <Checkbox
+            checked={isItemSelected}
+            onChange={(event) => handleSelectOne(event, row.id)}
+          />
+        </TableCell>
+        <TableCell align="left">{row.Candidate}</TableCell>
+        <TableCell align="center">
+          <span
+            className={`flex items-center w-32 justify-center gap-3 border p-1 -m-[5px] rounded-md ${className}`}
           >
-            {PageSizeOptions.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
-          <span>entries</span>
-        </div>
-        <div className="flex items-center justify-center gap-4">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className={`px-4 py-2 ${
-              currentPage === 1
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-blue-500 hover:bg-blue-700"
-            } text-white rounded`}
-          >
-            Previous
-          </button>
-          <span className="bg-red-400  text-center py-2 px-4 rounded">
-            {currentPage}
+            {icon}
+            <button className={`${labelClassName}`}>{label}</button>
           </span>
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={endIndex >= data.totalElements}
-            className={`px-4 py-2 ${
-              endIndex >= data.totalElements
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-blue-500 hover:bg-blue-700"
-            } text-white rounded`}
-          >
-            Next
-          </button>
-        </div>
+        </TableCell>
+        <TableCell align="center">
+          <div className="flex items-center justify-between gap-2 -m-1">
+            <button
+              className="border p-1 rounded-md w-full border-red-400 text-red-400 font-bold hover:bg-red-500 hover:text-white"
+              onClick={() => handleClickOpen("Reject", index)}
+            >
+              Reject
+            </button>
+            <button
+              className="border p-1 rounded-md w-full border-blue-400 text-blue-400 font-bold hover:bg-blue-500 hover:text-white"
+              onClick={() => handleClickOpen("Interview", index)}
+            >
+              Interview
+            </button>
+          </div>
+        </TableCell>
+      </TableRow>
+    );
+  };
+
+  const TableComponents = {
+    Scroller: React.forwardRef((props, ref) => (
+      <TableContainer component={Paper} {...props} ref={ref} />
+    )),
+    Table: (props) => (
+      <Table {...props} style={{ borderCollapse: "separate" }} />
+    ),
+    TableHead: TableHead,
+    TableRow: TableRow,
+    TableBody: TableBody,
+  };
+  const applyStatusChange = (newStatus) => {
+    console.log("newStatus", newStatus, selectedIndex);
+    const updateRows = rows.map((row, index) =>
+      index === selectedIndex ? { ...row, Status: newStatus } : row
+    );
+    setRows(updateRows);
+  };
+  const handleUpdateStatus = (newStatus) => {
+    const updatedRows = rows.map((row) =>
+      selectedRows.includes(row.id) ? { ...row, Status: newStatus } : row
+    );
+    setRows(updatedRows);
+    setSelectedRows([]); // Xóa lựa chọn sau khi cập nhật
+  };
+  const handleSelectAll = (event) => {
+    if (event.target.checked) {
+      const newSelectedRows = rows.map((n) => n.id);
+      setSelectedRows(newSelectedRows);
+      return;
+    }
+    setSelectedRows([]);
+  };
+  // console.log(rows);
+  return (
+    <div className="h-full">
+      <TableRow className={styles.header}>
+        <TableCell padding="checkbox">
+          <Checkbox
+            className="-mb-[9px]"
+            indeterminate={
+              selectedRows.length > 0 && selectedRows.length < rows.length
+            }
+            checked={rows.length > 0 && selectedRows.length === rows.length}
+            onChange={handleSelectAll}
+          />
+        </TableCell>
+        <TableCell align="left">Candidate</TableCell>
+        <TableCell align="center">Status</TableCell>
+        <TableCell align="center">Action</TableCell>
+      </TableRow>
+      <Virtuoso
+        totalCount={rows.length} // Add 1 for the header
+        itemContent={(index) => rowRenderer(index)}
+        components={TableComponents}
+        className={`${styles.table}`}
+        style={{ height: "calc(100% - 70px)", borderRadius: "0 " }}
+      />
+      <DialogCustoms
+        setOpen={setOpen}
+        open={open}
+        dialogMessage={dialogMessage}
+        setChangeStatus={applyStatusChange}
+      />
+      <div className={styles.actionBar}>
+        {/* <button
+          onClick={() => handleUpdateStatus("Active")}
+          className={styles.actionButton}
+        >
+          Set to Active
+        </button> */}
+        <button
+          onClick={() => handleUpdateStatus("Reject")}
+          className={styles.actionButton}
+        >
+          Set to Reject
+        </button>
+        <button
+          onClick={() => handleUpdateStatus("Interview")}
+          className={styles.actionButton}
+        >
+          Set to Interview
+        </button>
       </div>
     </div>
   );
-};
-
-export default CustomTable;
+}

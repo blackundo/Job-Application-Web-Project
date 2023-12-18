@@ -12,10 +12,3 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
-
-/* @media (prefers-color-scheme: dark) {
-  body {
-    background-color: black;
-    color: white;
-  }
-} */

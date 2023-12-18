@@ -11,11 +11,13 @@ import axiosPrivate from "../../../api/axios";
 
 function CompanyManager() {
   const [detailSummary, setDetailSummary] = useState(null);
+  const [listCompanyPending, setListCompanyPending] = useState(null);
   const companyPending = async () => {
     await axiosPrivate
       .get("/api/admin/companies/pending")
       .then((res) => {
         console.log(res.data);
+        setListCompanyPending(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -54,7 +56,12 @@ function CompanyManager() {
         </div>
       </div>
       <div className="px-6">
-        <TableCompanyCustom rows={rows} setDetailSummary={setDetailSummary} />
+        {listCompanyPending && listCompanyPending != null && (
+          <TableCompanyCustom
+            rows={listCompanyPending}
+            setDetailSummary={setDetailSummary}
+          />
+        )}
       </div>
     </LayoutAdminManager>
   );
