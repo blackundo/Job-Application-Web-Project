@@ -170,16 +170,6 @@ function DetailsJobs() {
             >
               Internship
             </button>
-            <button
-              className={`${
-                errollmentStatus === "All"
-                  ? "bg-slate-600 text-white"
-                  : "border border-slate-600 text-slate-800"
-              } border border-slate-600 text-slate-800 p-2 rounded-2xl w-28 text-sm`}
-              onClick={() => handleEnrollmentStatusChange("All")}
-            >
-              All
-            </button>
           </div>
         </div>
       </div>
@@ -188,7 +178,9 @@ function DetailsJobs() {
           <div className="flex flex-col items-start justify-center">
             <label htmlFor="" className="text-sm font-semibold">
               Hiring Name{" "}
-              <small className="text-red-400 ">Note: Limit 20 characters</small>
+              <small className="text-red-400 ">
+                Note: Limit 20 characters and fields separated by commas
+              </small>
             </label>
           </div>
           <input
@@ -199,7 +191,7 @@ function DetailsJobs() {
             value={moreDetails.hiringName}
             onChange={handleInputChange}
           />
-          <small>Eg: Backend And Game Developer, Marketing ....</small>
+          <small>Eg: Backend, Frontend, Marketing, Java-React, ....</small>
         </div>
         <div className="py-5 flex flex-col items-start justify-center gap-2 border-t">
           <div className="flex flex-col items-start justify-center">

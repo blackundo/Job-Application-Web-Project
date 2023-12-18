@@ -25,9 +25,9 @@ function PanelAdminPage() {
             <div className="flex items-center justify-end w-full px-10 gap-2">
               <AiOutlineBell className="text-2xl" />
               <span className="bg-slate-200 rounded-full p-1 font-bold">
-                AD
+                PD
               </span>
-              <span className="font-semibold ">ADMIN</span>
+              <span className="font-semibold ">Phuoc Dat</span>
             </div>
           </div>
           <div className={` h-full`}>

@@ -1,31 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoBusinessSharp } from "react-icons/io5";
 import { GoBookmark } from "react-icons/go";
 import img from "../../../Assets/savedJobCD.svg";
-import axiosPrivate from "../../../api/axios";
 const SavedTab = () => {
   const [countItems, setCountItems] = useState(0);
-
-  const getAllJobSaved = async () => {
-    const token = JSON.parse(localStorage.getItem("Token")).access_token;
-    await axiosPrivate
-      .get("/api/wish/", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    getAllJobSaved();
-  }, []);
-
   if (countItems === 0) {
     return (
       <div className="flex items-center justify-center w-full">

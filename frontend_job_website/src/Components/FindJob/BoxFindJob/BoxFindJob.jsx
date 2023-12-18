@@ -1,6 +1,7 @@
 import { BiSolidSearchAlt2 } from "react-icons/bi";
 import BoxFilter from "../BoxFilter/BoxFilter";
-import { useCallback, useState } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import { debounce } from "lodash";
 import axiosPrivate from "../../../api/axios";
 
@@ -13,13 +14,11 @@ function BoxFindJob({ setQuery, query, setJob }) {
       ...filters,
     }));
   }
-  const handleFind = useCallback(async () => {
+  const handleFind = async () => {
     setJob(null);
     await axiosPrivate
       .get(
-        `/api/hiring/find-hirings?hiringName=${query.query || ""}&salary=${
-          query.Salary || ""
-        }&address=${query.location || ""}`
+        `/api/hiring/find-hirings?hiringName=${query.query}&salary=${query.Salary}`
       )
       .then((res) => {
         setJob(res.data);
@@ -27,7 +26,7 @@ function BoxFindJob({ setQuery, query, setJob }) {
       .catch((err) => {
         console.log(err);
       });
-  }, [query.Salary, query.location, query.query, setJob]);
+  };
 
   const handleInputChange = debounce((value) => {
     if (value !== undefined) {

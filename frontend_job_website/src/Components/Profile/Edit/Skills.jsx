@@ -28,7 +28,6 @@ function Skills({
   const handleRemoveSkill = (removedSkill) => {
     setSelectedSkills(selectedSkills.filter((skill) => skill !== removedSkill));
   };
-
   return (
     <div>
       <label htmlFor="skills">Skills</label>

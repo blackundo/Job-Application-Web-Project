@@ -7,8 +7,7 @@ import { BiUserPin } from "react-icons/bi";
 import { IoWalletOutline } from "react-icons/io5";
 import { useState } from "react";
 import styles from "./ListMenu.module.css";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 const menus = {
   Notification: false,
   Dashboard: false,
@@ -20,19 +19,11 @@ const menus = {
 };
 function ListMenu({ open }) {
   const [selected, setSelected] = useState({ ...menus });
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const handleOnclickMenu = (e, name) => {
     setSelected({
       ...menus,
       [name]: true,
     });
-  };
-  const handleLogOut = () => {
-    dispatch({
-      type: "LOGOUT",
-    });
-    navigate("/");
   };
   const {
     Notification,
@@ -155,9 +146,6 @@ function ListMenu({ open }) {
           <span>Payment Manager</span>
         </Link>
       )}
-      <Link onClick={handleLogOut} to={"/"}>
-        Logout
-      </Link>
     </ul>
   );
 }

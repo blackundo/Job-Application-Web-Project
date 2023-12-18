@@ -40,7 +40,6 @@ function Home() {
           setOpen(false);
           ToastCustom.success("Verify Success.", { autoClose: 1500 });
           dispatch(informationUser(access_token));
-          localStorage.removeItem("timeRemaining");
           navigate("/");
         } else {
           setTitle("You have not verified email!");

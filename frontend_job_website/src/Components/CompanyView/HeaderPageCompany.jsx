@@ -6,8 +6,9 @@ import { AiFillBell } from "react-icons/ai";
 import { MdEmail, MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { Link } from "react-router-dom";
 const acc = JSON.parse(localStorage.getItem("Profile"));
-const user = acc?.user;
+
 function HeaderPageCompany({ toggleMenu, isOpenMenu }) {
+  const user = acc?.user;
   // console.log(user?.email);
   return (
     <div className=" flex items-center justify-between border-b pb-2 border-slate-200 shadow-lg px-7  h-16  sticky top-0  backdrop-blur-lg z-50">
@@ -41,8 +42,8 @@ function HeaderPageCompany({ toggleMenu, isOpenMenu }) {
           </span>
           <div className="flex flex-col ">
             <span>Name</span>
-            <span className="text-sm font-normal text-slate-600 overflow-hidden">
-              {user?.businessEmail || "Not yet"}
+            <span className="text-sm font-normal text-slate-600 ">
+              {user?.email}
             </span>
           </div>
         </div>
@@ -55,7 +56,7 @@ function HeaderPageCompany({ toggleMenu, isOpenMenu }) {
             className="border-x-2 rounded-full border-separate border-x-sky-500"
           />
           {/* <RxAvatar className="text-5xl" /> */}
-          <span className="max-md:hidden">Company Menu</span>
+          <span className="max-md:hidden">{user?.email}</span>
           <span
             className={`text-3xl cursor-pointer ${
               isOpenMenu ? "rotate-180" : ""

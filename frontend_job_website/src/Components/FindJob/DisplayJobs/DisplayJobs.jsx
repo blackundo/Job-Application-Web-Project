@@ -1,9 +1,12 @@
 import { AiFillQuestionCircle, AiOutlineMore } from "react-icons/ai";
 // import { jobs } from "./job";
 import DetailsJob from "./DetailsJob";
+
 import { memo, useState } from "react";
+
 import "./DisplayJobs.css";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import axiosPrivate from "../../../api/axios";
 import ReactPaginate from "react-paginate";
 
@@ -24,10 +27,10 @@ const DisplayJobs = ({
       .get(`/api/hiring/${id}`)
       .then((res) => {
         setJobDetail(res.data);
-        console.log(res.data);
+
         setLoad(true);
       })
-      .catch(() => {
+      .catch((err) => {
         setLoad(false);
       });
     setLoad(false);
@@ -206,4 +209,4 @@ const DisplayJobs = ({
   );
 };
 
-export default DisplayJobs;
+export default memo(DisplayJobs);

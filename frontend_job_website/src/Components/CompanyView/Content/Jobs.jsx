@@ -14,9 +14,10 @@ function Jobs() {
   const [statusJobs, setStatusJobs] = useState("OpenAndClose");
   const [refresh, setRefresh] = useState(false);
   const [query, setQuery] = useState("");
+  const access_token = JSON.parse(localStorage.getItem("Token"))?.access_token;
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
-  // const [totalItems, setTotalItems] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   const memoizedJobs = useMemo(() => {
     const transformedData = myJobs?.map((d) => transformJob(d));
@@ -31,6 +32,7 @@ function Jobs() {
   useEffect(() => {
     async function getHiring() {
       const userID = JSON.parse(localStorage.getItem("Profile"))?.user?.id;
+      // console.log(userID);
       await axiosPrivate
         .get(`api/hiring/company/${userID}?page=${page}&size=${pageSize}`)
         .then((res) => {
@@ -62,7 +64,7 @@ function Jobs() {
               Authorization: `Bearer ${accessToken}`,
             },
           })
-          .then(() => {
+          .then((res) => {
             swal("Poof! Your imaginary file has been deleted!", {
               icon: "success",
             });
@@ -79,13 +81,7 @@ function Jobs() {
       }
     });
   };
-  const handlePreviousPage = () => {
-    setPage((prevPage) => Math.max(0, prevPage - 1));
-  };
 
-  const handleNextPage = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
   return (
     <>
       <Header Title={"Jobs"} />
@@ -99,30 +95,16 @@ function Jobs() {
         pageSize={pageSize}
       />
       <div className="pt-3  ">
-        {!refresh ? (
+        {memoizedJobs?.length === 0 ? (
           Array.from({ length: 5 }, (_, i) => {
             return <LoadingComponent key={i} />;
           })
-        ) : memoizedJobs.length === 0 ? (
-          <div className="text-center">Job không có</div>
         ) : (
           <TableCollapsible
             rows={memoizedJobs}
             handleDeleteJob={handleDeleteJob}
           />
         )}
-        <div className="text-center mt-3">
-          <button onClick={handlePreviousPage} disabled={page === 0}>
-            Previous
-          </button>
-          <span className="mx-2">{`Page ${page + 1}`}</span>
-          <button
-            onClick={handleNextPage}
-            disabled={memoizedJobs.length < pageSize}
-          >
-            Next
-          </button>
-        </div>
       </div>
     </>
   );

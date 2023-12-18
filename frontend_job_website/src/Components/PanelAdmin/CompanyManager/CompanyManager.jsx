@@ -6,25 +6,10 @@ import { FaExchangeAlt } from "react-icons/fa";
 import { rows } from "./rows";
 import LayoutAdminManager from "../../../Layouts/LayoutAdminManager";
 import TableCompanyCustom from "../../TableCustom/TableCompanyCustom";
-import { useEffect, useState } from "react";
-import axiosPrivate from "../../../api/axios";
+import { useState } from "react";
 
 function CompanyManager() {
   const [detailSummary, setDetailSummary] = useState(null);
-  const companyPending = async () => {
-    await axiosPrivate
-      .get("/api/admin/companies/pending")
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    companyPending();
-  }, []);
   return (
     <LayoutAdminManager rows={rows}>
       <div className=" flex items-center justify-between pb-5">

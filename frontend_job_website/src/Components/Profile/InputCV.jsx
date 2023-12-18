@@ -18,10 +18,10 @@ function InputCV({ initFile }) {
   const [file, setFile] = useState(null);
   const [displayPDF, setDisplayPDF] = useState("");
   const [displayPDFStatus, setDisplayPDFStatus] = useState("loading");
-  const idUser = JSON.parse(localStorage.getItem("Profile")).user.id;
   const handleDisplayOption = () => {
     setOption((o) => !o);
   };
+
   const handleOnchangeFile = (e) => {
     console.log(e.target.value);
     if (e.target.value.length != 0) {
@@ -72,7 +72,7 @@ function InputCV({ initFile }) {
   useEffect(() => {
     setDisplayPDFStatus("loading");
     axiosPrivate
-      .get(`/api/profile/candidate-cv/${idUser}`, {
+      .get(`http://localhost:80/api/profile/candidate-cv/1`, {
         responseType: "blob",
       })
       .then((res) => {
@@ -83,7 +83,7 @@ function InputCV({ initFile }) {
         setDisplayPDFStatus("error");
         console.log(err);
       });
-  }, [idUser]);
+  }, []);
 
   return (
     <div className="flex flex-col  gap-3 ">

@@ -1,8 +1,45 @@
+import axiosPrivate from "../../../api/axios";
+import swal from "sweetalert";
 import Details from "./details";
 
 function DetailsJob({ job, loadDetails }) {
   const acc = JSON.parse(localStorage.getItem("Profile"));
   const role = acc?.user?.role?.roleName ?? null;
+  const handleApplyJob = async () => {
+    const tokenAccess = JSON.parse(localStorage.getItem("Token")).access_token;
+    console.log(tokenAccess);
+    await swal({
+      title: "Are you sure?",
+      text: "You Want apply this job?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((yes) => {
+      if (yes) {
+        swal("Apply success!", {
+          icon: "success",
+        });
+        if (acc.user)
+          axiosPrivate
+            .post(
+              "/api/apply/",
+              { hiringID: job.id, status: "Apply" },
+              {
+                headers: {
+                  Authorization: "Bearer " + tokenAccess,
+                },
+              }
+            )
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => console.log(err));
+      } else {
+        swal("Cancel!");
+      }
+    });
+  };
+  console.log(job);
 
   return (
     <div className="col-span-7 border-2 border-slate-600 w-full h-[46rem]  rounded-2xl  sticky top-4 max-md:hidden overflow-y-hidden ">
@@ -69,7 +106,14 @@ function DetailsJob({ job, loadDetails }) {
           </div>
         </div>
       )}
-      {job != null && !loadDetails && <Details job={job} role={role} />}
+      {job != null && !loadDetails && (
+        <Details
+          job={job}
+          handleApplyJob={handleApplyJob}
+          role={role}
+          cover={"cover"}
+        />
+      )}
     </div>
   );
 }
