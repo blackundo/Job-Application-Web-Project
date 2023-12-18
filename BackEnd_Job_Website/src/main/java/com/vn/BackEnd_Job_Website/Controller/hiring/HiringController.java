@@ -54,34 +54,6 @@ public class HiringController {
         return new ResponseEntity<>(pageHiring, HttpStatus.OK);
     }
 
-    @GetMapping("/get-candidate")
-    public ResponseEntity<?> getHiringCandidate(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size
-    ) {
-        Pageable pageable = PageRequest.of(page, size);
-
-        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow();
-
-        Page<Hiring> hirings = hiringRepository.findAll(pageable);
-
-        List<HiringResponse> hiringResponses = new ArrayList<>();
-
-        for (Hiring hiring : hirings) {
-            Boolean isWishlisted = wishListRepository.existsByCandidateIDAndAndHiringID_Id(candidate, hiring.getId());
-            Boolean isApplied = applyHireRepository.existsByCandidateIDAndAndHiringID_Id(candidate, hiring.getId());
-            HiringResponse hiringResponse = new HiringResponse();
-            hiringResponse.setHiring(hiring);
-            hiringResponse.setWishlisted(isWishlisted);
-            hiringResponse.setApplied(isApplied);
-            hiringResponses.add(hiringResponse);
-        }
-        // phân page
-        Page<HiringResponse> result = new PageImpl<>(hiringResponses, pageable, hirings.getTotalElements());
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
 
     @GetMapping("/find-hirings")
     public ResponseEntity<?> findHirings(
@@ -121,9 +93,19 @@ public class HiringController {
     // find one
     @GetMapping("/{id}")
     public ResponseEntity<?> getHiringById(@PathVariable int id) {
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow();
+
         Optional<Hiring> hiring = hiringRepository.findById(id);
+        Boolean isWishlisted = wishListRepository.existsByCandidateIDAndAndHiringID_Id(candidate, id);
+        Boolean isApplied = applyHireRepository.existsByCandidateIDAndAndHiringID_Id(candidate, id);
+
+
         if (hiring.isPresent()) {
-            return ResponseEntity.ok(hiring.get());
+            return new ResponseEntity<>(HiringResponse.builder()
+                    .hiring(hiring.get())
+                    .wishlisted(isWishlisted)
+                    .applied(isApplied).build(), HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }
