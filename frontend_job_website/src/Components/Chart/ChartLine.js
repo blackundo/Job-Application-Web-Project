@@ -75,7 +75,20 @@ function ChartLine() {
       },
     ],
   };
-  return <Line options={options} data={data} />;
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-[#2B3674] ">Overview</h1>
+        <div className="flex items-center justify-center gap-5 text-sm">
+          <span>2023-10-26 ~ 2023-11-01</span>
+          <span className="text-[#A3AED0] ">
+            (UTC + 07:00) Ho Chi Minh Time 📅
+          </span>
+        </div>
+      </div>
+      <Line options={options} data={data} />
+    </>
+  );
 }
 
 export default ChartLine;

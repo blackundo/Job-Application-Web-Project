@@ -15,7 +15,7 @@ function TabDetails({ job, role }) {
         <span className="p-3 font-bold text-[1.5rem]">
           {job.hiringContentID.title}
         </span>
-        <div className=" p-3  flex items-center justify-evenly gap-2">
+        <div className=" p-3 flex items-center justify-evenly gap-2">
           {/* <span className="text-[#2D2D2D] font-sans ">
                   {job.description}
                 </span> */}

@@ -36,14 +36,6 @@ function InformationJob() {
   };
 
   const handleDateChange = (date) => {
-    /*    const formattedDate = date ? date.format("YYYY-MM-DD") : null;
-
-    setDetails((prevDetails) => ({
-      ...prevDetails,
-      dateEnd: formattedDate,
-    }));
-    //kiem tra xem date da duoc chọn hay chua
-    setIsDateSelected(!!formattedDate); */
     const currentDate = dayjs();
     const formattedDate = date ? dayjs(date.format("YYYY-MM-DD")) : null;
 
