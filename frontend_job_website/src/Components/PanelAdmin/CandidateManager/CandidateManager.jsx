@@ -7,12 +7,29 @@ import { BsFilter } from "react-icons/bs";
 import TableCandidateCustom from "../../TableCustom/TableCandidateCustom";
 import { useState } from "react";
 import { useEffect } from "react";
+import axiosPrivate from "../../../api/axios";
 
 function CandidateManager() {
   const [detailSummary, setDetailSummary] = useState(null);
   useEffect(() => {
     console.log(detailSummary);
   }, [detailSummary]);
+  const [listCandidatePending, setListCandidatePending] = useState(null);
+  const candidatePending = async () => {
+    await axiosPrivate
+      .get("/api/admin/candidate/pending")
+      .then((res) => {
+        console.log(res.data);
+        setListCandidatePending(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    candidatePending();
+  }, []);
   return (
     <>
       <LayoutAdminManager>

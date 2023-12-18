@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Virtuoso } from "react-virtuoso";
 import { GrStatusGoodSmall } from "react-icons/gr";
-import { HiBars3 } from "react-icons/hi2";
-import { Link } from "react-router-dom";
 import styles from "./TableCustom.module.css";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

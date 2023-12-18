@@ -29,6 +29,7 @@ function BoxFilter({ onSubmit }) {
             className="bg-slate-200 h-11 rounded-lg col-span-3 text-sm max-md:col-span:2"
             onChange={(e) => handleFilterChange("DatePost", e.target.value)}
           >
+            <option value="">All</option>
             <option value="l24h">Last 24 hours</option>
             <option value="l3d">Last 3 days</option>
             <option value="l7days">Last 7 days</option>
@@ -56,18 +57,12 @@ function BoxFilter({ onSubmit }) {
             className="bg-slate-200 h-11 rounded-lg col-span-3 text-sm max-md:col-span:2"
             onChange={(e) => handleFilterChange("JobType", e.target.value)}
           >
+            <option value="">All</option>
             <option value="FULL_TIME">Full-time</option>
             <option value="PART_TIME">part-time</option>
             <option value="Internship">Internship</option>
           </select>
-          {/* <select
-          name="Location"
-          id="Location"
-          className="bg-slate-200 h-11 rounded-lg col-span-4"
-        >
-          <option value="">All Location</option>
-          <option value="">(Location)(X)</option>
-        </select> */}
+
           <select
             name="Company"
             id="Company"
