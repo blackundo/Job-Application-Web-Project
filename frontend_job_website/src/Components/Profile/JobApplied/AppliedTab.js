@@ -6,21 +6,20 @@ import axiosPrivate from "../../../api/axios";
 const AppliedTab = () => {
   const [countItems, setCountItems] = useState(0);
 
+  const displayJobApplied = async () => {
+    const accessToken = JSON.parse(localStorage.getItem("Token")).access_token;
+    await axiosPrivate
+      .get("/api/apply/get-applied", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
-    async function displayJobApplied() {
-      const accessToken = JSON.parse(
-        localStorage.getItem("Token")
-      ).access_token;
-      await axiosPrivate
-        .get("/api/apply/get-applied", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        .then((res) => console.log(res.data))
-        .catch((err) => console.log(err));
-    }
-    displayJobApplied();
+    // displayJobApplied();
   }, []);
 
   if (countItems === 0) {

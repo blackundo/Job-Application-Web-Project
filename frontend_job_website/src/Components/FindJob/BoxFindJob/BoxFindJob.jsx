@@ -19,7 +19,7 @@ function BoxFindJob({ setQuery, query, setJob }) {
       .get(
         `/api/hiring/find-hirings?hiringName=${query.query || ""}&salary=${
           query.Salary || ""
-        }&address=${query.location || ""}`
+        }&address=${query.Location || ""}&errollmentStatus=${query.JobType}`
       )
       .then((res) => {
         setJob(res.data);
@@ -27,7 +27,7 @@ function BoxFindJob({ setQuery, query, setJob }) {
       .catch((err) => {
         console.log(err);
       });
-  }, [query.Salary, query.location, query.query, setJob]);
+  }, [query.Salary, query.Location, query.query, setJob, query.JobType]);
 
   const handleInputChange = debounce((value) => {
     if (value !== undefined) {

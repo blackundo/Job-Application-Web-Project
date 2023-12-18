@@ -41,6 +41,7 @@ import EditJobs from "../Components/CompanyView/Content/EditJobs";
 import CompanyPage from "../Components/CompanyView/CompanyPage";
 
 import UpdateMainField from "../Components/CompanyView/Content/UpdateMainField";
+import ChangePasswordPage from "../Pages/ChangePasswordPage/ChangePasswordPage";
 
 // const roles = ["Candidate", "Company", "admin", null];
 function Router() {
@@ -61,6 +62,14 @@ function Router() {
             }
           />
           <Route path="login" element={<Login />} />
+          <Route
+            path="change_password"
+            element={
+              <RouterRole role={role} roles={["Candidate", "Company"]}>
+                <ChangePasswordPage />
+              </RouterRole>
+            }
+          />
           <Route
             path="login/Admin"
             element={

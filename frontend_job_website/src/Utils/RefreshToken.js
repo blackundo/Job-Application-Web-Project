@@ -15,7 +15,7 @@ export const refreshFailure = () => ({
 export const refreshAccessToken = (refreshToken) => async (dispatch) => {
   console.log(refreshToken);
   try {
-    const response = await axiosPrivate.post("api/auth/refresh-token", {
+    const response = await axiosPrivate.post("/api/auth/refresh-token", {
       refreshToken,
     });
     const accessToken = response.data;

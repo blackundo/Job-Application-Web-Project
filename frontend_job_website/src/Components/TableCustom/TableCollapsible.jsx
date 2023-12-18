@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 import styles from "./TableCollapsible.module.css";
-import Row from "./Row";
+import { Row } from "./Row";
 
 /* 
    

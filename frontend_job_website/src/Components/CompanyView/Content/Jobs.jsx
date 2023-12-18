@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 
 import Header from "./Header";
 import axiosPrivate from "../../../api/axios";
@@ -28,23 +28,24 @@ function Jobs() {
     return filteredData;
   }, [myJobs, statusJobs]);
 
+  const getHiring = useCallback(async () => {
+    const userID = JSON.parse(localStorage.getItem("Profile"))?.user?.id;
+    await axiosPrivate
+      .get(`api/hiring/company/${userID}?page=${page}&size=${pageSize}`)
+      .then((res) => {
+        const data = res.data.content;
+        setMyJobs(data);
+        setRefresh(true);
+      })
+      .catch((err) => {
+        setRefresh(false);
+        console.log(err);
+      });
+  }, [page, pageSize]);
+
   useEffect(() => {
-    async function getHiring() {
-      const userID = JSON.parse(localStorage.getItem("Profile"))?.user?.id;
-      await axiosPrivate
-        .get(`api/hiring/company/${userID}?page=${page}&size=${pageSize}`)
-        .then((res) => {
-          const data = res.data.content;
-          setMyJobs(data);
-          setRefresh(true);
-        })
-        .catch((err) => {
-          setRefresh(false);
-          console.log(err);
-        });
-    }
     getHiring();
-  }, [statusJobs, refresh, pageSize, page]);
+  }, [statusJobs, refresh, pageSize, page, getHiring]);
 
   const handleDeleteJob = async (id) => {
     const accessToken = JSON.parse(localStorage.getItem("Token")).access_token;

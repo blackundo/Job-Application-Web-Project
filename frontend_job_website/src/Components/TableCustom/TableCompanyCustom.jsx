@@ -1,7 +1,5 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -9,11 +7,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import IconButton from "@mui/material/IconButton";
-import FirstPageIcon from "@mui/icons-material/FirstPage";
-import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import LastPageIcon from "@mui/icons-material/LastPage";
 import TableHead from "@mui/material/TableHead";
 import { styled } from "@mui/material/styles";
 import { HiBars3 } from "react-icons/hi2";
@@ -21,67 +14,12 @@ import { useState } from "react";
 import { GrStatusGoodSmall } from "react-icons/gr";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-function TablePaginationActions(props) {
-  const theme = useTheme();
-  const { count, page, rowsPerPage, onPageChange } = props;
-
-  const handleFirstPageButtonClick = (event) => {
-    onPageChange(event, 0);
-  };
-
-  const handleBackButtonClick = (event) => {
-    onPageChange(event, page - 1);
-  };
-
-  const handleNextButtonClick = (event) => {
-    onPageChange(event, page + 1);
-  };
-
-  const handleLastPageButtonClick = (event) => {
-    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-  };
-
-  return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <IconButton
-        onClick={handleFirstPageButtonClick}
-        disabled={page === 0}
-        aria-label="first page"
-      >
-        {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
-      </IconButton>
-      <IconButton
-        onClick={handleBackButtonClick}
-        disabled={page === 0}
-        aria-label="previous page"
-      >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowRight />
-        ) : (
-          <KeyboardArrowLeft />
-        )}
-      </IconButton>
-      <IconButton
-        onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
-      >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowLeft />
-        ) : (
-          <KeyboardArrowRight />
-        )}
-      </IconButton>
-      <IconButton
-        onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="last page"
-      >
-        {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
-      </IconButton>
-    </Box>
-  );
-}
+import { useEffect } from "react";
+import { TablePaginationActions } from "./TablePaginationActions";
+import axiosPrivate from "../../api/axios";
+import swal from "sweetalert";
+import { ToastCustom } from "../ToastCustom/ToastCustom";
+import { toast } from "react-toastify";
 
 TablePaginationActions.propTypes = {
   count: PropTypes.number.isRequired,
@@ -125,25 +63,63 @@ export default function TableCompanyCustom({ rows, setDetailSummary }) {
     }
   };
 
+  const handleAcceptAccount = async (id) => {
+    const loadingToastId = toast.loading("Please wait...", {
+      autoClose: false,
+    });
+    await swal({
+      title: "Are you sure?",
+      text: "Do you want to accept this account",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        axiosPrivate
+          .patch(`/api/admin/companies/${id}/accept`)
+          .then(() => {
+            toast.dismiss(loadingToastId);
+            swal("Active Success", {
+              icon: "success",
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.dismiss(loadingToastId);
+            ToastCustom.error(
+              "Opps, Active fails, Maybe account Accepted then please reload page ",
+              {
+                autoClose: 2500,
+              }
+            );
+          });
+      } else {
+        toast.dismiss(loadingToastId);
+        swal("Cancelled");
+      }
+    });
+  };
+
   return (
     <motion.div
       initial={{ scale: 0.5 }}
       whileInView={{ scale: 1 }}
       transition={{ duration: 1, type: "spring", bounce: 0.2 }}
+      className="h-screen"
     >
-      <TableContainer>
+      <TableContainer className="h-full">
         <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
           <TableHead>
             <TableRow>
               <StyledTableCell>CompanyID</StyledTableCell>
-              <StyledTableCell align="right">CompanyName</StyledTableCell>
-              <StyledTableCell align="right">CompanyLink</StyledTableCell>
-              <StyledTableCell align="right">Status</StyledTableCell>
-              <StyledTableCell align="right">Founding</StyledTableCell>
-              <StyledTableCell align="right">Post</StyledTableCell>
-              <StyledTableCell align="right">Spending</StyledTableCell>
-              <StyledTableCell align="right">Country</StyledTableCell>
-              <StyledTableCell align="right">Action</StyledTableCell>
+              <StyledTableCell align="center">CompanyName</StyledTableCell>
+              {/* <StyledTableCell align="right">CompanyLink</StyledTableCell> */}
+              <StyledTableCell align="center">Status</StyledTableCell>
+              <StyledTableCell align="center">Founding</StyledTableCell>
+              <StyledTableCell align="center">Phone</StyledTableCell>
+              <StyledTableCell align="center">Organizational</StyledTableCell>
+              <StyledTableCell align="center">Address</StyledTableCell>
+              <StyledTableCell align="center">Action</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -152,24 +128,22 @@ export default function TableCompanyCustom({ rows, setDetailSummary }) {
               : rows
             ).map((row, index) => (
               <TableRow
-                key={row.CompanyID}
+                key={row.id}
                 className="hover:bg-slate-300 cursor-pointer"
                 onClick={() => {
                   setDetailSummary(row || null);
                 }}
               >
-                <TableCell component="th" scope="row">
-                  {row.CompanyID}
+                <TableCell component="th" scope="row" style={{ width: 160 }}>
+                  {row.id}
                 </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {row.CompanyName}
+                <TableCell style={{ width: 160 }} align="center">
+                  {row.companyName}
                 </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {row.CompanyLink}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
+
+                <TableCell style={{ width: 160 }} align="center">
                   {/* {row.Status} */}
-                  {row.Status === "true" ? (
+                  {row.account.status ? (
                     <div className="flex items-center justify-center gap-3 border p-1 border-green-400 rounded-md">
                       <GrStatusGoodSmall className="fill-green-400" />
                       <button>Active</button>
@@ -177,47 +151,53 @@ export default function TableCompanyCustom({ rows, setDetailSummary }) {
                   ) : (
                     <div className="flex items-center justify-center gap-3  border p-1 rounded-md">
                       <GrStatusGoodSmall />
-                      <button>Off</button>
+                      <button>Not Activated</button>
                     </div>
                   )}
                 </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {row.Founding}
+                <TableCell style={{ width: 160 }} align="center">
+                  {row.fouding}
                 </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {row.Post}
+                <TableCell style={{ width: 160 }} align="center">
+                  {row.phoneNumber}
                 </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {row.Spending}
+                <TableCell style={{ width: 160 }} align="center">
+                  {row.organizational}
                 </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {row.Country}
+                <TableCell style={{ width: 160 }} align="center">
+                  {row.address}
                 </TableCell>
                 <TableCell
                   style={{ width: 160 }}
-                  align="right"
+                  align="center"
                   className="relative "
                 >
                   <HiBars3
-                    className="cursor-pointer text-2xl "
+                    className="cursor-pointer text-2xl flex items-center justify-center w-full"
                     onClick={() => handleViewAction(index)}
                   />
                   <ul
                     className={`absolute top-[80%] right-0 bg-[#fff] border shadow-2xl w-[150px] ${
                       selectedRow === index ? "flex" : "hidden"
-                    } flex-col items-start justify-around z-50 rounded-xl  p-3`}
+                    } flex-col items-start justify-around z-50 rounded-xl  p-3 `}
                   >
                     <Link
-                      to={`details/${row.CompanyID}`}
+                      to={`details/${row.id}`}
                       className="hover:bg-slate-400 w-full text-start  p-3 rounded-lg cursor-pointer"
+                      state={{
+                        information: row,
+                      }}
                     >
-                      View Detail
+                      View
                     </Link>
                     <li className="hover:bg-slate-400 w-full text-start  p-3 rounded-lg cursor-pointer">
-                      Delete
+                      Delete/Block
                     </li>
-                    <li className="hover:bg-slate-400 w-full text-start  p-3 rounded-lg cursor-pointer">
-                      Control
+                    <li
+                      className="hover:bg-slate-400 w-full text-start  p-3 rounded-lg cursor-pointer"
+                      onClick={() => handleAcceptAccount(row.id)}
+                    >
+                      Accept
                     </li>
                   </ul>
                 </TableCell>

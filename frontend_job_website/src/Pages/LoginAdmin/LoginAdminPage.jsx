@@ -41,7 +41,8 @@ const LoginAdminPage = () => {
         });
         toast.dismiss(loadingToastId);
         ToastCustom.success("Welcome to back!", { autoClose: 2500 });
-        // dispatch(informationUser(token?.access_token));
+        dispatch(informationUser(token?.access_token));
+        localStorage.setItem("Token", JSON.stringify(token));
         navigate("/admin");
       })
       .catch((err) => {

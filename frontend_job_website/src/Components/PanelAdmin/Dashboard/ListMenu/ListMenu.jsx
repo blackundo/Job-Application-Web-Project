@@ -9,6 +9,7 @@ import { useState } from "react";
 import styles from "./ListMenu.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { CiLogout } from "react-icons/ci";
 const menus = {
   Notification: false,
   Dashboard: false,
@@ -80,84 +81,86 @@ function ListMenu({ open }) {
           <Link to={"paymentManager"}>
             <IoWalletOutline />
           </Link>
+          <Link to={"/"}>
+            <CiLogout />
+          </Link>
         </>
       )}
 
       {open && (
-        <Link
-          to={"dashboard"}
-          className={`${Dashboard ? styles.selected : ""}`}
-          onClick={(e) => handleOnclickMenu(e, "Dashboard")}
-        >
-          <div>
-            <HiOutlinePresentationChartLine />
-          </div>
-          <span>Dashboard</span>
-        </Link>
+        <>
+          <Link
+            to={"dashboard"}
+            className={`${Dashboard ? styles.selected : ""}`}
+            onClick={(e) => handleOnclickMenu(e, "Dashboard")}
+          >
+            <div>
+              <HiOutlinePresentationChartLine />
+            </div>
+            <span>Dashboard</span>
+          </Link>
+
+          <Link
+            to={"companyManager"}
+            className={`${CompanyManager ? styles.selected : ""}`}
+            onClick={(e) => handleOnclickMenu(e, "CompanyManager")}
+          >
+            <div>
+              <FaRegAddressCard />
+            </div>
+            <span>Company Manager</span>
+          </Link>
+
+          <Link
+            to={"candidateManager"}
+            className={`${CandidateManager ? styles.selected : ""}`}
+            onClick={(e) => handleOnclickMenu(e, "CandidateManager")}
+          >
+            <div>
+              <GrGroup />
+            </div>
+            <span> Candidate Manager</span>
+          </Link>
+
+          <Link
+            to={"jobManager"}
+            className={`${JobManager ? styles.selected : ""}`}
+            onClick={(e) => handleOnclickMenu(e, "JobManager")}
+          >
+            <div>
+              <BsCardChecklist />
+            </div>
+            <span>Job Manager</span>
+          </Link>
+
+          <Link
+            to={"accountManager"}
+            className={`${AccountManager ? styles.selected : ""}`}
+            onClick={(e) => handleOnclickMenu(e, "AccountManager")}
+          >
+            <div>
+              <BiUserPin />
+            </div>
+            <span>Account Manager</span>
+          </Link>
+
+          <Link
+            to={"paymentManager"}
+            className={`${PaymentManager ? styles.selected : ""}`}
+            onClick={(e) => handleOnclickMenu(e, "PaymentManager")}
+          >
+            <div>
+              <IoWalletOutline />
+            </div>
+            <span>Payment Manager</span>
+          </Link>
+
+          <Link onClick={handleLogOut} to={"/"}>
+            <CiLogout />
+            <span>Logout</span>
+          </Link>
+        </>
       )}
-      {open && (
-        <Link
-          to={"companyManager"}
-          className={`${CompanyManager ? styles.selected : ""}`}
-          onClick={(e) => handleOnclickMenu(e, "CompanyManager")}
-        >
-          <div>
-            <FaRegAddressCard />
-          </div>
-          <span>Company Manager</span>
-        </Link>
-      )}
-      {open && (
-        <Link
-          to={"candidateManager"}
-          className={`${CandidateManager ? styles.selected : ""}`}
-          onClick={(e) => handleOnclickMenu(e, "CandidateManager")}
-        >
-          <div>
-            <GrGroup />
-          </div>
-          <span> Candidate Manager</span>
-        </Link>
-      )}
-      {open && (
-        <Link
-          to={"jobManager"}
-          className={`${JobManager ? styles.selected : ""}`}
-          onClick={(e) => handleOnclickMenu(e, "JobManager")}
-        >
-          <div>
-            <BsCardChecklist />
-          </div>
-          <span>Job Manager</span>
-        </Link>
-      )}
-      {open && (
-        <Link
-          to={"accountManager"}
-          className={`${AccountManager ? styles.selected : ""}`}
-          onClick={(e) => handleOnclickMenu(e, "AccountManager")}
-        >
-          <div>
-            <BiUserPin />
-          </div>
-          <span>Account Manager</span>
-        </Link>
-      )}
-      {open && (
-        <Link
-          to={"paymentManager"}
-          className={`${PaymentManager ? styles.selected : ""}`}
-          onClick={(e) => handleOnclickMenu(e, "PaymentManager")}
-        >
-          <div>
-            <IoWalletOutline />
-          </div>
-          <span>Payment Manager</span>
-        </Link>
-      )}
-      <Link onClick={handleLogOut} to={"/"}>
-        Logout
-      </Link>
     </ul>
   );
 }

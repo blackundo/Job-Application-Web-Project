@@ -4,7 +4,7 @@ import axiosPrivate from "../../../api/axios";
 
 function Candidate() {
   const [detailSummary, setDetailSummary] = useState(null);
-  const [dataRows, setDataRow] = useState(null);
+  const [dataRows, setDataRows] = useState(null);
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(5);
   const [displayPDF, setDisplayPDF] = useState("");
@@ -18,7 +18,8 @@ function Candidate() {
           },
         })
         .then((res) => {
-          setDataRow(res.data);
+          setDataRows(res.data);
+          console.log(res.data);
         })
         .catch((err) => {
           console.log(err);
@@ -42,6 +43,10 @@ function Candidate() {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    console.log(dataRows);
+  }, [dataRows]);
 
   return (
     <div className="h-[calc(100vh-6rem)] p-5">

@@ -1,6 +1,5 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -8,16 +7,14 @@ import TableContainer from "@mui/material/TableContainer";
 import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-
 import TableHead from "@mui/material/TableHead";
 import { styled } from "@mui/material/styles";
 import { HiBars3 } from "react-icons/hi2";
 import { useState } from "react";
 import { GrStatusGoodSmall } from "react-icons/gr";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import styles from "./TableCandidateCustom.module.css";
-import TablePaginationActions from "./TablePaginationActions";
+import { TablePaginationActions } from "./TablePaginationActions";
 
 TablePaginationActions.propTypes = {
   count: PropTypes.number.isRequired,
@@ -36,7 +33,11 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-export default function TableCandidateCustom({ rows, setDetailSummary }) {
+export default function TableCandidateCustom({
+  rows,
+  setDetailSummary,
+  handleAcceptAccount,
+}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -82,7 +83,7 @@ export default function TableCandidateCustom({ rows, setDetailSummary }) {
                 UniversityOrCollege
               </StyledTableCell>
               <StyledTableCell align="center">Status</StyledTableCell>
-              <StyledTableCell align="center">Job Apply</StyledTableCell>
+              <StyledTableCell align="center">Email</StyledTableCell>
               <StyledTableCell align="center">Country</StyledTableCell>
               <StyledTableCell align="center">Action</StyledTableCell>
             </TableRow>
@@ -93,23 +94,33 @@ export default function TableCandidateCustom({ rows, setDetailSummary }) {
               : rows
             ).map((row, index) => (
               <TableRow
-                key={row.candidateId}
+                key={row.id}
                 className="hover:bg-slate-300 cursor-pointer"
                 onClick={() => {
                   setDetailSummary(row || null);
                 }}
               >
-                <TableCell>{row.candidateId}</TableCell>
-                <TableCell align="center">{row.fullName}</TableCell>
-                <TableCell style={{ width: 160 }} align="center">
-                  {row.universityOrCollege}
+                <TableCell>{row.id}</TableCell>
+                <TableCell align="center">
+                  {row.fullname === null ? "Not yet update" : row.fullname}
+                </TableCell>
+                <TableCell
+                  style={{ width: 160 }}
+                  align="center"
+                  className={`${
+                    row.universityOrCollege === null ? "!text-red-400" : ""
+                  }`}
+                >
+                  {row.universityOrCollege === null
+                    ? "Not yet update"
+                    : row.universityOrCollege}
                 </TableCell>
                 <TableCell align="center" style={{ width: 160 }}>
                   {/* {row.Status} */}
-                  {row.Status === "true" ? (
+                  {row.account.status ? (
                     <div className="flex items-center justify-center gap-3 border p-1 border-green-400 rounded-md w-full">
                       <GrStatusGoodSmall className="fill-green-400" />
-                      <button>Active</button>
+                      <button>Accepted</button>
                     </div>
                   ) : (
                     <div className="flex items-center justify-center gap-3  border p-1 rounded-md w-full">
@@ -119,10 +130,15 @@ export default function TableCandidateCustom({ rows, setDetailSummary }) {
                   )}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="center">
-                  {row.jobApply}
+                  {row.account.email}
                 </TableCell>
 
-                <TableCell align="center">{row.country}</TableCell>
+                <TableCell
+                  align="center"
+                  className={`${row.city === null ? "!text-red-400" : ""}`}
+                >
+                  {row.city === null ? "Not yet update" : row.city}
+                </TableCell>
                 <TableCell
                   align="center"
                   style={{ width: 160 }}
@@ -137,17 +153,20 @@ export default function TableCandidateCustom({ rows, setDetailSummary }) {
                       selectedRow === index ? "flex" : "hidden"
                     } flex-col items-start justify-around z-50 rounded-xl  p-3`}
                   >
-                    <Link
+                    {/*  <Link
                       to={`details/${row.CompanyID}`}
                       className="hover:bg-slate-400 w-full text-start  p-3 rounded-lg cursor-pointer"
                     >
                       View Detail
-                    </Link>
+                    </Link> */}
                     <li className="hover:bg-slate-400 w-full text-start  p-3 rounded-lg cursor-pointer">
                       Delete
                     </li>
-                    <li className="hover:bg-slate-400 w-full text-start  p-3 rounded-lg cursor-pointer">
-                      Control
+                    <li
+                      className="hover:bg-slate-400 w-full text-start  p-3 rounded-lg cursor-pointer"
+                      onClick={() => handleAcceptAccount(row.id)}
+                    >
+                      Accept
                     </li>
                   </ul>
                 </TableCell>

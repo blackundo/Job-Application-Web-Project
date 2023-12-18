@@ -37,6 +37,14 @@ export const informationUser = (accessToken) => async (dispatch) => {
         .finally(() => {
           controller.abort();
         });
+    } else if (decoded.roles[0] === "ROLE_Admin") {
+      dispatch(
+        showProfile(
+          { user: { role: { roleName: "Admin" } } },
+          "",
+          decoded.roles[0]
+        )
+      );
     } else {
       try {
         const [profileResponse, imageResponse] = await Promise.all([

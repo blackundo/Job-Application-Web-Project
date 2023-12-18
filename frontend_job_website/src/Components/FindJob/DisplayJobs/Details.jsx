@@ -9,7 +9,7 @@ import axiosPrivate from "../../../api/axios";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-const acc = JSON.parse(localStorage.getItem("Profile"));
+// const acc = JSON.parse(localStorage.getItem("Profile"));
 function Details({ job, role }) {
   const [selectTab, setSelectTab] = useState("details");
   const [imageCoverError, setImageCoverError] = useState(false);

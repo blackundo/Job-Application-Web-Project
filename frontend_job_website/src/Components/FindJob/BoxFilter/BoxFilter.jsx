@@ -60,7 +60,7 @@ function BoxFilter({ onSubmit }) {
             <option value="">All</option>
             <option value="FULL_TIME">Full-time</option>
             <option value="PART_TIME">part-time</option>
-            <option value="Internship">Internship</option>
+            <option value="INTERNSHIP">Internship</option>
           </select>
 
           <select
@@ -80,11 +80,11 @@ function BoxFilter({ onSubmit }) {
             name=""
             id=""
             className="bg-slate-200 h-11 rounded-lg col-span-3 text-sm  max-md:col-span-2"
-            onChange={(e) => handleFilterChange("location", e.target.value)}
+            onChange={(e) => handleFilterChange("Location", e.target.value)}
           >
             <option value="">All Location</option>
-            <option value="">Da Nang</option>
-            <option value="">Hue</option>
+            <option value="Da Nang">Đà Nẵng</option>
+            <option value="Hue">Huế</option>
           </select>
         </div>
       </div>
