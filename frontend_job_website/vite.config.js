@@ -27,6 +27,7 @@ export default defineConfig({
     },
     // End workaround
   ],
+  build: {chunkSizeWarningLimit: 4500}
   // Workaround before renaming .js to .jsx
   optimizeDeps: {
     esbuildOptions: {
