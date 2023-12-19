@@ -39,11 +39,7 @@ export const informationUser = (accessToken) => async (dispatch) => {
         });
     } else if (decoded.roles[0] === "ROLE_Admin") {
       dispatch(
-        showProfile(
-          { user: { role: { roleName: "Admin" } } },
-          "",
-          decoded.roles[0]
-        )
+        showProfile({ role: { roleName: "Admin" } }, "", decoded.roles[0])
       );
     } else {
       try {

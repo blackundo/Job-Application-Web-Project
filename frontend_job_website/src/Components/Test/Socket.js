@@ -6,7 +6,7 @@ function Socket() {
   const [connected, setConnected] = useState(false);
   useEffect(() => {
     var stompClient = Stomp.over(function () {
-      return new WebSocket("ws://api.modundo.com/ws");
+      return new WebSocket("ws://168.138.104.2/ws");
     });
 
     stompClient.connect(

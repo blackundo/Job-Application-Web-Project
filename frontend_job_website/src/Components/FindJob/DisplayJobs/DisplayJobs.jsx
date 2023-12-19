@@ -53,7 +53,7 @@ const DisplayJobs = ({
         >
           <div className="border-b border-slate-300 pb-4 ">
             <span className="text-blue-400 text-[0.875rem]">
-              Post your resume
+              Post your resume{" "}
             </span>
             <span className=" text-[0.875rem]">
               and find your next job on JobHunter!
@@ -69,10 +69,10 @@ const DisplayJobs = ({
                 <option value="20">20 per page</option>
                 <option value="25">25 per page</option>
               </select>
-              <span className="flex items-center justify-center text-[0.68rem] gap-1">
+              {/* <span className="flex items-center justify-center text-[0.68rem] gap-1">
                 {jobs?.length} Jobs
                 <AiFillQuestionCircle className="text-slate-400" />
-              </span>
+              </span> */}
             </div>
           </div>
 

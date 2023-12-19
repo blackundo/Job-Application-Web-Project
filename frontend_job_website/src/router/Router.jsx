@@ -42,6 +42,7 @@ import CompanyPage from "../Components/CompanyView/CompanyPage";
 
 import UpdateMainField from "../Components/CompanyView/Content/UpdateMainField";
 import ChangePasswordPage from "../Pages/ChangePasswordPage/ChangePasswordPage";
+import JobManager from "../Components/PanelAdmin/JobManager/JobManager";
 
 // const roles = ["Candidate", "Company", "admin", null];
 function Router() {
@@ -133,6 +134,8 @@ function Router() {
             <Route path="dashboard" element={<ChartContent />} />
             <Route path="companyManager" element={<CompanyManager />} />
             <Route path="candidateManager" element={<CandidateManager />} />
+            <Route path="jobManager" element={<JobManager />} />
+
             <Route
               path="companyManager/details/:id"
               element={<DetailsCompany />}

@@ -31,7 +31,6 @@ function FindJobPage() {
       .then((res) => {
         const data = res.data.content;
         setJobs(data);
-
         setTotalItems(res.data.totalElements);
       })
       .catch((err) => {
@@ -39,6 +38,7 @@ function FindJobPage() {
         console.log(err);
       });
   }, [page, pageSize]);
+
   useEffect(() => {
     fetchDataJobs();
   }, [fetchDataJobs]);

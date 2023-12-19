@@ -1,6 +1,5 @@
 import { RiPagesFill } from "react-icons/ri";
 import { BiMessageAltDetail } from "react-icons/bi";
-import { GrVmMaintenance } from "react-icons/gr";
 import { LuLogOut } from "react-icons/lu";
 import styles from "./HeaderPageCompany.module.css";
 import {
@@ -8,7 +7,6 @@ import {
   AiOutlineAppstoreAdd,
   AiOutlineSearch,
 } from "react-icons/ai";
-// import { MdPayments } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { informationUser } from "../../Utils/TokenToProfile";
