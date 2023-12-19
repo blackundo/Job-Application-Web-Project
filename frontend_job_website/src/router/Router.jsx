@@ -8,8 +8,6 @@ import ChartContent from "../Components/PanelAdmin/Content/ChartContent";
 import CompanyManager from "../Components/PanelAdmin/CompanyManager/CompanyManager";
 import DetailsCompany from "../Components/PanelAdmin/CompanyManager/Details/DetailsCompany";
 import { Suspense } from "react";
-
-import { Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import CandidateManager from "../Components/PanelAdmin/CandidateManager/CandidateManager";
 import Home from "../Pages/Home/Home";
@@ -17,12 +15,10 @@ import RolePage from "../Pages/ChooseRole/RolePage";
 import Login from "../Pages/Login/LoginPage";
 import Register from "../Pages/Register/RegisterPage";
 import ForgotPassword from "../Pages/ForgotPassword/ForgotPassword";
-
 import MessagePage from "../Pages/MessagePage/MessagePage";
 import NotFoundPage from "../Pages/ErrorPages/NotFoundPage";
 import FindJobPage from "../Pages/FindJobPage/FindJobPage";
 import ProfilePage from "../Pages/ProfilePage/ProfilePage";
-
 import SpinnerFullPage from "../Components/SpinnerFullPage/SpinnerFullPage";
 import RouterRole from "./RouterRole";
 import CompanyPages from "../Pages/CompanyPages/CompanyPages";
@@ -43,6 +39,7 @@ import CompanyPage from "../Components/CompanyView/CompanyPage";
 import UpdateMainField from "../Components/CompanyView/Content/UpdateMainField";
 import ChangePasswordPage from "../Pages/ChangePasswordPage/ChangePasswordPage";
 import JobManager from "../Components/PanelAdmin/JobManager/JobManager";
+import { Routes, Route } from "react-router-dom";
 
 // const roles = ["Candidate", "Company", "admin", null];
 function Router() {

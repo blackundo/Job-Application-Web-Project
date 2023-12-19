@@ -19,7 +19,8 @@ function Details({ job, role }) {
   const handleOnChangeTab = (tabs) => {
     setSelectTab(tabs);
   };
-  const { address, companyName, businessEmail } = job.hiring.companyID;
+  const { address, companyName, businessEmail } =
+    role === "Company" || role === null ? job.companyID : job.hiring.companyID;
   const handleWishList = async () => {
     const tokenAccess = JSON.parse(localStorage.getItem("Token")).access_token;
     await axiosPrivate
@@ -145,7 +146,11 @@ function Details({ job, role }) {
             src={
               imageCoverError
                 ? imageDefault
-                : `http://api.modundo.com/api/profile/company-cover/${job.hiring.companyID.id}`
+                : `http://api.modundo.com/api/profile/company-cover/${
+                    role === "Company" || role === null
+                      ? job.companyID.id
+                      : job.hiring.companyID.id
+                  }`
             }
             onError={() => setImageCoverError(true)}
             className="w-full object-cover h-3/4 absolute z-10 rounded-lg"
@@ -238,7 +243,13 @@ function Details({ job, role }) {
           {selectTab === "details" ? (
             <TabDetails job={job} role={role} />
           ) : (
-            <TabSummary summaryCompany={job?.companyID} />
+            <TabSummary
+              summaryCompany={
+                role === "Company" || role === null
+                  ? job?.companyID
+                  : job?.hiring.companyID
+              }
+            />
           )}
         </div>
       </AnimatePresence>
