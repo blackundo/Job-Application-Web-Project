@@ -3,7 +3,7 @@ import Details from "./Details";
 function DetailsJob({ job, loadDetails }) {
   const acc = JSON.parse(localStorage.getItem("Profile"));
   const role = acc?.user?.role?.roleName ?? null;
-  console.log(job);
+
   return (
     <div className="col-span-7 border-2 border-slate-600 w-full h-[46rem]  rounded-2xl  sticky top-4 max-md:hidden overflow-y-hidden ">
       {loadDetails && (
