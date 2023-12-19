@@ -55,6 +55,12 @@ public class WishListController {
             var hiring = hiringRepository.findById(hiringId)
                     .orElseThrow(() -> new NotFoundException("Hiring not found"));
 
+            Optional<WishList> wishListExist = wishListRepository.findByHiringIDAndAndCandidateID(hiring, candidate);
+            if(!wishListExist.isEmpty()){
+                return new ResponseEntity<>("You was wish", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+
             WishList wishList = new WishList(null, candidate, hiring);
             wishListRepository.save(wishList);
 
@@ -65,8 +71,23 @@ public class WishListController {
     }
 
     @DeleteMapping("/{id}")
-    public void wishes(@RequestPart Hiring hiring){
-        WishList wishList = wishListRepository.findByHiringID(hiring.getId()).orElseThrow();
-        wishListRepository.delete(wishList);
+    public ResponseEntity<?> unWish(@PathVariable Integer id){
+        if (id == null) {
+            return new ResponseEntity<>("Hiring ID is required", HttpStatus.BAD_REQUEST);
+        }
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Candidate candidate = candidateRepository.findByAccountID(account.getId())
+                .orElseThrow(() -> new NotFoundException("Candidate not found"));
+
+        var hiring = hiringRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Hiring not found"));
+
+        Optional<WishList> wishList = wishListRepository.findByHiringIDAndAndCandidateID(hiring, candidate);
+        if(!wishList.isEmpty()){
+            wishListRepository.delete(wishList.get());
+            return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+        }else{
+            return new ResponseEntity<>("No entity ", HttpStatus.BAD_REQUEST);
+        }
     }
 }

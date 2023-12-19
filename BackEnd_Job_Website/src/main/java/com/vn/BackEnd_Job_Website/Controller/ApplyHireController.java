@@ -2,6 +2,7 @@ package com.vn.BackEnd_Job_Website.Controller;
 
 
 import com.vn.BackEnd_Job_Website.Dto.RequestApplyRecord;
+import com.vn.BackEnd_Job_Website.Dto.UpdateStatusApplyRequest;
 import com.vn.BackEnd_Job_Website.Exception.ResourceNotFoundException;
 import com.vn.BackEnd_Job_Website.Model.Account;
 import com.vn.BackEnd_Job_Website.Model.ApplyHire;
@@ -85,18 +86,27 @@ public class ApplyHireController {
         var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var company = companyRepository.findByAccountID(account.getId()).orElseThrow();
         var applied = applyHireRepository.findByHiringID_CompanyIDAndHiringID_Id(company, hiringid).orElseThrow(() -> {
-                new ResourceNotFoundException("Không timf thấy hoặc hiring baif đăng kh phải của m").printStackTrace();
+//                new ResourceNotFoundException("Không timf thấy hoặc hiring baif đăng kh phải của m").printStackTrace();
                 return new ResourceNotFoundException("Không timf thấy hoặc hiring baif đăng kh phải của m");}
         );
         return new ResponseEntity<>(applied, HttpStatus.OK);
     }
 
     @GetMapping("/get-hiring-applied-candidate/{hiringid}")
-    public ResponseEntity<?> getApplyByCandidateAndHiring(@PathVariable Integer hiringid) throws ResourceNotFoundException{
+    public ResponseEntity<?> getApplyByCandidateAndHiring(@PathVariable Integer hiringid) {
         var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         var candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow();
 
         var applied = applyHireRepository.findByCandidateID_IdAndHiringID_Id(candidate.getId(), hiringid);
+        return new ResponseEntity<>(applied, HttpStatus.OK);
+    }
+
+    @PatchMapping("update-apply")
+    public ResponseEntity<?> update(@RequestBody UpdateStatusApplyRequest request) {
+        ApplyHire applied = applyHireRepository.findById(request.apply_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Apply not found with id " + request.apply_id()));
+        applied.setStatus(request.status());
+        applyHireRepository.save(applied);
         return new ResponseEntity<>(applied, HttpStatus.OK);
     }
 }

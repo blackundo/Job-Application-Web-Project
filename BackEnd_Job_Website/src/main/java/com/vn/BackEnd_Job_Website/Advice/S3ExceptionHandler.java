@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class S3ExceptionHandler {
 
-    //kh phai s3
     @ExceptionHandler(IllegalArgumentException.class)
     public ProblemDetail handleSecurityException(IllegalArgumentException ex){
         ProblemDetail errDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), ex.getMessage());

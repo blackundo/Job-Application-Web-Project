@@ -1,11 +1,10 @@
 package com.vn.BackEnd_Job_Website.Dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class ChangePasswordDTO {
     private String currentPassword;

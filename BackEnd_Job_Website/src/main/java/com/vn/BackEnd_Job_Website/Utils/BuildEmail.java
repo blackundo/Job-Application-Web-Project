@@ -1,7 +1,7 @@
 package com.vn.BackEnd_Job_Website.Utils;
 
 public class BuildEmail {
-    public static String build(String name, String link){
+    public static String registerCandidate(String name, String link){
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                 "\n" +
                 "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
@@ -68,5 +68,27 @@ public class BuildEmail {
                 "  </tbody></table><div class=\"yj6qo\"></div><div class=\"adL\">\n" +
                 "\n" +
                 "</div></div>";
+    }
+
+
+    public static String accountApprovedEmail(String companyName) {
+        return "<div style=\"font-family:Arial,sans-serif;\">" +
+                "<h2 style=\"color:#1D70B8;\">Congratulations " + companyName + "</h2>" +
+                "<p style=\"font-size:18px;\">" +
+                "We are pleased to inform you that your company account has been officially approved." +
+                "<br><br>" +
+                "You can now take full advantage of our services and features to grow your business." +
+                "<br><br>" +
+                "We look forward to having a successful partnership and helping you achieve great success." +
+                "<br><br>" +
+                "Please feel free to contact us if you have any questions." +
+                "<br><br>" +
+                "Best regards," +
+                "<br><br>" +
+                "Manager Cuteeee <3" +
+                "<br>" +
+                "Job Hunter" +
+                "</p>" +
+                "</div>";
     }
 }

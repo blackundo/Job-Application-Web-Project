@@ -1,6 +1,7 @@
 package com.vn.BackEnd_Job_Website.Controller.hiring;
 
 import com.vn.BackEnd_Job_Website.Dto.HiringPostDto;
+import com.vn.BackEnd_Job_Website.Dto.HiringResponse;
 import com.vn.BackEnd_Job_Website.Dto.RequestHiringAndCompanyID;
 import com.vn.BackEnd_Job_Website.Model.*;
 import com.vn.BackEnd_Job_Website.Respository.*;
@@ -9,6 +10,7 @@ import com.vn.BackEnd_Job_Website.Utils.GetNullPropertyNames;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +32,10 @@ public class HiringController {
     private final HiringRepository hiringRepository;
     private final HiringContentRepository hiringContentRepository;
     private final CompanyRepository companyRepository;
+    private final WishListRepository wishListRepository;
     private final Specification<Hiring> spec;
+    private final CandidateRepository candidateRepository;
+    private final ApplyHireRepository applyHireRepository;
 
     @GetMapping("/get-all")
     public ResponseEntity<List<Hiring>> getAllHirings() {
@@ -47,6 +53,7 @@ public class HiringController {
 //        List<Hiring> hirings = pageHiring.getContent();
         return new ResponseEntity<>(pageHiring, HttpStatus.OK);
     }
+
 
     @GetMapping("/find-hirings")
     public ResponseEntity<?> findHirings(
@@ -86,16 +93,26 @@ public class HiringController {
     // find one
     @GetMapping("/{id}")
     public ResponseEntity<?> getHiringById(@PathVariable int id) {
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Candidate candidate = candidateRepository.findByAccountID(account.getId()).orElseThrow();
+
         Optional<Hiring> hiring = hiringRepository.findById(id);
+        Boolean isWishlisted = wishListRepository.existsByCandidateIDAndAndHiringID_Id(candidate, id);
+        Boolean isApplied = applyHireRepository.existsByCandidateIDAndAndHiringID_Id(candidate, id);
+
+
         if (hiring.isPresent()) {
-            return ResponseEntity.ok(hiring.get());
+            return new ResponseEntity<>(HiringResponse.builder()
+                    .hiring(hiring.get())
+                    .wishlisted(isWishlisted)
+                    .applied(isApplied).build(), HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     //find one with company
-    @GetMapping("/with-comapny")
+    @GetMapping("/with-company")
     public ResponseEntity<?> findByIdAndCompanyId(@RequestBody RequestHiringAndCompanyID request) {
 
         Optional<Hiring> hiring = hiringRepository.findByIdAndCompanyId(request.hiringId(), request.CompanyId());

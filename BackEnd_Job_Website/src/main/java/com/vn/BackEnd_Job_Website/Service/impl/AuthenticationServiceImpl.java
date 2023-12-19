@@ -60,6 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
 //                .status(false)
+                .status(false)
                 .build();
 
         repoAccount.save(user);
@@ -103,6 +104,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .role(repoRole.findById(3).get()) // 1- ADMIN | 2- Company | 3- Candidate
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
+                    .status(false)
                     .build();
              //chưa bắt lỗi trùng
             repoAccount.save(user);
@@ -127,7 +129,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String link = "http://api.modundo.com/api/auth/verify?token=" + tokenVeri;
         emailService.send(
                 request.getEmail(),
-                BuildEmail.build(request.getFullName(), link));
+                BuildEmail.registerCandidate(request.getFullName(), link));
 
         var accessToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
@@ -240,7 +242,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 //        EmailTokenVeri tokenVeri = repoEmailVeri.findByAccount(account).orElseThrow(() -> new EntityNotFoundException("Token not found !!"));
 
 
-        if (account.isStatus() == true){
+        if (Boolean.TRUE.equals(account.getStatus())){
             return "error !! Email already confirm";
         }else {
             //send mail
@@ -248,7 +250,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             String link = "http://api.modundo.com/api/auth/verify?token=" + tokenVeri.getId();
             emailService.send(
                     userEmail,
-                    BuildEmail.build("Bro", link));
+                    BuildEmail.registerCandidate("Bro", link));
 
             return "Email has send !!!";
         }

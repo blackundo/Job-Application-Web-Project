@@ -13,8 +13,6 @@ import java.util.List;
 @Slf4j
 public class SchedulerJobs {
 
-
-
     @Autowired
     private HiringRepository hiringRepository;
 

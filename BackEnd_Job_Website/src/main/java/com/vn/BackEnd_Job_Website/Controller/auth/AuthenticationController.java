@@ -62,7 +62,7 @@ public class AuthenticationController {
     @GetMapping("/verified")
     public ResponseEntity<?> emailExistVerified(){
         Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok().body(account.isStatus());
+        return ResponseEntity.ok().body(account.getStatus());
     }
 
 

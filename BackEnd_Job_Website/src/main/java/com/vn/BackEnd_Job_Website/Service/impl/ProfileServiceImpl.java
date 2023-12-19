@@ -47,7 +47,7 @@ public class ProfileServiceImpl implements ProfileService {
                     .businessEmail(company.getBusinessEmail())
                     .orgn(company.getOrganizational())
                     .phone(company.getPhoneNumber())
-                    .status(account.isStatus())
+                    .status(account.getStatus())
                     .build();
         }else {
             var candidate = repoCandidate.findByAccountID(account.getId()).orElseThrow();
@@ -61,7 +61,7 @@ public class ProfileServiceImpl implements ProfileService {
                     .gender(candidate.getGender())
                     .universityOrCollege(candidate.getUniversityOrCollege())
                     .city(candidate.getCity())
-                    .status(account.isStatus())
+                    .status(account.getStatus())
                     .exp(candidate.getExp())
                     .skill(candidate.getSkills())
                     .build();

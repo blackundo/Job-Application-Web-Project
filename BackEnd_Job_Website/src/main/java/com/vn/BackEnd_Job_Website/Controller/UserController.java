@@ -1,13 +1,12 @@
 package com.vn.BackEnd_Job_Website.Controller;
 
 import com.vn.BackEnd_Job_Website.Dto.ChangePasswordDTO;
+import com.vn.BackEnd_Job_Website.Model.Account;
 import com.vn.BackEnd_Job_Website.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -16,12 +15,10 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService service;
-    @PatchMapping
-    public ResponseEntity<?> changePassword(
-            @RequestBody ChangePasswordDTO request,
-            Principal connectedUser
-    ) {
-//        service.changePassword(request, connectedUser);
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO request) {
+        var account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        service.changePassword(request, account);
         return ResponseEntity.ok().build();
     }
 }
