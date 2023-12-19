@@ -1,4 +1,4 @@
-import InputSettingCompany from "../../Input/inputSettingCompany";
+import InputSettingCompany from "../../Input/InputSettingCompany";
 import DrawImage from "./DrawImage";
 
 function SettingFiled({
