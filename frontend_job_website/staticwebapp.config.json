@@ -3,7 +3,7 @@
     {
       "source" : "/(.*)", 
       "headers" : [ 
-        { "key" : "Content-Security-Policy", "value" : "default-src 'self' https://api.modundo.com" }
+        { "key" : "Content-Security-Policy", "value" : "default-src 'self' http://api.modundo.com" }
       ]
     }
   ],
@@ -22,7 +22,7 @@
       }
     },
     "globalHeaders": {
-      "content-security-policy": "default-src 'self' https://api.modundo.com"
+      "content-security-policy": "default-src 'self' http://api.modundo.com"
     },
     "routes": [
       {
