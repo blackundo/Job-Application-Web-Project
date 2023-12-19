@@ -18,19 +18,35 @@ const DisplayJobs = ({
   const mobile = window.innerWidth <= 768;
   const [jobDetail, setJobDetail] = useState(null);
   const [load, setLoad] = useState(false);
+  const acc = JSON.parse(localStorage.getItem("Profile"));
+  const role = acc?.user?.role?.roleName ?? null;
   const handleChooseJob = async (id) => {
     setLoad(true);
-    await axiosPrivate
-      .get(`/api/hiring/${id}`)
-      .then((res) => {
-        setJobDetail(res.data);
-        console.log(res.data);
-        setLoad(true);
-      })
-      .catch(() => {
-        setLoad(false);
-      });
-    setLoad(false);
+    if (role === "Company" || role === null) {
+      await axiosPrivate
+        .get(`/api/hiring/get-one/${id}`)
+        .then((res) => {
+          console.log(res.data);
+          setJobDetail(res.data);
+          setLoad(true);
+        })
+        .catch(() => {
+          setLoad(false);
+        });
+      setLoad(false);
+    } else {
+      await axiosPrivate
+        .get(`/api/hiring/${id}`)
+        .then((res) => {
+          console.log(res.data);
+          setJobDetail(res.data);
+          setLoad(true);
+        })
+        .catch(() => {
+          setLoad(false);
+        });
+      setLoad(false);
+    }
   };
 
   const handlePageChange = (selectedPage) => {

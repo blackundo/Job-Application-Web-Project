@@ -9,17 +9,13 @@ function Candidate() {
   const [size, setSize] = useState(5);
   const [displayPDF, setDisplayPDF] = useState("");
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("Token")).access_token;
+    // const token = JSON.parse(localStorage.getItem("Token")).access_token;
     const getCandidateApplied = async () => {
       await axiosPrivate
-        .get(`/api/apply/get-applied?page=${page}&size=${size}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        .get(`/api/apply/get-applied?page=${page}&size=${size}`)
         .then((res) => {
           setDataRows(res.data);
-          console.log(res.data);
+          //  console.log(res.data);
         })
         .catch((err) => {
           console.log(err);
@@ -29,12 +25,25 @@ function Candidate() {
   }, [page, size]);
 
   const handleRejectCandidate = async (id) => {
-    const token = JSON.parse(localStorage.getItem("Token")).access_token;
+    //const token = JSON.parse(localStorage.getItem("Token")).access_token;
     await axiosPrivate
-      .delete(`/api/apply/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      .patch(`/api/apply/update-apply`, {
+        apply_id: id,
+        status: "Rejected",
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleInterviewCandidate = async (id) => {
+    //const token = JSON.parse(localStorage.getItem("Token")).access_token;
+    await axiosPrivate
+      .patch(`/api/apply/update-apply`, {
+        apply_id: id,
+        status: "Interview",
       })
       .then((res) => {
         console.log(res.data);
@@ -44,9 +53,9 @@ function Candidate() {
       });
   };
 
-  useEffect(() => {
+  /*   useEffect(() => {
     console.log(dataRows);
-  }, [dataRows]);
+  }, [dataRows]); */
 
   return (
     <div className="h-[calc(100vh-6rem)] p-5">
@@ -63,6 +72,7 @@ function Candidate() {
               setDetailSummary={setDetailSummary}
               setDisplayPDF={setDisplayPDF}
               rejectCandidate={handleRejectCandidate}
+              interviewCandidate={handleInterviewCandidate}
             />
           )}
         </div>

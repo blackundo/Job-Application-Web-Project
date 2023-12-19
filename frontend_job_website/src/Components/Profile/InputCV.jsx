@@ -37,16 +37,13 @@ function InputCV({ initFile }) {
         dangerMode: true,
       }).then(async (yes) => {
         if (yes) {
-          const access_token = JSON.parse(
-            localStorage.getItem("Token")
-          ).access_token;
           const data = new FormData();
           data.append("file", selectFile);
           console.log("Updating file...", selectFile);
           await axiosPrivate
             .patch("/api/profile/candidate/update", data, {
               headers: {
-                Authorization: `Bearer ${access_token}`,
+                // Authorization: `Bearer ${access_token}`,
                 "Content-Type": "multipart/form-data",
               },
             })

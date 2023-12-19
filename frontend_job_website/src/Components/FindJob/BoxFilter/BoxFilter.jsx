@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 
 function BoxFilter({ onSubmit }) {
   const [filters, setFilters] = useState({
-    DatePost: "l24h",
+    DatePost: "",
     Salary: "",
-    JobType: "FULL_TIME",
+    JobType: "",
     Location: "",
     Company: "",
   });
