@@ -32,10 +32,8 @@ import WriteJobs from "../Components/CompanyView/Post/WriteJobs";
 import PreviewPost from "../Components/CompanyView/Post/PreviewPost";
 import AccountSetting from "../Components/CompanyView/Content/AccountSetting";
 import JobApplied from "../Components/Profile/JobApplied/JobApplied";
-
 import EditJobs from "../Components/CompanyView/Content/EditJobs";
 import CompanyPage from "../Components/CompanyView/CompanyPage";
-
 import UpdateMainField from "../Components/CompanyView/Content/UpdateMainField";
 import ChangePasswordPage from "../Pages/ChangePasswordPage/ChangePasswordPage";
 import JobManager from "../Components/PanelAdmin/JobManager/JobManager";

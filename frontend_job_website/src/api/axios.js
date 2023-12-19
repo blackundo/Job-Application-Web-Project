@@ -2,10 +2,10 @@ import axios from "axios";
 const BASE_LOCAL = "http://localhost";
 const BASE_SERVER = "http://api.modundo.com";
 const BASE_PORT = "http://168.138.104.2";
-const BASE_URL = BASE_LOCAL;
+const BASE_URL = BASE_SERVER;
 
 const axiosPrivate = axios.create({
-  baseURL: BASE_SERVER,
+  baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
 
@@ -39,7 +39,7 @@ axiosPrivate.interceptors.response.use(
     }
     if (err.response.data.status === 403) {
       const refreshResponse = await axios.post(
-        BASE_SERVER + "/api/auth/refresh-token",
+        BASE_URL + "/api/auth/refresh-token",
         {},
         {
           headers: {
@@ -47,6 +47,7 @@ axiosPrivate.interceptors.response.use(
           },
         }
       );
+      console.log(data);
       // console.log(refreshResponse);
       const data = refreshResponse?.data;
       localStorage.setItem("Token", JSON.stringify(data));

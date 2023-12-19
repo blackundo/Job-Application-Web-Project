@@ -13,7 +13,7 @@ const FormRegisterCandidate = ({ setIsRegistered }) => {
 
   // console.log(role);
   const [formData, setFormData] = useState({
-    // name: "",
+    //name: "",
     email: "",
     password: "",
   });
