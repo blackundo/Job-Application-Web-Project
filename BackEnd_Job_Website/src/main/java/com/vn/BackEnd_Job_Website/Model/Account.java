@@ -40,7 +40,7 @@ public class Account implements UserDetails {
     private String password;
 
     @Column(name = "Status")
-    private Boolean status = Boolean.FALSE;
+    private Boolean status = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

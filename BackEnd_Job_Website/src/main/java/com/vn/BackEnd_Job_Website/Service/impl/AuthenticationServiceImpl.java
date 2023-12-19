@@ -60,6 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
 //                .status(false)
+                .status(false)
                 .build();
 
         repoAccount.save(user);
@@ -103,6 +104,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .role(repoRole.findById(3).get()) // 1- ADMIN | 2- Company | 3- Candidate
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
+                    .status(false)
                     .build();
              //chưa bắt lỗi trùng
             repoAccount.save(user);
