@@ -1,4 +1,4 @@
-import Details from "./details";
+import Details from "./Details";
 
 function DetailsJob({ job, loadDetails }) {
   const acc = JSON.parse(localStorage.getItem("Profile"));
