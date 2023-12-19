@@ -7,7 +7,7 @@ import {
 import MenuItem from "./MenuItem";
 import HeaderPageCompany from "./HeaderPageCompany";
 import { Outlet } from "react-router-dom";
-import FiexdMenu from "./fiexdMenu";
+import FiexdMenu from "./FiexdMenu";
 
 function CompanyView() {
   const [isOpen, setIsOpen] = useState(false);
