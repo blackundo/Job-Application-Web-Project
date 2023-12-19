@@ -7,19 +7,15 @@ const AppliedTab = () => {
   const [countItems, setCountItems] = useState(0);
 
   const displayJobApplied = async () => {
-    const accessToken = JSON.parse(localStorage.getItem("Token")).access_token;
+    //const accessToken = JSON.parse(localStorage.getItem("Token")).access_token;
     await axiosPrivate
-      .get("/api/apply/get-applied", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+      .get("/api/apply/get-applied")
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
   };
 
   useEffect(() => {
-    // displayJobApplied();
+    //  displayJobApplied();
   }, []);
 
   if (countItems === 0) {

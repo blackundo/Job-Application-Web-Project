@@ -43,7 +43,6 @@ function Details({ job, role }) {
       });
   };
   const handleApplyJob = async () => {
-    const tokenAccess = JSON.parse(localStorage.getItem("Token")).access_token;
     const loadingToastId = toast.loading("Please wait...", {
       autoClose: false,
     });
@@ -63,15 +62,7 @@ function Details({ job, role }) {
       switch (confirm) {
         case "Apply":
           axiosPrivate
-            .post(
-              "/api/apply/",
-              { hiringID: job.id, status: "Apply" },
-              {
-                headers: {
-                  Authorization: "Bearer " + tokenAccess,
-                },
-              }
-            )
+            .post("/api/apply/", { hiringID: job.hiring.id, status: "Apply" })
             .then((res) => {
               if (res.status === 200) {
                 swal("Apply success!", {
@@ -96,10 +87,53 @@ function Details({ job, role }) {
 
         case "ChangeCV":
           navigate("/user");
+          toast.dismiss(loadingToastId);
           break;
 
         default:
           toast.dismiss(loadingToastId);
+      }
+    });
+  };
+  const handleChangeApply = async () => {
+    const loadingToastId = toast.loading("Please wait...", {
+      autoClose: false,
+    });
+    await swal({
+      title: "Do you want to change ",
+      text: "You Want apply this job?",
+      icon: "warning",
+      buttons: {
+        UnApply: "UnApply",
+        Cancel: true,
+      },
+      dangerMode: true,
+    }).then((confirm) => {
+      switch (confirm) {
+        case "UnApply":
+          axiosPrivate
+            .delete(`/api/apply/${job.hiring.id}`)
+            .then((res) => {
+              if (res.status === 204) {
+                swal("Apply success!", {
+                  icon: "success",
+                });
+                toast.dismiss(loadingToastId);
+              }
+              /*  if (res.status === 204) {
+                swal("You Applied!", {
+                  icon: "error",
+                });
+                toast.dismiss(loadingToastId);
+              } */
+            })
+            .catch(() => {
+              swal("Apply Fails!", {
+                icon: "error",
+              });
+              toast.dismiss(loadingToastId);
+            });
+          break;
       }
     });
   };
@@ -147,8 +181,8 @@ function Details({ job, role }) {
               {job?.applied && (
                 <button
                   className="w-[19rem] h-[3.125rem] bg-yellow-300 rounded-lg text-[1.31rem] text-white font-bold cursor-not-allowed"
-                  disabled
-                  // onClick={handleApplyJob}
+                  //disabled
+                  onClick={handleChangeApply}
                 >
                   Applied
                 </button>
