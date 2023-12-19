@@ -11,13 +11,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { CiLogout } from "react-icons/ci";
 const menus = {
-  Notification: false,
+  /* Notification: false, */
   Dashboard: false,
   CompanyManager: false,
   CandidateManager: false,
   JobManager: false,
-  AccountManager: false,
-  PaymentManager: false,
+  /*  AccountManager: false,
+  PaymentManager: false, */
 };
 function ListMenu({ open }) {
   const [selected, setSelected] = useState({ ...menus });
@@ -36,17 +36,16 @@ function ListMenu({ open }) {
     navigate("/");
   };
   const {
-    Notification,
     Dashboard,
     CompanyManager,
     CandidateManager,
     JobManager,
-    AccountManager,
-    PaymentManager,
+    /*   AccountManager,
+    PaymentManager, */
   } = selected;
   return (
     <ul className={`${styles.menu}`}>
-      {open && (
+      {/* {open && (
         <Link
           to={"Notification"}
           className={`${Notification ? styles.selected : ""}`}
@@ -57,12 +56,12 @@ function ListMenu({ open }) {
           </div>
           <span>Notification</span>
         </Link>
-      )}
+      )} */}
       {!open && (
         <>
-          <Link to={"Notification"}>
+          {/* <Link to={"Notification"}>
             <AiOutlineNotification />
-          </Link>
+          </Link> */}
           <Link to={"dashboard"}>
             <HiOutlinePresentationChartLine />
           </Link>
@@ -75,12 +74,12 @@ function ListMenu({ open }) {
           <Link to={"jobManager"}>
             <BsCardChecklist />
           </Link>
-          <Link to={"accountManager"}>
+          {/*   <Link to={"accountManager"}>
             <BiUserPin />
-          </Link>
-          <Link to={"paymentManager"}>
+          </Link> */}
+          {/*  <Link to={"paymentManager"}>
             <IoWalletOutline />
-          </Link>
+          </Link> */}
           <Link to={"/"}>
             <CiLogout />
           </Link>
@@ -133,7 +132,7 @@ function ListMenu({ open }) {
             <span>Job Manager</span>
           </Link>
 
-          <Link
+          {/* <Link
             to={"accountManager"}
             className={`${AccountManager ? styles.selected : ""}`}
             onClick={(e) => handleOnclickMenu(e, "AccountManager")}
@@ -143,8 +142,8 @@ function ListMenu({ open }) {
             </div>
             <span>Account Manager</span>
           </Link>
-
-          <Link
+ */}
+          {/* <Link
             to={"paymentManager"}
             className={`${PaymentManager ? styles.selected : ""}`}
             onClick={(e) => handleOnclickMenu(e, "PaymentManager")}
@@ -153,7 +152,7 @@ function ListMenu({ open }) {
               <IoWalletOutline />
             </div>
             <span>Payment Manager</span>
-          </Link>
+          </Link> */}
 
           <Link onClick={handleLogOut} to={"/"}>
             <CiLogout />

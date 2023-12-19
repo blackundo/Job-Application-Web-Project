@@ -13,7 +13,9 @@ function TabDetails({ job, role }) {
         transition={{ duration: 0.5 }}
       >
         <span className="p-3 font-bold text-[1.5rem]">
-          {job.hiring.hiringContentID.title}
+          {role === "Company" || role === null
+            ? job.hiringContentID.title
+            : job.hiring.hiringContentID.title}
         </span>
         <div className=" p-3  flex items-center justify-evenly gap-2">
           {/* <span className="text-[#2D2D2D] font-sans ">
@@ -26,7 +28,9 @@ function TabDetails({ job, role }) {
             </div>
             <div>
               <span className="h-[1.68rem]  bg-[#D9D9D9] text-[#5A5A5A] p-1 text-[0.875rem] rounded-sm ">
-                {job.hiring.errollmentStatus}
+                {role === "Company" || role === null
+                  ? job.errollmentStatus
+                  : job.hiring.errollmentStatus}
               </span>
             </div>
           </div>
@@ -37,7 +41,9 @@ function TabDetails({ job, role }) {
             </div>
             <div>
               <span className="h-[1.68rem]  bg-[#D9D9D9] text-[#5A5A5A] p-1 text-[0.875rem] rounded-sm ">
-                {job.hiring.fieldName}
+                {role === "Company" || role === null
+                  ? job.fieldName
+                  : job.hiring.fieldName}
               </span>
             </div>
           </div>
@@ -48,11 +54,17 @@ function TabDetails({ job, role }) {
             </div>
             <div className="flex items-center justify-start gap-3">
               <span className="h-[1.68rem] bg-[#D9D9D9] text-black p-1 text-[0.875rem] rounded-lg ">
-                {job.hiring.minSalary} $
+                {role === "Company" || role === null
+                  ? job.minSalary
+                  : job.hiring.minSalary}{" "}
+                $
               </span>
               -
               <span className="h-[1.68rem]  bg-sky-300  text-[#5A5A5A] p-1 text-[0.875rem] rounded-lg ">
-                {job.hiring.maxSalary} $
+                {role === "Company" || role === null
+                  ? job.maxSalary
+                  : job.hiring.maxSalary}{" "}
+                $
               </span>
             </div>
           </div>
@@ -63,11 +75,15 @@ function TabDetails({ job, role }) {
             </div>
             <div className="flex items-center justify-center gap-3">
               <span className="h-[1.68rem]  bg-[#D9D9D9] text-[#5A5A5A] p-1 text-[0.875rem] rounded-sm ">
-                {job.hiring.dateSubmit}
+                {role === "Company" || role === null
+                  ? job.dateSubmit
+                  : job.hiring.dateSubmit}
               </span>
               -
               <span className="h-[1.68rem]  bg-[#D9D9D9] text-[#5A5A5A] p-1 text-[0.875rem] rounded-sm ">
-                {job.hiring.dateEnd}
+                {role === "Company" || role === null
+                  ? job.dateEnd
+                  : job.hiring.dateEnd}
               </span>
             </div>
           </div>
@@ -91,7 +107,10 @@ function TabDetails({ job, role }) {
         <div
           className={`ql-editor prose prose-lg`}
           dangerouslySetInnerHTML={{
-            __html: job.hiring.hiringContentID.content,
+            __html:
+              role === "Company" || role === null
+                ? job.hiringContentID.content
+                : job.hiring.hiringContentID.content,
           }}
         />
 

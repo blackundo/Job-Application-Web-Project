@@ -11,6 +11,7 @@ const CustomTable = ({
   setDetailSummary,
   setDisplayPDF,
   rejectCandidate,
+  interviewCandidate,
 }) => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -126,7 +127,7 @@ const CustomTable = ({
                   </button>
                   <button
                     className="border p-1 rounded-md w-20 text-[0.9rem] border-blue-400 text-blue-400 font-bold hover:bg-blue-500 hover:text-white"
-                    // onClick={() => handleStatusChange("Interview")}
+                    onClick={() => interviewCandidate(row.id)}
                   >
                     Interview
                   </button>
